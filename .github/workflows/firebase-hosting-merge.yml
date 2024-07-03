@@ -27,4 +27,3 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TATMANGA_28C80 }}'
           channelId: live
           projectId: tatmanga-28c80
-          entryPoint: build/web
