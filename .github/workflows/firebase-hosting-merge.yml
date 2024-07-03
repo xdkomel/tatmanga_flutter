@@ -12,15 +12,15 @@ jobs:
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-      - name: Create Dotenv File
-        uses: actually-colab/github-action-create-env-file@v2.3
-        with: 
-          ADMINS: ${{ secrets.ADMINS }}
-          WEB: ${{ secrets.WEB }}
-          file_name: env.env
-      - run: flutter build web --release
+      # - name: Set up Flutter
+      #   uses: subosito/flutter-action@v2
+      # - name: Create Dotenv File
+      #   uses: actually-colab/github-action-create-env-file@v2.3
+      #   with: 
+      #     ADMINS: ${{ secrets.ADMINS }}
+      #     WEB: ${{ secrets.WEB }}
+      #     file_name: env.env
+      # - run: flutter build web --release
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
