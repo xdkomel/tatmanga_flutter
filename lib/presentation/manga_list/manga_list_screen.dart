@@ -96,10 +96,10 @@ class _CardsWrap extends ConsumerWidget {
   double _oneCardWidth(BuildContext context) {
     final width = contentWidth(context);
     return switch (width) {
-      >= 1132 => (width - 32) / 5,
-      >= 904 => (width - 24) / 4,
-      >= 676 => (width - 16) / 3,
-      _ => (width - 8) / 2,
+      >= 1132 => (width - 64) / 5,
+      >= 904 => (width - 56) / 4,
+      >= 676 => (width - 48) / 3,
+      _ => (width - 40) / 2,
     };
   }
 }

@@ -12,7 +12,11 @@ class MangaCard extends ConsumerWidget {
   final Manga manga;
   final double width;
 
-  const MangaCard({super.key, required this.manga, required this.width});
+  const MangaCard({
+    super.key,
+    required this.manga,
+    required this.width,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => Stack(
@@ -22,7 +26,7 @@ class MangaCard extends ConsumerWidget {
             child: Padding(
               padding: const EdgeInsets.all(8),
               child: SizedBox(
-                width: width,
+                width: width-16,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -31,8 +35,8 @@ class MangaCard extends ConsumerWidget {
                       (cover) => ImageWidget(
                         imageData: cover.image,
                         mangaId: manga.mangaId,
-                        width: width - 16,
-                        height: width - 16,
+                        width: width - 32,
+                        height: width - 32,
                         fit: BoxFit.cover,
                         radius: 4,
                       ),
@@ -65,7 +69,7 @@ class MangaCard extends ConsumerWidget {
               builder: (_) => const MangaContentsScreen(),
             ),
           );
-          
+          ref.read(SP.mangaLoadingManager.notifier).updateManga(manga);
           await manager.uploadConfig();
           manager.removeModel();
         },

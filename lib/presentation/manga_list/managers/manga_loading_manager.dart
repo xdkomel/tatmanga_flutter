@@ -33,6 +33,13 @@ class MangaLoadingManager extends Notifier<Option<IList<Manga>>> {
         ),
       );
 
+  void updateManga(Manga manga) => state = state.map(
+        (ms) => ms.replaceFirstWhere(
+          (m) => m.mangaId == manga.mangaId,
+          (_) => manga,
+        ),
+      );
+
   // Future<void> removeManga(String mangaId) async {
   //   final oldState = state;
   //   state = const None();
