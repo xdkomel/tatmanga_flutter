@@ -14,10 +14,13 @@ jobs:
         uses: actions/checkout@v4
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
-      - run: flutter build web --web-renderer html --release
-        env: 
+      - name: Create Dotenv File
+        uses: actually-colab/github-action-create-env-file@v2.3
+        with: 
           ADMINS: ${{ secrets.ADMINS }}
           WEB: ${{ secrets.WEB }}
+          file_name: .env
+      - run: flutter build web --web-renderer html --release
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
