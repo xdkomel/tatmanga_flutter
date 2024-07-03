@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:tatmanga_flutter/main.dart';
 import 'package:tatmanga_flutter/providers.dart';
-import 'package:tatmanga_flutter/secrets.dart';
 import 'package:tatmanga_flutter/utils/fp.dart';
 
 class AuthData {
@@ -32,5 +32,5 @@ class AuthenticationManager extends Notifier<Option<AuthData>> {
   }
 
   bool _canEdit(User user) =>
-      user.email.fold(() => false, adminEmails.contains);
+      user.email.fold(() => false, adminEmails!.contains);
 }

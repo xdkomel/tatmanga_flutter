@@ -3,7 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
-import 'package:tatmanga_flutter/secrets.dart';
+import 'package:tatmanga_flutter/main.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -18,7 +18,7 @@ import 'package:tatmanga_flutter/secrets.dart';
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      return web!;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
