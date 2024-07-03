@@ -10,7 +10,7 @@ class Env {
   Option<HashMap<String, String>> _env = const None();
 
   Future<HashMap<String, String>> _init() async {
-    await dotenv.load(fileName: ".env");
+    await dotenv.load(fileName: "env.env");
     final hm = HashMap<String, String>.from(dotenv.env);
     _env = Some(hm);
     return hm;
