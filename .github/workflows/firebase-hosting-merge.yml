@@ -20,7 +20,13 @@ jobs:
           ADMINS: ${{ secrets.ADMINS }}
           WEB: ${{ secrets.WEB }}
           file_name: env.env
-      # - run: flutter build web --web-renderer html --release
-      - uses: AlienKevin/flutter-gh-pages@v11
+      - run: flutter build web --web-renderer html --release
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          webRenderer: html
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build/web
+          publish_branch: gh-pages
+      # - uses: AlienKevin/flutter-gh-pages@v11
+      #   with:
+      #     webRenderer: html
