@@ -19,7 +19,7 @@ jobs:
         with: 
           ADMINS: ${{ secrets.ADMINS }}
           WEB: ${{ secrets.WEB }}
-          file_name: .env
+          file_name: env.env
       # - run: flutter build web --web-renderer html --release
       - uses: AlienKevin/flutter-gh-pages@v11
         with:
