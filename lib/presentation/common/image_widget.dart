@@ -37,9 +37,10 @@ class _ImageWidgetState extends ConsumerState<ImageWidget> {
   }
 
   Future<void> _loadUrl() => switch (widget.imageData) {
-        NamedImage ni => ref.read(P.storage).getUrl(widget.mangaId, ni.name).then(
-              (url) => setState(() => _loadedUrl = url),
-            ),
+        NamedImage ni =>
+          ref.read(P.storage).getUrl(widget.mangaId, ni.name).then(
+                (url) => setState(() => _loadedUrl = url),
+              ),
         _ => Future.value(),
       };
 
@@ -68,6 +69,16 @@ class _ImageWidgetState extends ConsumerState<ImageWidget> {
             height: widget.height,
             imageUrl: ui.url,
             fit: widget.fit,
+            placeholder: (context, _) => Container(
+              width: widget.width,
+              height: widget.height,
+              color: Colors.black38,
+            ),
+            errorWidget: (context, _, __) => Container(
+              width: widget.width,
+              height: widget.height,
+              color: Colors.black38,
+            ),
           ),
         BytesImage bi => Image.memory(
             bi.bytes,

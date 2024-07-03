@@ -16,8 +16,9 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$MangaChapter {
+  String get id => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
-  List<StatusImageData> get pageImages => throw _privateConstructorUsedError;
+  IList<StatusImageData> get pageImages => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MangaChapterCopyWith<MangaChapter> get copyWith =>
@@ -30,7 +31,7 @@ abstract class $MangaChapterCopyWith<$Res> {
           MangaChapter value, $Res Function(MangaChapter) then) =
       _$MangaChapterCopyWithImpl<$Res, MangaChapter>;
   @useResult
-  $Res call({String? name, List<StatusImageData> pageImages});
+  $Res call({String id, String? name, IList<StatusImageData> pageImages});
 }
 
 /// @nodoc
@@ -46,10 +47,15 @@ class _$MangaChapterCopyWithImpl<$Res, $Val extends MangaChapter>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? name = freezed,
     Object? pageImages = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -57,7 +63,7 @@ class _$MangaChapterCopyWithImpl<$Res, $Val extends MangaChapter>
       pageImages: null == pageImages
           ? _value.pageImages
           : pageImages // ignore: cast_nullable_to_non_nullable
-              as List<StatusImageData>,
+              as IList<StatusImageData>,
     ) as $Val);
   }
 }
@@ -70,7 +76,7 @@ abstract class _$$MangaChapterImplCopyWith<$Res>
       __$$MangaChapterImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? name, List<StatusImageData> pageImages});
+  $Res call({String id, String? name, IList<StatusImageData> pageImages});
 }
 
 /// @nodoc
@@ -84,18 +90,23 @@ class __$$MangaChapterImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? name = freezed,
     Object? pageImages = null,
   }) {
     return _then(_$MangaChapterImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
       pageImages: null == pageImages
-          ? _value._pageImages
+          ? _value.pageImages
           : pageImages // ignore: cast_nullable_to_non_nullable
-              as List<StatusImageData>,
+              as IList<StatusImageData>,
     ));
   }
 }
@@ -104,22 +115,18 @@ class __$$MangaChapterImplCopyWithImpl<$Res>
 
 class _$MangaChapterImpl implements _MangaChapter {
   const _$MangaChapterImpl(
-      {required this.name, required final List<StatusImageData> pageImages})
-      : _pageImages = pageImages;
+      {required this.id, required this.name, required this.pageImages});
 
   @override
-  final String? name;
-  final List<StatusImageData> _pageImages;
+  final String id;
   @override
-  List<StatusImageData> get pageImages {
-    if (_pageImages is EqualUnmodifiableListView) return _pageImages;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_pageImages);
-  }
+  final String? name;
+  @override
+  final IList<StatusImageData> pageImages;
 
   @override
   String toString() {
-    return 'MangaChapter(name: $name, pageImages: $pageImages)';
+    return 'MangaChapter(id: $id, name: $name, pageImages: $pageImages)';
   }
 
   @override
@@ -127,14 +134,15 @@ class _$MangaChapterImpl implements _MangaChapter {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MangaChapterImpl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality()
-                .equals(other._pageImages, _pageImages));
+                .equals(other.pageImages, pageImages));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, name, const DeepCollectionEquality().hash(_pageImages));
+      runtimeType, id, name, const DeepCollectionEquality().hash(pageImages));
 
   @JsonKey(ignore: true)
   @override
@@ -145,13 +153,16 @@ class _$MangaChapterImpl implements _MangaChapter {
 
 abstract class _MangaChapter implements MangaChapter {
   const factory _MangaChapter(
-      {required final String? name,
-      required final List<StatusImageData> pageImages}) = _$MangaChapterImpl;
+      {required final String id,
+      required final String? name,
+      required final IList<StatusImageData> pageImages}) = _$MangaChapterImpl;
 
+  @override
+  String get id;
   @override
   String? get name;
   @override
-  List<StatusImageData> get pageImages;
+  IList<StatusImageData> get pageImages;
   @override
   @JsonKey(ignore: true)
   _$$MangaChapterImplCopyWith<_$MangaChapterImpl> get copyWith =>

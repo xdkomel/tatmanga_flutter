@@ -19,9 +19,10 @@ mixin _$Manga {
   String get mangaId => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
-  ImageData? get cover => throw _privateConstructorUsedError;
-  List<AuthorData>? get authors => throw _privateConstructorUsedError;
-  List<MangaChapter> get chapters => throw _privateConstructorUsedError;
+  StatusImageData? get cover => throw _privateConstructorUsedError;
+  IList<Author> get authors => throw _privateConstructorUsedError;
+  IList<MangaChapter> get chapters => throw _privateConstructorUsedError;
+  bool get configUploading => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MangaCopyWith<Manga> get copyWith => throw _privateConstructorUsedError;
@@ -36,9 +37,12 @@ abstract class $MangaCopyWith<$Res> {
       {String mangaId,
       String title,
       String? description,
-      ImageData? cover,
-      List<AuthorData>? authors,
-      List<MangaChapter> chapters});
+      StatusImageData? cover,
+      IList<Author> authors,
+      IList<MangaChapter> chapters,
+      bool configUploading});
+
+  $StatusImageDataCopyWith<$Res>? get cover;
 }
 
 /// @nodoc
@@ -58,8 +62,9 @@ class _$MangaCopyWithImpl<$Res, $Val extends Manga>
     Object? title = null,
     Object? description = freezed,
     Object? cover = freezed,
-    Object? authors = freezed,
+    Object? authors = null,
     Object? chapters = null,
+    Object? configUploading = null,
   }) {
     return _then(_value.copyWith(
       mangaId: null == mangaId
@@ -77,16 +82,32 @@ class _$MangaCopyWithImpl<$Res, $Val extends Manga>
       cover: freezed == cover
           ? _value.cover
           : cover // ignore: cast_nullable_to_non_nullable
-              as ImageData?,
-      authors: freezed == authors
+              as StatusImageData?,
+      authors: null == authors
           ? _value.authors
           : authors // ignore: cast_nullable_to_non_nullable
-              as List<AuthorData>?,
+              as IList<Author>,
       chapters: null == chapters
           ? _value.chapters
           : chapters // ignore: cast_nullable_to_non_nullable
-              as List<MangaChapter>,
+              as IList<MangaChapter>,
+      configUploading: null == configUploading
+          ? _value.configUploading
+          : configUploading // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $StatusImageDataCopyWith<$Res>? get cover {
+    if (_value.cover == null) {
+      return null;
+    }
+
+    return $StatusImageDataCopyWith<$Res>(_value.cover!, (value) {
+      return _then(_value.copyWith(cover: value) as $Val);
+    });
   }
 }
 
@@ -101,9 +122,13 @@ abstract class _$$MangaImplCopyWith<$Res> implements $MangaCopyWith<$Res> {
       {String mangaId,
       String title,
       String? description,
-      ImageData? cover,
-      List<AuthorData>? authors,
-      List<MangaChapter> chapters});
+      StatusImageData? cover,
+      IList<Author> authors,
+      IList<MangaChapter> chapters,
+      bool configUploading});
+
+  @override
+  $StatusImageDataCopyWith<$Res>? get cover;
 }
 
 /// @nodoc
@@ -121,8 +146,9 @@ class __$$MangaImplCopyWithImpl<$Res>
     Object? title = null,
     Object? description = freezed,
     Object? cover = freezed,
-    Object? authors = freezed,
+    Object? authors = null,
     Object? chapters = null,
+    Object? configUploading = null,
   }) {
     return _then(_$MangaImpl(
       mangaId: null == mangaId
@@ -140,15 +166,19 @@ class __$$MangaImplCopyWithImpl<$Res>
       cover: freezed == cover
           ? _value.cover
           : cover // ignore: cast_nullable_to_non_nullable
-              as ImageData?,
-      authors: freezed == authors
-          ? _value._authors
+              as StatusImageData?,
+      authors: null == authors
+          ? _value.authors
           : authors // ignore: cast_nullable_to_non_nullable
-              as List<AuthorData>?,
+              as IList<Author>,
       chapters: null == chapters
-          ? _value._chapters
+          ? _value.chapters
           : chapters // ignore: cast_nullable_to_non_nullable
-              as List<MangaChapter>,
+              as IList<MangaChapter>,
+      configUploading: null == configUploading
+          ? _value.configUploading
+          : configUploading // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -161,10 +191,9 @@ class _$MangaImpl implements _Manga {
       required this.title,
       required this.description,
       required this.cover,
-      required final List<AuthorData>? authors,
-      required final List<MangaChapter> chapters})
-      : _authors = authors,
-        _chapters = chapters;
+      required this.authors,
+      required this.chapters,
+      required this.configUploading});
 
   @override
   final String mangaId;
@@ -173,28 +202,17 @@ class _$MangaImpl implements _Manga {
   @override
   final String? description;
   @override
-  final ImageData? cover;
-  final List<AuthorData>? _authors;
+  final StatusImageData? cover;
   @override
-  List<AuthorData>? get authors {
-    final value = _authors;
-    if (value == null) return null;
-    if (_authors is EqualUnmodifiableListView) return _authors;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
-  final List<MangaChapter> _chapters;
+  final IList<Author> authors;
   @override
-  List<MangaChapter> get chapters {
-    if (_chapters is EqualUnmodifiableListView) return _chapters;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_chapters);
-  }
+  final IList<MangaChapter> chapters;
+  @override
+  final bool configUploading;
 
   @override
   String toString() {
-    return 'Manga(mangaId: $mangaId, title: $title, description: $description, cover: $cover, authors: $authors, chapters: $chapters)';
+    return 'Manga(mangaId: $mangaId, title: $title, description: $description, cover: $cover, authors: $authors, chapters: $chapters, configUploading: $configUploading)';
   }
 
   @override
@@ -207,8 +225,10 @@ class _$MangaImpl implements _Manga {
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.cover, cover) || other.cover == cover) &&
-            const DeepCollectionEquality().equals(other._authors, _authors) &&
-            const DeepCollectionEquality().equals(other._chapters, _chapters));
+            const DeepCollectionEquality().equals(other.authors, authors) &&
+            const DeepCollectionEquality().equals(other.chapters, chapters) &&
+            (identical(other.configUploading, configUploading) ||
+                other.configUploading == configUploading));
   }
 
   @override
@@ -218,8 +238,9 @@ class _$MangaImpl implements _Manga {
       title,
       description,
       cover,
-      const DeepCollectionEquality().hash(_authors),
-      const DeepCollectionEquality().hash(_chapters));
+      const DeepCollectionEquality().hash(authors),
+      const DeepCollectionEquality().hash(chapters),
+      configUploading);
 
   @JsonKey(ignore: true)
   @override
@@ -233,9 +254,10 @@ abstract class _Manga implements Manga {
       {required final String mangaId,
       required final String title,
       required final String? description,
-      required final ImageData? cover,
-      required final List<AuthorData>? authors,
-      required final List<MangaChapter> chapters}) = _$MangaImpl;
+      required final StatusImageData? cover,
+      required final IList<Author> authors,
+      required final IList<MangaChapter> chapters,
+      required final bool configUploading}) = _$MangaImpl;
 
   @override
   String get mangaId;
@@ -244,11 +266,13 @@ abstract class _Manga implements Manga {
   @override
   String? get description;
   @override
-  ImageData? get cover;
+  StatusImageData? get cover;
   @override
-  List<AuthorData>? get authors;
+  IList<Author> get authors;
   @override
-  List<MangaChapter> get chapters;
+  IList<MangaChapter> get chapters;
+  @override
+  bool get configUploading;
   @override
   @JsonKey(ignore: true)
   _$$MangaImplCopyWith<_$MangaImpl> get copyWith =>

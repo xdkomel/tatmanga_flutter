@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:fpdart/fpdart.dart';
-import 'package:tatmanga_flutter/presentation/common/image_widget.dart';
 import 'package:tatmanga_flutter/presentation/common/page_body.dart';
-import 'package:tatmanga_flutter/presentation/common/styles.dart';
-import 'package:tatmanga_flutter/presentation/common/widget_button.dart';
-import 'package:tatmanga_flutter/presentation/episode_images_view.dart/episode_images_view_screen.dart';
-import 'package:tatmanga_flutter/presentation/models/manga.dart';
+import 'package:tatmanga_flutter/presentation/manga_contents/widgets/manga_authors.dart';
+import 'package:tatmanga_flutter/presentation/manga_contents/widgets/manga_chapters.dart';
+import 'package:tatmanga_flutter/presentation/manga_contents/widgets/manga_cover.dart';
+import 'package:tatmanga_flutter/presentation/manga_contents/widgets/manga_description.dart';
+import 'package:tatmanga_flutter/presentation/manga_contents/widgets/manga_title.dart';
+import 'package:tatmanga_flutter/presentation/manga_contents/widgets/upload_config_button.dart';
 import 'package:tatmanga_flutter/utils/fp.dart';
 import 'package:tatmanga_flutter/utils/responsive_ui.dart';
 
 class MangaContentsScreen extends StatelessWidget {
-  final Manga manga;
-
-  const MangaContentsScreen({super.key, required this.manga});
+  const MangaContentsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,37 +28,15 @@ class MangaContentsScreen extends StatelessWidget {
             spacing: 24,
             runSpacing: 16,
             children: [
-              ...manga.cover.fold(
-                () => [],
-                (cover) => [
-                  ImageWidget(
-                    imageData: cover,
-                    mangaId: manga.mangaId,
-                    width: coverWidth,
-                  ),
-                ],
-              ),
+              MangaCover(width: coverWidth),
               SizedBox(
                 width: bodyWidth,
-                child: Column(
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(
-                      manga.title,
-                      style: Styles.h2b,
-                      textAlign: TextAlign.start,
-                    ),
-                    ...manga.description.fold(
-                      () => [],
-                      (d) => [
-                        const SizedBox(height: 16),
-                        Text(
-                          d,
-                          style: Styles.pr,
-                          textAlign: TextAlign.start,
-                        ),
-                      ],
-                    ),
+                    MangaTitle(),
+                    MangaDesc(),
+                    MangaAuthors(),
                   ],
                 ),
               ),
@@ -68,56 +44,14 @@ class MangaContentsScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
+        const UploadConfigButton(),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(16),
           ),
           padding: const EdgeInsets.symmetric(vertical: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: manga.chapters.indexed
-                .expand(
-                  (ch) => [
-                    WidgetButton(
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => EpisodeImagesViewScreen(
-                            chapter: ch.$2,
-                            mangaId: manga.mangaId,
-                          ),
-                        ),
-                      ),
-                      borderRadius: 0,
-                      child: Right(
-                        Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 24,
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    '${ch.$1}',
-                                    style: Styles.pb.copyWith(color: Styles.prime012),
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                ch.$2.name ?? 'Глава ${ch.$1}',
-                                style: Styles.pr.copyWith(color: Styles.prime200),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    const Divider(height: 1),
-                  ],
-                )
-                .toList(),
-          ),
+          child: const MangaChapters(),
         ),
       ],
     );

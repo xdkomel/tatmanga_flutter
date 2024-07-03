@@ -10,5 +10,6 @@ class FirebaseChapter with _$FirebaseChapter {
     @JsonKey(name: 'files_names') required List<String> filesNames,
   }) = _FirebaseChapter;
 
-  factory FirebaseChapter.fromJson(Map<String, dynamic> json) => _$FirebaseChapterFromJson(json);
+  factory FirebaseChapter.fromJson(Map<String, dynamic> json) =>
+      _$FirebaseChapterFromJson(json);
 }

@@ -48,13 +48,35 @@ class Storage {
     );
   }
 
-  Future<void> uploadConfig(MangaConfig config) async {
-    final json = jsonEncode(config.toJson());
-    await _ref.child('${config.mangaId}/config.json').putString(json);
+  Future<void> uploadConfig(MangaConfig config) {
+    return throwable(() async {
+      final json = jsonEncode(config.toJson());
+      await _ref.child('${config.mangaId}/config.json').putString(json);
+    }).fold(
+      (a) async => print(a),
+      identity,
+    );
   }
 
   Future<void> uploadImage(String mangaId, String imageName, Uint8List bytes) =>
-      _ref.child('$mangaId/$imageName').putData(bytes);
+      throwable(
+        () => _ref.child('$mangaId/$imageName').putData(bytes),
+      ).fold(
+        (a) async => print(a),
+        identity,
+      );
 
-  Future<void> removeImage(String mangaId, String imageName) => _ref.child('$mangaId/$imageName').delete();
+  Future<void> removeImage(String mangaId, String imageName) => throwable(
+        _ref.child('$mangaId/$imageName').delete,
+      ).fold(
+        (a) async => print(a),
+        identity,
+      );
+
+  // Future<void> removeManga(String mangaId) => throwable(
+  //       _ref.child(mangaId).delete,
+  //     ).fold(
+  //       (a) async => print(a),
+  //       identity,
+  //     );
 }

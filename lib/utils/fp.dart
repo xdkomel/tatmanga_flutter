@@ -5,7 +5,8 @@ ReturnType run<ReturnType>(ReturnType Function() operation) {
 }
 
 extension ScopeFunctionsForObject<T extends Object?> on T {
-  ReturnType let<ReturnType>(ReturnType Function(T self) operationFor) => operationFor(this);
+  ReturnType let<ReturnType>(ReturnType Function(T self) operationFor) =>
+      operationFor(this);
 
   T also(void Function(T self) operationFor) {
     operationFor(this);

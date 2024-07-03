@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:tatmanga_flutter/presentation/common/resources.dart';
 import 'package:tatmanga_flutter/presentation/common/styles.dart';
 import 'package:tatmanga_flutter/presentation/common/widget_button.dart';
@@ -37,22 +36,39 @@ class PageBody extends StatelessWidget {
                   const Text('Татманга', style: Styles.h3b),
                   const Spacer(),
                   Consumer(
-                    builder: (context, ref, _) => ref.watch(SP.authenticationManager).fold(
-                          () => const SizedBox(),
-                          (data) => WidgetButton(
-                            onTap: ref.read(SP.editingModeOnManager.notifier).toggle,
-                            child: Left(
-                              ref.watch(SP.editingModeOnManager) ? 'Обычный вид' : 'Редактировать',
+                    builder: (context, ref, _) =>
+                        ref.watch(SP.authenticationManager).fold(
+                              () => const SizedBox(),
+                              (data) => WidgetButton(
+                                onTap: ref
+                                    .read(SP.editingModeOnManager.notifier)
+                                    .toggle,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Text(
+                                    ref.watch(SP.editingModeOnManager)
+                                        ? 'Обычный вид'
+                                        : 'Редактировать',
+                                    style: Styles.pr,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
                   ),
                   const SizedBox(width: 16),
                   Consumer(
-                    builder: (context, ref, _) => ref.watch(SP.authenticationManager).fold(
+                    builder: (context, ref, _) => ref
+                        .watch(SP.authenticationManager)
+                        .fold(
                           () => WidgetButton(
-                            onTap: ref.read(SP.authenticationManager.notifier).auth,
-                            child: const Left('Авторизоваться'),
+                            onTap: ref
+                                .read(SP.authenticationManager.notifier)
+                                .auth,
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8),
+                              child: Text('Авторизоваться', style: Styles.pr),
+                            ),
                           ),
                           (data) => Text(data.displayName, style: Styles.pb),
                         ),
@@ -68,17 +84,31 @@ class PageBody extends StatelessWidget {
                     children: [
                       if (breadCrumbs.isNotEmpty) ...[
                         Row(
-                          children: breadCrumbs
+                          children: breadCrumbs.indexed
                               .expand(
                                 (bc) => [
-                                  Text(
-                                    bc,
-                                    style: Styles.pr.copyWith(color: Styles.prime400),
+                                  WidgetButton(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8),
+                                      child: Text(
+                                        bc.$2,
+                                        style: Styles.pr
+                                            .copyWith(color: Styles.prime400),
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      for (final _ in Iterable.generate(
+                                        breadCrumbs.length - bc.$1,
+                                      )) {
+                                        Navigator.of(context).pop();
+                                      }
+                                    },
                                   ),
-                                  const SizedBox(width: 8),
                                   Text(
                                     '·',
-                                    style: Styles.pb.copyWith(color: Styles.prime400),
+                                    style: Styles.pb
+                                        .copyWith(color: Styles.prime400),
                                   ),
                                 ],
                               )

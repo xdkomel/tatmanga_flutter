@@ -31,5 +31,6 @@ class AuthenticationManager extends Notifier<Option<AuthData>> {
         );
   }
 
-  bool _canEdit(User user) => user.email.fold(() => false, adminEmails.contains);
+  bool _canEdit(User user) =>
+      user.email.fold(() => false, adminEmails.contains);
 }

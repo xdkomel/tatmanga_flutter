@@ -1,4 +1,4 @@
-import 'package:freezed_annotation/freezed_annotation.dart';  
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:tatmanga_flutter/presentation/common/image_data.dart';
 
 part 'status_image_data.freezed.dart';

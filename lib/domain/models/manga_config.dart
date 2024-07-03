@@ -15,7 +15,8 @@ class MangaConfig with _$MangaConfig {
     required List<FirebaseChapter> chapters,
   }) = _MangaConfig;
 
-  factory MangaConfig.fromJson(Map<String, dynamic> json) => _$MangaConfigFromJson(json);
+  factory MangaConfig.fromJson(Map<String, dynamic> json) =>
+      _$MangaConfigFromJson(json);
 }
 
 @freezed
@@ -25,5 +26,6 @@ class AuthorData with _$AuthorData {
     required String role,
   }) = _AuthorData;
 
-  factory AuthorData.fromJson(Map<String, dynamic> json) => _$AuthorDataFromJson(json);
+  factory AuthorData.fromJson(Map<String, dynamic> json) =>
+      _$AuthorDataFromJson(json);
 }
