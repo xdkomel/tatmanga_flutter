@@ -26,7 +26,7 @@ class MangaCard extends ConsumerWidget {
             child: Padding(
               padding: const EdgeInsets.all(8),
               child: SizedBox(
-                width: width-16,
+                width: width - 16,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -69,7 +69,9 @@ class MangaCard extends ConsumerWidget {
               builder: (_) => const MangaContentsScreen(),
             ),
           );
-          ref.read(SP.mangaLoadingManager.notifier).updateManga(manga);
+          ref.read(SP.mangaManager).map(
+                ref.read(SP.mangaLoadingManager.notifier).updateManga,
+              );
           await manager.uploadConfig();
           manager.removeModel();
         },
