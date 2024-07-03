@@ -29,12 +29,15 @@ class _Button extends ConsumerWidget {
         () => const SizedBox(),
         (cu) => WidgetButton(
           onTap: ref.read(SP.mangaManager.notifier).uploadConfig,
-          child: cu
-              ? const CircularProgressIndicator()
-              : const Text(
-                  'Сохранить',
-                  style: Styles.pr,
-                ),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: cu
+                ? const CircularProgressIndicator()
+                : const Text(
+                    'Сохранить',
+                    style: Styles.pr,
+                  ),
+          ),
         ),
       );
 }

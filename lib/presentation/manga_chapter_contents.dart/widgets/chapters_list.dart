@@ -80,14 +80,20 @@ class ChaptersList extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  WidgetButton(
-                    background: Styles.primary,
-                    onTap: () => ref
-                        .read(SP.mangaManager.notifier)
-                        .addChapterImages(chapterIndex),
-                    child: const Text(
-                      'Добавить изображения',
-                      style: Styles.pr,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: WidgetButton(
+                      background: Styles.primary,
+                      onTap: () => ref
+                          .read(SP.mangaManager.notifier)
+                          .addChapterImages(chapterIndex),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Text(
+                          'Добавить изображения',
+                          style: Styles.pr,
+                        ),
+                      ),
                     ),
                   ),
                 ],

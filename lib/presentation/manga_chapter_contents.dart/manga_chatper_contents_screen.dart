@@ -22,7 +22,7 @@ class MangaChatperContentsScreen extends ConsumerWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
             ),
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            padding: const EdgeInsets.all(16),
             child: ChapterName(index: chapterIndex),
           ),
           const SizedBox(height: 8),

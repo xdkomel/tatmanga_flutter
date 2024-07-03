@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tatmanga_flutter/presentation/common/image_widget.dart';
@@ -11,10 +12,12 @@ enum EpisodeImagesViewResponse { forward, back }
 
 class EpisodeImagesViewScreen extends ConsumerStatefulWidget {
   final String mangaId;
+  final bool startFromEnd;
 
   const EpisodeImagesViewScreen({
     super.key,
     required this.mangaId,
+    required this.startFromEnd,
   });
 
   @override
@@ -24,11 +27,13 @@ class EpisodeImagesViewScreen extends ConsumerStatefulWidget {
   static Future<EpisodeImagesViewResponse?> show(
     BuildContext context,
     String mangaId,
+    bool startFromEnd,
   ) =>
       showCupertinoModalPopup(
         context: context,
         builder: (context) => EpisodeImagesViewScreen(
           mangaId: mangaId,
+          startFromEnd: startFromEnd,
         ),
       );
 }
@@ -43,6 +48,16 @@ class _EpisodeImagesViewScreenState
   void initState() {
     _chapter = ref.read(SP.episodeImagesViewManager).toNullable();
     HardwareKeyboard.instance.addHandler(_handle);
+    _chapter.map((chapter) {
+      if (widget.startFromEnd) {
+        SchedulerBinding.instance.addPostFrameCallback(
+          (_) => _controller.jumpTo(
+            (chapter.pageImages.length - 1) * MediaQuery.of(context).size.width,
+          ),
+        );
+      }
+    });
+
     super.initState();
   }
 

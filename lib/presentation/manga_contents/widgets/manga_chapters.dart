@@ -39,30 +39,36 @@ class _RemoveChapterButton extends ConsumerWidget {
   const _RemoveChapterButton({required this.index});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => ref.watch(SP.editingModeOnManager)
-      ? Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: IconButton(
-            onPressed: () => ref.read(SP.mangaManager.notifier).removeChapter(index),
-            icon: const Icon(
-              Icons.delete,
-              color: Colors.redAccent,
-            ),
-          ),
-        )
-      : const SizedBox();
+  Widget build(BuildContext context, WidgetRef ref) =>
+      ref.watch(SP.editingModeOnManager)
+          ? Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: IconButton(
+                onPressed: () =>
+                    ref.read(SP.mangaManager.notifier).removeChapter(index),
+                icon: const Icon(
+                  Icons.delete,
+                  color: Colors.redAccent,
+                ),
+              ),
+            )
+          : const SizedBox();
 }
 
 class _AddChapterButton extends ConsumerWidget {
   const _AddChapterButton();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => ref.watch(SP.editingModeOnManager)
-      ? WidgetButton(
-          onTap: ref.read(SP.mangaManager.notifier).addChapter,
-          child: const Text('Добавить эпизод'),
-        )
-      : const SizedBox();
+  Widget build(BuildContext context, WidgetRef ref) =>
+      ref.watch(SP.editingModeOnManager)
+          ? WidgetButton(
+              onTap: ref.read(SP.mangaManager.notifier).addChapter,
+              child: const Padding(
+                padding: EdgeInsets.all(8),
+                child: Text('Добавить эпизод'),
+              ),
+            )
+          : const SizedBox();
 }
 
 class _OneChapter extends ConsumerWidget {
@@ -131,14 +137,16 @@ class _OneChapter extends ConsumerWidget {
     WidgetRef ref,
     BuildContext context,
     int index,
-    Manga manga,
-  ) async {
+    Manga manga, [
+    bool startFromEnd = false,
+  ]) async {
     ref.read(SP.episodeImagesViewManager.notifier).setModel(
           manga.chapters.get(index),
         );
     final value = await EpisodeImagesViewScreen.show(
       context,
       manga.mangaId,
+      startFromEnd,
     );
     if (context.mounted) {
       return switch (value) {
@@ -147,8 +155,11 @@ class _OneChapter extends ConsumerWidget {
             context,
             index - 1,
             manga,
+            true,
           ),
-        EpisodeImagesViewResponse.forward when index < manga.chapters.length - 1 => _openEpisodeView(
+        EpisodeImagesViewResponse.forward
+            when index < manga.chapters.length - 1 =>
+          _openEpisodeView(
             ref,
             context,
             index + 1,
