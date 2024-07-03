@@ -10,12 +10,14 @@ import 'package:tatmanga_flutter/presentation/manga_list/managers/manga_loading_
 import 'package:tatmanga_flutter/data/storage.dart';
 import 'package:tatmanga_flutter/presentation/models/manga.dart';
 import 'package:tatmanga_flutter/presentation/models/manga_chapter.dart';
+import 'package:tatmanga_flutter/utils/env.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class P {
   static final auth = Provider((_) => Auth());
   static final storage = Provider((_) => Storage());
   static final uuid = Provider((_) => const Uuid());
+  static final env = Provider((_) => Env());
 }
 
 abstract class SP {
