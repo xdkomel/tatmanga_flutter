@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tatmanga_flutter/presentation/common/page_body.dart';
 import 'package:tatmanga_flutter/presentation/manga_contents/widgets/manga_authors.dart';
 import 'package:tatmanga_flutter/presentation/manga_contents/widgets/manga_chapters.dart';
@@ -6,17 +7,20 @@ import 'package:tatmanga_flutter/presentation/manga_contents/widgets/manga_cover
 import 'package:tatmanga_flutter/presentation/manga_contents/widgets/manga_description.dart';
 import 'package:tatmanga_flutter/presentation/manga_contents/widgets/manga_title.dart';
 import 'package:tatmanga_flutter/presentation/manga_contents/widgets/upload_config_button.dart';
+import 'package:tatmanga_flutter/providers.dart';
 import 'package:tatmanga_flutter/utils/fp.dart';
 import 'package:tatmanga_flutter/utils/responsive_ui.dart';
 
-class MangaContentsScreen extends StatelessWidget {
+class MangaContentsScreen extends ConsumerWidget {
   const MangaContentsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final (coverWidth, bodyWidth) = _coverAndTextWidth(context);
     return PageBody(
-      breadCrumbs: const ['Библиотека'],
+      breadCrumbs: [
+        ref.watch(SP.localizationManager).translations.mangaList.library,
+      ],
       children: [
         Container(
           decoration: BoxDecoration(

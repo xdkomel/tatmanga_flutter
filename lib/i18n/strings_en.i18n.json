@@ -1,0 +1,38 @@
+{
+    "mangaList": {
+        "library": "Library",
+        "episodesCount": {
+            "episodes": {
+                "one": "1 episode",
+                "other": "$n episodes"
+            }
+        }
+    },
+    "common": {
+        "name": "Tatmanga",
+        "stopEditing": "Stop editing",
+        "edit": "Edit",
+        "authorize": "Authorize",
+        "manga": "Manga"
+    },
+    "mangaContents": {
+        "addAuthor": "Add an author",
+        "name": "Name",
+        "role": "Role",
+        "addEpisode": "Add episode",
+        "episodeDefault": {
+            "episode": {
+                "other": "Episode $n"
+            }
+        },
+        "coverChange": "Change",
+        "coverRemove": "Remove",
+        "mangaDescription": "Description",
+        "mangaTitle": "Title",
+        "save": "Save"
+    },
+    "mangaChapterContents": {
+        "episodeName": "Episode name",
+        "addImages": "Add images"
+    }
+}

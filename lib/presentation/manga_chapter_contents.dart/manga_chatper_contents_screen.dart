@@ -13,8 +13,9 @@ class MangaChatperContentsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) => PageBody(
         breadCrumbs: [
-          'Библиотека',
-          ref.read(SP.mangaManager).map((m) => m.title).toNullable() ?? 'Манга',
+          ref.watch(SP.localizationManager).translations.mangaList.library,
+          ref.read(SP.mangaManager).map((m) => m.title).toNullable() ??
+              ref.watch(SP.localizationManager).translations.common.manga,
         ],
         children: [
           Container(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tatmanga_flutter/presentation/common/localization_manager.dart';
 import 'package:tatmanga_flutter/presentation/common/resources.dart';
 import 'package:tatmanga_flutter/presentation/common/styles.dart';
 import 'package:tatmanga_flutter/presentation/common/widget_button.dart';
@@ -33,46 +34,12 @@ class PageBody extends StatelessWidget {
                 children: [
                   SvgPicture.asset(Resources.logo),
                   const SizedBox(width: 6),
-                  const Text('Татманга', style: Styles.h3b),
+                  const _Title(),
                   const Spacer(),
-                  Consumer(
-                    builder: (context, ref, _) =>
-                        ref.watch(SP.authenticationManager).fold(
-                              () => const SizedBox(),
-                              (data) => WidgetButton(
-                                onTap: ref
-                                    .read(SP.editingModeOnManager.notifier)
-                                    .toggle,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
-                                  child: Text(
-                                    ref.watch(SP.editingModeOnManager)
-                                        ? 'Обычный вид'
-                                        : 'Редактировать',
-                                    style: Styles.pr,
-                                  ),
-                                ),
-                              ),
-                            ),
-                  ),
+                  const _LanguageSelector(),
                   const SizedBox(width: 16),
-                  Consumer(
-                    builder: (context, ref, _) => ref
-                        .watch(SP.authenticationManager)
-                        .fold(
-                          () => WidgetButton(
-                            onTap: ref
-                                .read(SP.authenticationManager.notifier)
-                                .auth,
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8),
-                              child: Text('Авторизоваться', style: Styles.pr),
-                            ),
-                          ),
-                          (data) => Text(data.displayName, style: Styles.pb),
-                        ),
-                  ),
+                  const _EditButton(),
+                  const _AuthorizeButton(),
                 ],
               ),
               const SizedBox(height: 16),
@@ -118,11 +85,7 @@ class PageBody extends StatelessWidget {
                       ],
                       ...children,
                       const SizedBox(height: 24),
-                      Text(
-                        'Татманга | 2024',
-                        style: Styles.h4r.copyWith(color: Styles.prime500),
-                        textAlign: TextAlign.center,
-                      )
+                      const _BottomLine(),
                     ],
                   ),
                 ),
@@ -131,6 +94,103 @@ class PageBody extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _Title extends ConsumerWidget {
+  const _Title();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) => Text(
+        ref.watch(SP.localizationManager).translations.common.name,
+        style: Styles.h3b,
+      );
+}
+
+class _LanguageSelector extends ConsumerWidget {
+  const _LanguageSelector();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) => WidgetButton(
+        onTap: ref.read(SP.localizationManager.notifier).toggleLocalization,
+        child: Text(
+          switch (ref.watch(SP.localizationManager).language) {
+            Language.en => 'EN',
+            Language.tt => 'ТТ',
+            Language.ru => 'РУ',
+          },
+        ),
+      );
+}
+
+class _EditButton extends ConsumerWidget {
+  const _EditButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) =>
+      ref.watch(SP.authenticationManager).fold(
+            () => const SizedBox(),
+            (data) => Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: WidgetButton(
+                onTap: ref.read(SP.editingModeOnManager.notifier).toggle,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Text(
+                    ref.watch(SP.editingModeOnManager)
+                        ? ref
+                            .watch(SP.localizationManager)
+                            .translations
+                            .common
+                            .stopEditing
+                        : ref
+                            .watch(SP.localizationManager)
+                            .translations
+                            .common
+                            .edit,
+                    style: Styles.pr,
+                  ),
+                ),
+              ),
+            ),
+          );
+}
+
+class _AuthorizeButton extends ConsumerWidget {
+  const _AuthorizeButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) =>
+      ref.watch(SP.authenticationManager).fold(
+            () => WidgetButton(
+              onTap: ref.read(SP.authenticationManager.notifier).auth,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  ref
+                      .watch(SP.localizationManager)
+                      .translations
+                      .common
+                      .authorize,
+                  style: Styles.pr,
+                ),
+              ),
+            ),
+            (data) => Text(data.displayName, style: Styles.pb),
+          );
+}
+
+class _BottomLine extends ConsumerWidget {
+  const _BottomLine();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final name = ref.watch(SP.localizationManager).translations.common.name;
+    return Text(
+      '$name | 2024',
+      style: Styles.h4r.copyWith(color: Styles.prime500),
+      textAlign: TextAlign.center,
     );
   }
 }

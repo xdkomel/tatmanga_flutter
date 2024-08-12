@@ -1,0 +1,37 @@
+{
+    "mangaList": {
+        "library": "Мангаханә",
+        "episodesCount": {
+            "episodes": {
+                "other": "$n эпизод"
+            }
+        }
+    },
+    "common": {
+        "name": "Татманга",
+        "stopEditing": "Үзгәртүне тәмамларга",
+        "edit": "Үзгәртергә",
+        "authorize": "Авторлаштырырга",
+        "manga": "Манга"
+    },
+    "mangaContents": {
+        "addAuthor": "Авторны өстәргә",
+        "name": "Исем",
+        "role": "Роль",
+        "addEpisode": "Эпизодны өстәргә",
+        "episodeDefault": {
+            "episode": {
+                "other": "Эпизод $n"
+            }
+        },
+        "coverChange": "Үзгәртергә",
+        "coverRemove": "Ерагайтырга",
+        "mangaDescription": "Тасвирлама",
+        "mangaTitle": "Исем",
+        "save": "Сакларга"
+    },
+    "mangaChapterContents": {
+        "episodeName": "Эпизодның исеме",
+        "addImages": "Сүрәтләрне өстәргә"
+    }
+}

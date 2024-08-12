@@ -73,13 +73,19 @@ class _AuthorsFields extends ConsumerWidget {
                 ),
                 WidgetButton(
                   onTap: ref.read(SP.mangaManager.notifier).addAuthor,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Row(
                       children: [
-                        Icon(Icons.add),
-                        SizedBox(width: 4),
-                        Text('Добавить автора'),
+                        const Icon(Icons.add),
+                        const SizedBox(width: 4),
+                        Text(
+                          ref
+                              .watch(SP.localizationManager)
+                              .translations
+                              .mangaContents
+                              .addAuthor,
+                        ),
                       ],
                     ),
                   ),
@@ -163,7 +169,11 @@ class _NameRoleState extends ConsumerState<_NameRole> {
           Expanded(
             child: TextEditingField(
               controller: _controller1,
-              hintText: 'Имя',
+              hintText: ref
+                  .watch(SP.localizationManager)
+                  .translations
+                  .mangaContents
+                  .name,
               style: Styles.pb,
             ),
           ),
@@ -171,14 +181,19 @@ class _NameRoleState extends ConsumerState<_NameRole> {
           Expanded(
             child: TextEditingField(
               controller: _controller2,
-              hintText: 'Роль',
+              hintText: ref
+                  .watch(SP.localizationManager)
+                  .translations
+                  .mangaContents
+                  .role,
               style: Styles.pr,
             ),
           ),
           const SizedBox(width: 8),
           IconButton(
-            onPressed: () =>
-                ref.read(SP.mangaManager.notifier).removeAuthor(widget.index),
+            onPressed: () => ref.read(SP.mangaManager.notifier).removeAuthor(
+                  widget.index,
+                ),
             icon: const Icon(Icons.delete),
           ),
         ],

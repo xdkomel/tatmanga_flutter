@@ -24,6 +24,7 @@ class WidgetButton extends StatelessWidget {
           ),
           padding: const WidgetStatePropertyAll(EdgeInsets.all(0)),
           backgroundColor: WidgetStatePropertyAll(background),
+          visualDensity: const VisualDensity(),
         ),
         onPressed: onTap,
         child: child,

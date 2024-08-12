@@ -48,10 +48,13 @@ class _ImageWidgetState extends ConsumerState<ImageWidget> {
   Widget build(BuildContext context) {
     final image = _loadedUrl.fold(
       () => widget.imageData,
-      (url) => UrlImage(
-        widget.imageData.name,
-        url,
-      ),
+      (url) => switch (widget.imageData) {
+        BytesImage bi => bi,
+        _ => UrlImage(
+            widget.imageData.name,
+            url,
+          ),
+      },
     );
     return Container(
       decoration: BoxDecoration(

@@ -48,7 +48,11 @@ class _ChapterNameState extends ConsumerState<ChapterName> {
   @override
   Widget build(BuildContext context) => TextEditingField(
         controller: _controller,
-        hintText: 'Название эпизода',
+        hintText: ref
+            .watch(SP.localizationManager)
+            .translations
+            .mangaChapterContents
+            .episodeName,
         style: Styles.pb,
       );
 }

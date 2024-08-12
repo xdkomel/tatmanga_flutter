@@ -2,8 +2,10 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:tatmanga_flutter/data/auth.dart';
+import 'package:tatmanga_flutter/data/translations_builder.dart';
 import 'package:tatmanga_flutter/presentation/common/authentication_manager.dart';
 import 'package:tatmanga_flutter/presentation/common/editing_mode_on_manager.dart';
+import 'package:tatmanga_flutter/presentation/common/localization_manager.dart';
 import 'package:tatmanga_flutter/presentation/episode_images_view.dart/managers/episode_images_view_manager.dart';
 import 'package:tatmanga_flutter/presentation/manga_contents/managers/manga_manager.dart';
 import 'package:tatmanga_flutter/presentation/manga_list/managers/manga_loading_manager.dart';
@@ -18,6 +20,7 @@ abstract class P {
   static final storage = Provider((_) => Storage());
   static final uuid = Provider((_) => const Uuid());
   static final env = Provider((_) => Env());
+  static final translationsBuilder = Provider((_) => TranslationsBuilder());
 }
 
 abstract class SP {
@@ -39,5 +42,9 @@ abstract class SP {
   static final episodeImagesViewManager =
       NotifierProvider<EpisodeImagesViewManager, Option<MangaChapter>>(
     EpisodeImagesViewManager.new,
+  );
+  static final localizationManager =
+      NotifierProvider<LocalizationManager, LocalizationState>(
+    LocalizationManager.new,
   );
 }

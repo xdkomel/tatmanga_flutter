@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:tatmanga_flutter/domain/models/manga_config.dart';
 import 'package:tatmanga_flutter/utils/fp.dart';
 
@@ -14,69 +13,53 @@ class Storage {
 
   Future<Iterable<MangaConfig>> downloadConfigs() async {
     final mangas = await _ref.listAll();
-    return mangas.prefixes
+    final configs = await mangas.prefixes
         .map(
-          (r) => throwable(() async {
+          (r) => futureThrowable(() async {
             final configData = await r.child('config.json').getData();
             final configStr = utf8.decode(configData!);
             final json = jsonDecode(configStr) as Map<String, dynamic>;
             return MangaConfig.fromJson(json);
-          }).toNullable(),
+          }),
         )
-        .nonNulls
         .wait;
+    return configs
+        .map(
+          (c) => c.toNullable(),
+        )
+        .nonNulls;
   }
 
   Future<String?> getUrl(String mangaId, String fileName) {
     final path = '$mangaId/$fileName';
     return _linksCache[path].fold(
-      () => throwable(_ref.child(path).getDownloadURL)
-          .fold(
-            (_) => Future.value(null),
-            identity,
-          )
-          .then(
-            (url) => url.fold(
-              () => null,
-              (url) {
-                _linksCache[path] = url;
-                return url;
-              },
-            ),
-          ),
+      () async {
+        final maybeUrl = await futureThrowable(
+          _ref.child(path).getDownloadURL,
+        );
+        return maybeUrl.toNullable().also(
+              (url) => url.map(
+                (u) => _linksCache[path] = u,
+              ),
+            );
+      },
       Future.value,
     );
   }
 
   Future<void> uploadConfig(MangaConfig config) {
-    return throwable(() async {
+    return futureThrowable(() async {
       final json = jsonEncode(config.toJson());
       await _ref.child('${config.mangaId}/config.json').putString(json);
-    }).fold(
-      (a) async => print(a),
-      identity,
-    );
+    });
   }
 
   Future<void> uploadImage(String mangaId, String imageName, Uint8List bytes) =>
-      throwable(
+      futureThrowable(
         () => _ref.child('$mangaId/$imageName').putData(bytes),
-      ).fold(
-        (a) async => print(a),
-        identity,
       );
 
-  Future<void> removeImage(String mangaId, String imageName) => throwable(
+  Future<void> removeImage(String mangaId, String imageName) => futureThrowable(
         _ref.child('$mangaId/$imageName').delete,
-      ).fold(
-        (a) async => print(a),
-        identity,
       );
-
-  // Future<void> removeManga(String mangaId) => throwable(
-  //       _ref.child(mangaId).delete,
-  //     ).fold(
-  //       (a) async => print(a),
-  //       identity,
-  //     );
 }

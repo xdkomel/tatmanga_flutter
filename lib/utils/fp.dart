@@ -22,6 +22,15 @@ Either<(Object e, StackTrace st), T> throwable<T>(T Function() fun) {
   }
 }
 
+Future<Either<(Object e, StackTrace st), T>> futureThrowable<T>(
+    Future<T> Function() fun) async {
+  try {
+    return right(await fun());
+  } catch (e, st) {
+    return left((e, st));
+  }
+}
+
 extension FunctionalNullable<A> on A? {
   T fold<T>(T Function() none, T Function(A) some) => switch (this) {
         null => none(),

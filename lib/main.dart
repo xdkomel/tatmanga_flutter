@@ -1,27 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tatmanga_flutter/i18n/strings.g.dart';
 import 'package:tatmanga_flutter/presentation/common/styles.dart';
 import 'package:tatmanga_flutter/presentation/homepage.dart';
+import 'package:tatmanga_flutter/providers.dart';
+import 'package:tatmanga_flutter/utils/tt_localization_delegate.dart';
+// ignore: depend_on_referenced_packages
+import 'package:intl/date_symbol_data_local.dart';
 
-void main() {
+void main() async {
+  await initializeDateFormatting();
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: _MaterialApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class _MaterialApp extends ConsumerWidget {
+  const _MaterialApp();
 
   @override
-  Widget build(BuildContext context) {
-    return ProviderScope(
-      child: MaterialApp(
-        title: 'Tatmanga',
+  Widget build(BuildContext context, WidgetRef ref) => MaterialApp(
+        locale: ref
+            .watch(SP.localizationManager)
+            .translations
+            .$meta
+            .locale
+            .flutterLocale,
+        supportedLocales: AppLocaleUtils.supportedLocales,
+        localizationsDelegates: [
+          ...GlobalMaterialLocalizations.delegates,
+          TtMaterialLocalizationDelegate(),
+          TtCupertinoLocalizationDelegate(),
+        ],
+        title: ref.watch(SP.localizationManager).translations.common.name,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Styles.primary),
           useMaterial3: true,
         ),
         home: const HomePage(),
-      ),
-    );
-  }
+      );
 }

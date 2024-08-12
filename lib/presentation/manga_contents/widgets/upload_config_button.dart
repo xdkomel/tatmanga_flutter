@@ -33,8 +33,12 @@ class _Button extends ConsumerWidget {
             padding: const EdgeInsets.all(16),
             child: cu
                 ? const CircularProgressIndicator()
-                : const Text(
-                    'Сохранить',
+                : Text(
+                    ref
+                        .watch(SP.localizationManager)
+                        .translations
+                        .mangaContents
+                        .save,
                     style: Styles.pr,
                   ),
           ),

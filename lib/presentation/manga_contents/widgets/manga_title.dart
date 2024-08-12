@@ -73,7 +73,11 @@ class _MangaTitleFieldState extends ConsumerState<_MangaTitleField> {
   @override
   Widget build(BuildContext context) => TextEditingField(
         controller: _controller,
-        hintText: 'Название',
+        hintText: ref
+            .watch(SP.localizationManager)
+            .translations
+            .mangaContents
+            .mangaTitle,
         style: Styles.h2b,
       );
 }

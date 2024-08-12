@@ -87,10 +87,14 @@ class ChaptersList extends ConsumerWidget {
                       onTap: () => ref
                           .read(SP.mangaManager.notifier)
                           .addChapterImages(chapterIndex),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
                         child: Text(
-                          'Добавить изображения',
+                          ref
+                              .watch(SP.localizationManager)
+                              .translations
+                              .mangaChapterContents
+                              .addImages,
                           style: Styles.pr,
                         ),
                       ),

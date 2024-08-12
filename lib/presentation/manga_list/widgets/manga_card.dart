@@ -42,20 +42,18 @@ class MangaCard extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text(manga.title,
-                        style: Styles.h3b, textAlign: TextAlign.start),
-                    const SizedBox(height: 2),
                     Text(
-                      '${manga.chapters.length} эпизодов',
+                      manga.title,
+                      style: Styles.h3b,
                       textAlign: TextAlign.start,
-                      style: Styles.pr.copyWith(color: Styles.prime300),
                     ),
+                    const SizedBox(height: 2),
+                    _EpisodesCount(manga),
                   ],
                 ),
               ),
             ),
           ),
-          // _RemoveButton(mangaId: manga.mangaId),
         ],
       );
 
@@ -79,26 +77,20 @@ class MangaCard extends ConsumerWidget {
       );
 }
 
-// class _RemoveButton extends ConsumerWidget {
-//   final String mangaId;
+class _EpisodesCount extends ConsumerWidget {
+  final Manga _manga;
 
-//   const _RemoveButton({required this.mangaId});
+  const _EpisodesCount(this._manga);
 
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) =>
-//       ref.watch(SP.editingModeOnManager)
-//           ? Positioned(
-//               top: 8,
-//               right: 8,
-//               child: IconButton(
-//                 onPressed: () => ref
-//                     .read(SP.mangaLoadingManager.notifier)
-//                     .removeManga(mangaId),
-//                 icon: const Icon(
-//                   Icons.delete,
-//                   color: Colors.redAccent,
-//                 ),
-//               ),
-//             )
-//           : const SizedBox();
-// }
+  @override
+  Widget build(BuildContext context, WidgetRef ref) => Text(
+        ref
+            .watch(SP.localizationManager)
+            .translations
+            .mangaList
+            .episodesCount
+            .episodes(n: _manga.chapters.length),
+        textAlign: TextAlign.start,
+        style: Styles.pr.copyWith(color: Styles.prime300),
+      );
+}

@@ -64,7 +64,11 @@ class _CoverEditingButtons extends ConsumerWidget {
                   WidgetButton(
                     onTap: ref.read(SP.mangaManager.notifier).uploadCoverImage,
                     child: Text(
-                      'Сменить',
+                      ref
+                          .watch(SP.localizationManager)
+                          .translations
+                          .mangaContents
+                          .coverChange,
                       style: Styles.pr.copyWith(color: Colors.white),
                     ),
                   ),
@@ -72,7 +76,11 @@ class _CoverEditingButtons extends ConsumerWidget {
                   WidgetButton(
                     onTap: ref.read(SP.mangaManager.notifier).removeCoverImage,
                     child: Text(
-                      'Удалить',
+                      ref
+                          .watch(SP.localizationManager)
+                          .translations
+                          .mangaContents
+                          .coverRemove,
                       style: Styles.pr.copyWith(color: Colors.white),
                     ),
                   ),

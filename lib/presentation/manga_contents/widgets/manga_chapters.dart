@@ -63,9 +63,15 @@ class _AddChapterButton extends ConsumerWidget {
       ref.watch(SP.editingModeOnManager)
           ? WidgetButton(
               onTap: ref.read(SP.mangaManager.notifier).addChapter,
-              child: const Padding(
-                padding: EdgeInsets.all(8),
-                child: Text('Добавить эпизод'),
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  ref
+                      .watch(SP.localizationManager)
+                      .translations
+                      .mangaContents
+                      .addEpisode,
+                ),
               ),
             )
           : const SizedBox();
@@ -103,7 +109,13 @@ class _OneChapter extends ConsumerWidget {
                     ),
                     Expanded(
                       child: Text(
-                        chapter.name ?? 'Глава $index',
+                        chapter.name ??
+                            ref
+                                .watch(SP.localizationManager)
+                                .translations
+                                .mangaContents
+                                .episodeDefault
+                                .episode(n: index),
                         style: Styles.pr.copyWith(color: Styles.prime200),
                         textAlign: TextAlign.start,
                       ),

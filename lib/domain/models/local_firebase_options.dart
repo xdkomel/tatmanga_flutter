@@ -16,7 +16,8 @@ class LocalFirebaseOptions with _$LocalFirebaseOptions {
     required String measurementId,
   }) = _LocalFirebaseOptions;
 
-  factory LocalFirebaseOptions.fromJson(Map<String, dynamic> json) => _$LocalFirebaseOptionsFromJson(json);
+  factory LocalFirebaseOptions.fromJson(Map<String, dynamic> json) =>
+      _$LocalFirebaseOptionsFromJson(json);
 }
 
 extension ToFirebaseOptions on LocalFirebaseOptions {

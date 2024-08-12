@@ -60,8 +60,12 @@ class _Body extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text(
-                    'Библиотека',
+                  Text(
+                    ref
+                        .watch(SP.localizationManager)
+                        .translations
+                        .mangaList
+                        .library,
                     style: Styles.h2b,
                     textAlign: TextAlign.start,
                   ),
