@@ -28,8 +28,12 @@ mixin _$LocalFirebaseOptions {
   String get storageBucket => throw _privateConstructorUsedError;
   String get measurementId => throw _privateConstructorUsedError;
 
+  /// Serializes this LocalFirebaseOptions to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of LocalFirebaseOptions
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $LocalFirebaseOptionsCopyWith<LocalFirebaseOptions> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -61,6 +65,8 @@ class _$LocalFirebaseOptionsCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of LocalFirebaseOptions
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -131,6 +137,8 @@ class __$$LocalFirebaseOptionsImplCopyWithImpl<$Res>
       $Res Function(_$LocalFirebaseOptionsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of LocalFirebaseOptions
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -178,7 +186,7 @@ class __$$LocalFirebaseOptionsImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$LocalFirebaseOptionsImpl implements _LocalFirebaseOptions {
-  _$LocalFirebaseOptionsImpl(
+  const _$LocalFirebaseOptionsImpl(
       {required this.apiKey,
       required this.appId,
       required this.messagingSenderId,
@@ -229,12 +237,14 @@ class _$LocalFirebaseOptionsImpl implements _LocalFirebaseOptions {
                 other.measurementId == measurementId));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, apiKey, appId, messagingSenderId,
       projectId, authDomain, storageBucket, measurementId);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LocalFirebaseOptions
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$LocalFirebaseOptionsImplCopyWith<_$LocalFirebaseOptionsImpl>
@@ -251,7 +261,7 @@ class _$LocalFirebaseOptionsImpl implements _LocalFirebaseOptions {
 }
 
 abstract class _LocalFirebaseOptions implements LocalFirebaseOptions {
-  factory _LocalFirebaseOptions(
+  const factory _LocalFirebaseOptions(
       {required final String apiKey,
       required final String appId,
       required final String messagingSenderId,
@@ -277,8 +287,11 @@ abstract class _LocalFirebaseOptions implements LocalFirebaseOptions {
   String get storageBucket;
   @override
   String get measurementId;
+
+  /// Create a copy of LocalFirebaseOptions
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LocalFirebaseOptionsImplCopyWith<_$LocalFirebaseOptionsImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

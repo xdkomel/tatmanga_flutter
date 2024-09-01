@@ -5,7 +5,7 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:tatmanga_flutter/presentation/common/image_data.dart';
+import 'package:tatmanga_flutter/presentation/models/image_data.dart';
 import 'package:tatmanga_flutter/presentation/models/author.dart';
 import 'package:tatmanga_flutter/presentation/models/manga.dart';
 import 'package:tatmanga_flutter/presentation/models/manga_chapter.dart';
@@ -110,7 +110,7 @@ class MangaManager extends Notifier<Option<Manga>> {
 
   Future<void> _uploadConfig(Manga model) async {
     setModel(model.copyWith(configUploading: true));
-    await ref.read(P.storage).uploadConfig(model.toConfig);
+    await ref.read(P.mangaContentRepository).uploadConfig(model);
     setModel(model.copyWith(configUploading: false));
     _changed = false;
   }
@@ -126,10 +126,10 @@ class MangaManager extends Notifier<Option<Manga>> {
         cover: manga.cover?.copyWith(status: ImageDataStatus.deleting),
       ),
     );
-    await manga.cover?.image.name.fold(
-      Future.value,
-      (name) => _removeImage(manga.mangaId, name),
-    );
+    await switch (manga.cover?.image) {
+      FirebaseName fn => _removeImage(manga.mangaId, fn.name),
+      _ => Future.value()
+    };
     setModel(manga.copyWith(cover: null));
   }
 
@@ -171,11 +171,25 @@ class MangaManager extends Notifier<Option<Manga>> {
         )),
       );
 
+  void setLinkCover(String url) {
+    _debounceUpdate();
+    state.map(
+      (model) => setModel(
+        model.copyWith(
+          cover: StatusImageData(
+            status: ImageDataStatus.none,
+            image: UrlImage(url),
+          ),
+        ),
+      ),
+    );
+  }
+
   Future<void> _uploadImage(String mangaId, String fileName, Uint8List bytes) =>
-      ref.read(P.storage).uploadImage(mangaId, fileName, bytes);
+      ref.read(P.mangaContentRepository).uploadImage(mangaId, fileName, bytes);
 
   Future<void> _removeImage(String mangaId, String fileName) =>
-      ref.read(P.storage).removeImage(mangaId, fileName);
+      ref.read(P.mangaContentRepository).removeImage(mangaId, fileName);
 
   Future<void> addChapterImages(int eposodeIndex) {
     _debounceUpdate();
@@ -211,23 +225,29 @@ class MangaManager extends Notifier<Option<Manga>> {
           .map(
             (model) => model.chapters.getOrNull(eposodeIndex).map(
               (episode) {
-                setModel(
-                  model.copyWith(
-                    chapters: model.chapters.replace(
-                      eposodeIndex,
-                      episode.copyWith(
-                        pageImages: episode.pageImages.add(
+                final (newMangaChapterImages, index) = switch (episode.images) {
+                  MangaChapterImagesList list => (
+                      MangaChapterImages.list(
+                        images: list.images.add(
                           StatusImageData(
                             image: BytesImage(fileName, bytes),
                             status: ImageDataStatus.uploading,
                           ),
                         ),
                       ),
+                      list.images.length,
+                    ),
+                  _ => (episode.images, null),
+                };
+                setModel(
+                  model.copyWith(
+                    chapters: model.chapters.replace(
+                      eposodeIndex,
+                      episode.copyWith(images: newMangaChapterImages),
                     ),
                   ),
                 );
-                // last image index is the previous list's length
-                return episode.pageImages.length;
+                return index;
               },
             ),
           )
@@ -240,13 +260,18 @@ class MangaManager extends Notifier<Option<Manga>> {
                   chapters: model.chapters.replace(
                     eposodeIndex,
                     episode.copyWith(
-                      pageImages: episode.pageImages.replace(
-                        index,
-                        StatusImageData(
-                          image: episode.pageImages.get(index).image,
-                          status: ImageDataStatus.none,
-                        ),
-                      ),
+                      images: switch (episode.images) {
+                        MangaChapterImagesList mcil => MangaChapterImages.list(
+                            images: mcil.images.replace(
+                              index,
+                              StatusImageData(
+                                image: mcil.images.get(index).image,
+                                status: ImageDataStatus.none,
+                              ),
+                            ),
+                          ),
+                        _ => episode.images,
+                      },
                     ),
                   ),
                 ),
@@ -260,45 +285,61 @@ class MangaManager extends Notifier<Option<Manga>> {
   }
 
   Future<void> _removeChapterImage(
-          int chapterIndex, int imageIndex, bool emitUpdates) =>
+    int chapterIndex,
+    int imageIndex,
+    bool emitUpdates,
+  ) =>
       state
           .map(
             (model) => model.chapters.getOrNull(chapterIndex).map(
-                  (chapter) => chapter.pageImages.getOrNull(imageIndex).map(
-                    (img) async {
-                      if (emitUpdates) {
-                        setModel(
-                          model.copyWith(
-                            chapters: model.chapters.replace(
-                              chapterIndex,
-                              chapter.copyWith(
-                                pageImages: chapter.pageImages.replace(
-                                  imageIndex,
-                                  img.copyWith(
-                                    status: ImageDataStatus.deleting,
+                  (chapter) => switch (chapter.images) {
+                    MangaChapterImagesList list =>
+                      list.images.getOrNull(imageIndex).map(
+                        (img) async {
+                          if (emitUpdates) {
+                            setModel(
+                              model.copyWith(
+                                chapters: model.chapters.replace(
+                                  chapterIndex,
+                                  chapter.copyWith(
+                                    images: MangaChapterImages.list(
+                                      images: list.images.replace(
+                                        imageIndex,
+                                        img.copyWith(
+                                          status: ImageDataStatus.deleting,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                        );
-                      }
-                      await _removeImage(model.mangaId, img.image.name);
-                      if (emitUpdates) {
-                        setModel(
-                          model.copyWith(
-                            chapters: model.chapters.replace(
-                              chapterIndex,
-                              chapter.copyWith(
-                                pageImages:
-                                    chapter.pageImages.removeAt(imageIndex),
+                            );
+                          }
+                          await switch (img.image) {
+                            FirebaseName fn => _removeImage(
+                                model.mangaId,
+                                fn.name,
                               ),
-                            ),
-                          ),
-                        );
-                      }
-                    },
-                  ),
+                            _ => Future.value(),
+                          };
+                          if (emitUpdates) {
+                            setModel(
+                              model.copyWith(
+                                chapters: model.chapters.replace(
+                                  chapterIndex,
+                                  chapter.copyWith(
+                                    images: MangaChapterImages.list(
+                                      images: list.images.removeAt(imageIndex),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    _ => null,
+                  },
                 ),
           )
           .toNullable() ??
@@ -310,10 +351,12 @@ class MangaManager extends Notifier<Option<Manga>> {
             .map(
               (model) => model.chapters.getOrNull(index).map(
                 (chapter) async {
-                  for (final imgIndx
-                      in Iterable.generate(chapter.pageImages.length)) {
-                    await _removeChapterImage(index, imgIndx, false);
-                  }
+                  await switch (chapter.images) {
+                    MangaChapterImagesList list => list.images.indexed
+                        .map((e) => _removeChapterImage(index, e.$1, false))
+                        .wait,
+                    _ => Future.value(),
+                  };
                   setModel(
                     model.copyWith(chapters: model.chapters.removeAt(index)),
                   );
@@ -333,8 +376,47 @@ class MangaManager extends Notifier<Option<Manga>> {
             MangaChapter(
               id: ref.read(P.uuid).v4(),
               name: null,
-              pageImages: const IList.empty(),
+              images: const MangaChapterImages.stored(loading: false),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void setTelegraphParsingUsage(int chIndex, bool value) {
+    _debounceUpdate();
+    state.map(
+      (model) => setModel(
+        model.copyWith(
+          chapters: model.chapters.replace(
+            chIndex,
+            model.chapters.get(chIndex).copyWith(
+                  images: value
+                      ? const MangaChapterImages.stored(loading: false)
+                      : const MangaChapterImages.list(images: IList.empty()),
+                ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void setTelegraphMangaName(int chIndex, String name) {
+    _debounceUpdate();
+    state.map(
+      (model) => setModel(
+        model.copyWith(
+          chapters: model.chapters.replace(
+            chIndex,
+            model.chapters.get(chIndex).let(
+                  (chapter) => switch (chapter.images) {
+                    MangaChapterImagesStored mcis => chapter.copyWith(
+                        images: mcis.copyWith(url: name),
+                      ),
+                    _ => chapter,
+                  },
+                ),
           ),
         ),
       ),

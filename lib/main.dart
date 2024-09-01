@@ -6,15 +6,24 @@ import 'package:tatmanga_flutter/presentation/common/styles.dart';
 import 'package:tatmanga_flutter/presentation/homepage.dart';
 import 'package:tatmanga_flutter/providers.dart';
 import 'package:tatmanga_flutter/utils/tt_localization_delegate.dart';
-// ignore: depend_on_referenced_packages
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
-  await initializeDateFormatting();
+  initializeDateFormatting();
   WidgetsFlutterBinding.ensureInitialized();
+  final providerContainer = ProviderContainer();
+  // providerContainer.read(P.fluroRouter)
+  //   ..define(
+  //     '/library',
+  //     handler: Handler(
+  //       handlerFunc: (context, _) => const MangaListScreen(),
+  //     ),
+  //   )
+  //   ..define('/manga/', handler: handler);
   runApp(
-    const ProviderScope(
-      child: _MaterialApp(),
+    UncontrolledProviderScope(
+      container: providerContainer,
+      child: const _MaterialApp(),
     ),
   );
 }

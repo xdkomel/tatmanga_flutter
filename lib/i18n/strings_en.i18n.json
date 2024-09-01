@@ -25,11 +25,12 @@
                 "other": "Episode $n"
             }
         },
-        "coverChange": "Change",
+        "coverUpload": "Upload",
         "coverRemove": "Remove",
         "mangaDescription": "Description",
         "mangaTitle": "Title",
-        "save": "Save"
+        "save": "Save",
+        "coverUrl": "Cover URL"
     },
     "mangaChapterContents": {
         "episodeName": "Episode name",

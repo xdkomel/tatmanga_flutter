@@ -6,7 +6,7 @@ part 'local_firebase_options.g.dart';
 
 @freezed
 class LocalFirebaseOptions with _$LocalFirebaseOptions {
-  factory LocalFirebaseOptions({
+  const factory LocalFirebaseOptions({
     required String apiKey,
     required String appId,
     required String messagingSenderId,

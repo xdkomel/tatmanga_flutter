@@ -26,11 +26,12 @@
                 "other": "Эпизод $n"
             }
         },
-        "coverChange": "Сменить",
+        "coverUpload": "Загрузить",
         "coverRemove": "Удалить",
         "mangaDescription": "Описание",
         "mangaTitle": "Заголовок",
-        "save": "Сохранить"
+        "save": "Сохранить",
+        "coverUrl": "Ссылка на обложку"
     },
     "mangaChapterContents": {
         "episodeName": "Навание эпизода",

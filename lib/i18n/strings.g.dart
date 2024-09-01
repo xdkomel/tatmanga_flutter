@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 60 (20 per locale)
+/// Strings: 63 (21 per locale)
 ///
-/// Built on 2024-08-12 at 17:55 UTC
+/// Built on 2024-08-31 at 15:42 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -121,11 +121,12 @@ class StringsMangaContentsEn {
 	String get role => 'Role';
 	String get addEpisode => 'Add episode';
 	late final StringsMangaContentsEpisodeDefaultEn episodeDefault = StringsMangaContentsEpisodeDefaultEn._(_root);
-	String get coverChange => 'Change';
+	String get coverUpload => 'Upload';
 	String get coverRemove => 'Remove';
 	String get mangaDescription => 'Description';
 	String get mangaTitle => 'Title';
 	String get save => 'Save';
+	String get coverUrl => 'Cover URL';
 }
 
 // Path: mangaChapterContents
@@ -231,11 +232,12 @@ class StringsMangaContentsRu implements StringsMangaContentsEn {
 	@override String get role => 'Роль';
 	@override String get addEpisode => 'Добавить эпизод';
 	@override late final StringsMangaContentsEpisodeDefaultRu episodeDefault = StringsMangaContentsEpisodeDefaultRu._(_root);
-	@override String get coverChange => 'Сменить';
+	@override String get coverUpload => 'Загрузить';
 	@override String get coverRemove => 'Удалить';
 	@override String get mangaDescription => 'Описание';
 	@override String get mangaTitle => 'Заголовок';
 	@override String get save => 'Сохранить';
+	@override String get coverUrl => 'Ссылка на обложку';
 }
 
 // Path: mangaChapterContents
@@ -342,11 +344,12 @@ class StringsMangaContentsTt implements StringsMangaContentsEn {
 	@override String get role => 'Роль';
 	@override String get addEpisode => 'Эпизодны өстәргә';
 	@override late final StringsMangaContentsEpisodeDefaultTt episodeDefault = StringsMangaContentsEpisodeDefaultTt._(_root);
-	@override String get coverChange => 'Үзгәртергә';
+	@override String get coverUpload => 'Бушатырга';
 	@override String get coverRemove => 'Ерагайтырга';
 	@override String get mangaDescription => 'Тасвирлама';
 	@override String get mangaTitle => 'Исем';
 	@override String get save => 'Сакларга';
+	@override String get coverUrl => 'Тышлыкка сылтама';
 }
 
 // Path: mangaChapterContents
@@ -407,11 +410,12 @@ extension on Translations {
 			case 'mangaContents.episodeDefault.episode': return ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n,
 				other: 'Episode ${n}',
 			);
-			case 'mangaContents.coverChange': return 'Change';
+			case 'mangaContents.coverUpload': return 'Upload';
 			case 'mangaContents.coverRemove': return 'Remove';
 			case 'mangaContents.mangaDescription': return 'Description';
 			case 'mangaContents.mangaTitle': return 'Title';
 			case 'mangaContents.save': return 'Save';
+			case 'mangaContents.coverUrl': return 'Cover URL';
 			case 'mangaChapterContents.episodeName': return 'Episode name';
 			case 'mangaChapterContents.addImages': return 'Add images';
 			default: return null;
@@ -440,11 +444,12 @@ extension on StringsRu {
 			case 'mangaContents.episodeDefault.episode': return ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(n,
 				other: 'Эпизод ${n}',
 			);
-			case 'mangaContents.coverChange': return 'Сменить';
+			case 'mangaContents.coverUpload': return 'Загрузить';
 			case 'mangaContents.coverRemove': return 'Удалить';
 			case 'mangaContents.mangaDescription': return 'Описание';
 			case 'mangaContents.mangaTitle': return 'Заголовок';
 			case 'mangaContents.save': return 'Сохранить';
+			case 'mangaContents.coverUrl': return 'Ссылка на обложку';
 			case 'mangaChapterContents.episodeName': return 'Навание эпизода';
 			case 'mangaChapterContents.addImages': return 'Добавить изображения';
 			default: return null;
@@ -471,11 +476,12 @@ extension on StringsTt {
 			case 'mangaContents.episodeDefault.episode': return ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('tt'))(n,
 				other: 'Эпизод ${n}',
 			);
-			case 'mangaContents.coverChange': return 'Үзгәртергә';
+			case 'mangaContents.coverUpload': return 'Бушатырга';
 			case 'mangaContents.coverRemove': return 'Ерагайтырга';
 			case 'mangaContents.mangaDescription': return 'Тасвирлама';
 			case 'mangaContents.mangaTitle': return 'Исем';
 			case 'mangaContents.save': return 'Сакларга';
+			case 'mangaContents.coverUrl': return 'Тышлыкка сылтама';
 			case 'mangaChapterContents.episodeName': return 'Эпизодның исеме';
 			case 'mangaChapterContents.addImages': return 'Сүрәтләрне өстәргә';
 			default: return null;

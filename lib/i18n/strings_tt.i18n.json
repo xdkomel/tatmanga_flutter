@@ -24,11 +24,12 @@
                 "other": "Эпизод $n"
             }
         },
-        "coverChange": "Үзгәртергә",
+        "coverUpload": "Бушатырга",
         "coverRemove": "Ерагайтырга",
         "mangaDescription": "Тасвирлама",
         "mangaTitle": "Исем",
-        "save": "Сакларга"
+        "save": "Сакларга",
+        "coverUrl": "Тышлыкка сылтама"
     },
     "mangaChapterContents": {
         "episodeName": "Эпизодның исеме",

@@ -11,7 +11,9 @@ _$MangaConfigImpl _$$MangaConfigImplFromJson(Map<String, dynamic> json) =>
       mangaId: json['manga_id'] as String,
       title: json['title'] as String,
       description: json['description'] as String?,
-      coverName: json['cover_name'] as String?,
+      coverImage: json['cover_image'] == null
+          ? null
+          : SingleImage.fromJson(json['cover_image'] as Map<String, dynamic>),
       authors: (json['authors'] as List<dynamic>?)
           ?.map((e) => AuthorData.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -25,7 +27,7 @@ Map<String, dynamic> _$$MangaConfigImplToJson(_$MangaConfigImpl instance) =>
       'manga_id': instance.mangaId,
       'title': instance.title,
       'description': instance.description,
-      'cover_name': instance.coverName,
+      'cover_image': instance.coverImage,
       'authors': instance.authors,
       'chapters': instance.chapters,
     };

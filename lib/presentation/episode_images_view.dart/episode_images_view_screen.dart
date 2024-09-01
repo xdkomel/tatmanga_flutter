@@ -4,6 +4,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tatmanga_flutter/presentation/common/image_widget.dart';
+import 'package:tatmanga_flutter/presentation/common/styles.dart';
 import 'package:tatmanga_flutter/presentation/models/manga_chapter.dart';
 import 'package:tatmanga_flutter/providers.dart';
 import 'package:tatmanga_flutter/utils/fp.dart';
@@ -42,28 +43,39 @@ class _EpisodeImagesViewScreenState
     extends ConsumerState<EpisodeImagesViewScreen> {
   final _controller = ScrollController();
   bool _showingControls = true;
-  MangaChapter? _chapter;
 
   @override
   void initState() {
-    _chapter = ref.read(SP.episodeImagesViewManager).toNullable();
     HardwareKeyboard.instance.addHandler(_handle);
-    _chapter.map((chapter) {
-      if (widget.startFromEnd) {
-        SchedulerBinding.instance.addPostFrameCallback(
-          (_) => _controller.jumpTo(
-            (chapter.pageImages.length - 1) * MediaQuery.of(context).size.width,
-          ),
-        );
-      }
-    });
-
+    SchedulerBinding.instance.addPostFrameCallback(
+      (_) => _loadImages(),
+    );
     super.initState();
   }
+
+  Future<void> _loadImages() async {
+    await ref.read(SP.episodeImagesViewManager.notifier).loadImages();
+    if (widget.startFromEnd) {
+      _scrollToEnd();
+    }
+  }
+
+  void _scrollToEnd() => ref.read(SP.episodeImagesViewManager).map(
+        (chapter) => switch (chapter.images) {
+          MangaChapterImagesList list =>
+            SchedulerBinding.instance.addPostFrameCallback(
+              (_) => _controller.jumpTo(
+                (list.images.length - 1) * MediaQuery.of(context).size.width,
+              ),
+            ),
+          MangaChapterImagesStored _ => null,
+        },
+      );
 
   @override
   void dispose() {
     HardwareKeyboard.instance.removeHandler(_handle);
+    _controller.dispose();
     super.dispose();
   }
 
@@ -80,23 +92,26 @@ class _EpisodeImagesViewScreenState
     return true;
   }
 
-  void _moveForward() => _chapter.map(
-        (chapter) {
-          final maxOffset = (chapter.pageImages.length - 1) *
-              MediaQuery.of(context).size.width;
-          if (_controller.offset >= maxOffset) {
-            Navigator.of(context).pop(EpisodeImagesViewResponse.forward);
-            return;
-          }
-          _controller.animateTo(
-            _controller.offset + MediaQuery.of(context).size.width,
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.easeOut,
-          );
+  void _moveForward() => ref.read(SP.episodeImagesViewManager).map(
+        (chapter) => switch (chapter.images) {
+          MangaChapterImagesList mcil => run(() {
+              final maxOffset =
+                  (mcil.images.length - 1) * MediaQuery.of(context).size.width;
+              if (_controller.offset >= maxOffset) {
+                Navigator.of(context).pop(EpisodeImagesViewResponse.forward);
+                return;
+              }
+              _controller.animateTo(
+                _controller.offset + MediaQuery.of(context).size.width,
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeOut,
+              );
+            }),
+          _ => null,
         },
       );
 
-  void _moveBack() => _chapter.map(
+  void _moveBack() => ref.read(SP.episodeImagesViewManager).map(
         (chapter) {
           if (_controller.offset <= 0) {
             Navigator.of(context).pop(EpisodeImagesViewResponse.back);
@@ -123,22 +138,32 @@ class _EpisodeImagesViewScreenState
                   onTap: () => setState(
                     () => _showingControls = !_showingControls,
                   ),
-                  child: ListView.builder(
-                    controller: _controller,
-                    scrollDirection: Axis.horizontal,
-                    physics: const PageScrollPhysics(
-                      parent: BouncingScrollPhysics(),
-                    ),
-                    itemCount: chapter.pageImages.length,
-                    itemBuilder: (context, i) => SizedBox(
-                      width: size.width,
-                      height: size.height,
-                      child: ImageWidget(
-                        mangaId: widget.mangaId,
-                        imageData: chapter.pageImages[i].image,
+                  child: switch (chapter.images) {
+                    MangaChapterImagesList list => ListView.builder(
+                        controller: _controller,
+                        scrollDirection: Axis.horizontal,
+                        physics: const PageScrollPhysics(
+                          parent: BouncingScrollPhysics(),
+                        ),
+                        itemCount: list.images.length,
+                        itemBuilder: (context, i) => SizedBox(
+                          width: size.width,
+                          height: size.height,
+                          child: ImageWidget(
+                            mangaId: widget.mangaId,
+                            imageData: list.images[i].image,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                    MangaChapterImagesStored stored when stored.loading =>
+                      const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    MangaChapterImagesStored stored => Text(
+                        stored.errorMessage ?? 'Не удалось загрузить картинки',
+                        style: Styles.h4b.copyWith(color: Colors.white),
+                      ),
+                  },
                 ),
                 Positioned(
                   top: 16,

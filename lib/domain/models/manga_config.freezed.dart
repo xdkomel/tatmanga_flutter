@@ -24,13 +24,17 @@ mixin _$MangaConfig {
   String get mangaId => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
-  @JsonKey(name: 'cover_name')
-  String? get coverName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'cover_image')
+  SingleImage? get coverImage => throw _privateConstructorUsedError;
   List<AuthorData>? get authors => throw _privateConstructorUsedError;
   List<FirebaseChapter> get chapters => throw _privateConstructorUsedError;
 
+  /// Serializes this MangaConfig to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of MangaConfig
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $MangaConfigCopyWith<MangaConfig> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -45,9 +49,11 @@ abstract class $MangaConfigCopyWith<$Res> {
       {@JsonKey(name: 'manga_id') String mangaId,
       String title,
       String? description,
-      @JsonKey(name: 'cover_name') String? coverName,
+      @JsonKey(name: 'cover_image') SingleImage? coverImage,
       List<AuthorData>? authors,
       List<FirebaseChapter> chapters});
+
+  $SingleImageCopyWith<$Res>? get coverImage;
 }
 
 /// @nodoc
@@ -60,13 +66,15 @@ class _$MangaConfigCopyWithImpl<$Res, $Val extends MangaConfig>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of MangaConfig
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? mangaId = null,
     Object? title = null,
     Object? description = freezed,
-    Object? coverName = freezed,
+    Object? coverImage = freezed,
     Object? authors = freezed,
     Object? chapters = null,
   }) {
@@ -83,10 +91,10 @@ class _$MangaConfigCopyWithImpl<$Res, $Val extends MangaConfig>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
-      coverName: freezed == coverName
-          ? _value.coverName
-          : coverName // ignore: cast_nullable_to_non_nullable
-              as String?,
+      coverImage: freezed == coverImage
+          ? _value.coverImage
+          : coverImage // ignore: cast_nullable_to_non_nullable
+              as SingleImage?,
       authors: freezed == authors
           ? _value.authors
           : authors // ignore: cast_nullable_to_non_nullable
@@ -96,6 +104,20 @@ class _$MangaConfigCopyWithImpl<$Res, $Val extends MangaConfig>
           : chapters // ignore: cast_nullable_to_non_nullable
               as List<FirebaseChapter>,
     ) as $Val);
+  }
+
+  /// Create a copy of MangaConfig
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $SingleImageCopyWith<$Res>? get coverImage {
+    if (_value.coverImage == null) {
+      return null;
+    }
+
+    return $SingleImageCopyWith<$Res>(_value.coverImage!, (value) {
+      return _then(_value.copyWith(coverImage: value) as $Val);
+    });
   }
 }
 
@@ -111,9 +133,12 @@ abstract class _$$MangaConfigImplCopyWith<$Res>
       {@JsonKey(name: 'manga_id') String mangaId,
       String title,
       String? description,
-      @JsonKey(name: 'cover_name') String? coverName,
+      @JsonKey(name: 'cover_image') SingleImage? coverImage,
       List<AuthorData>? authors,
       List<FirebaseChapter> chapters});
+
+  @override
+  $SingleImageCopyWith<$Res>? get coverImage;
 }
 
 /// @nodoc
@@ -124,13 +149,15 @@ class __$$MangaConfigImplCopyWithImpl<$Res>
       _$MangaConfigImpl _value, $Res Function(_$MangaConfigImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MangaConfig
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? mangaId = null,
     Object? title = null,
     Object? description = freezed,
-    Object? coverName = freezed,
+    Object? coverImage = freezed,
     Object? authors = freezed,
     Object? chapters = null,
   }) {
@@ -147,10 +174,10 @@ class __$$MangaConfigImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
-      coverName: freezed == coverName
-          ? _value.coverName
-          : coverName // ignore: cast_nullable_to_non_nullable
-              as String?,
+      coverImage: freezed == coverImage
+          ? _value.coverImage
+          : coverImage // ignore: cast_nullable_to_non_nullable
+              as SingleImage?,
       authors: freezed == authors
           ? _value._authors
           : authors // ignore: cast_nullable_to_non_nullable
@@ -166,11 +193,11 @@ class __$$MangaConfigImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$MangaConfigImpl implements _MangaConfig {
-  _$MangaConfigImpl(
+  const _$MangaConfigImpl(
       {@JsonKey(name: 'manga_id') required this.mangaId,
       required this.title,
       required this.description,
-      @JsonKey(name: 'cover_name') required this.coverName,
+      @JsonKey(name: 'cover_image') required this.coverImage,
       required final List<AuthorData>? authors,
       required final List<FirebaseChapter> chapters})
       : _authors = authors,
@@ -187,8 +214,8 @@ class _$MangaConfigImpl implements _MangaConfig {
   @override
   final String? description;
   @override
-  @JsonKey(name: 'cover_name')
-  final String? coverName;
+  @JsonKey(name: 'cover_image')
+  final SingleImage? coverImage;
   final List<AuthorData>? _authors;
   @override
   List<AuthorData>? get authors {
@@ -209,7 +236,7 @@ class _$MangaConfigImpl implements _MangaConfig {
 
   @override
   String toString() {
-    return 'MangaConfig(mangaId: $mangaId, title: $title, description: $description, coverName: $coverName, authors: $authors, chapters: $chapters)';
+    return 'MangaConfig(mangaId: $mangaId, title: $title, description: $description, coverImage: $coverImage, authors: $authors, chapters: $chapters)';
   }
 
   @override
@@ -221,24 +248,26 @@ class _$MangaConfigImpl implements _MangaConfig {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
-            (identical(other.coverName, coverName) ||
-                other.coverName == coverName) &&
+            (identical(other.coverImage, coverImage) ||
+                other.coverImage == coverImage) &&
             const DeepCollectionEquality().equals(other._authors, _authors) &&
             const DeepCollectionEquality().equals(other._chapters, _chapters));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
       mangaId,
       title,
       description,
-      coverName,
+      coverImage,
       const DeepCollectionEquality().hash(_authors),
       const DeepCollectionEquality().hash(_chapters));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MangaConfig
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MangaConfigImplCopyWith<_$MangaConfigImpl> get copyWith =>
@@ -253,11 +282,11 @@ class _$MangaConfigImpl implements _MangaConfig {
 }
 
 abstract class _MangaConfig implements MangaConfig {
-  factory _MangaConfig(
+  const factory _MangaConfig(
       {@JsonKey(name: 'manga_id') required final String mangaId,
       required final String title,
       required final String? description,
-      @JsonKey(name: 'cover_name') required final String? coverName,
+      @JsonKey(name: 'cover_image') required final SingleImage? coverImage,
       required final List<AuthorData>? authors,
       required final List<FirebaseChapter> chapters}) = _$MangaConfigImpl;
 
@@ -272,14 +301,17 @@ abstract class _MangaConfig implements MangaConfig {
   @override
   String? get description;
   @override
-  @JsonKey(name: 'cover_name')
-  String? get coverName;
+  @JsonKey(name: 'cover_image')
+  SingleImage? get coverImage;
   @override
   List<AuthorData>? get authors;
   @override
   List<FirebaseChapter> get chapters;
+
+  /// Create a copy of MangaConfig
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MangaConfigImplCopyWith<_$MangaConfigImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -293,8 +325,12 @@ mixin _$AuthorData {
   String get name => throw _privateConstructorUsedError;
   String get role => throw _privateConstructorUsedError;
 
+  /// Serializes this AuthorData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AuthorData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AuthorDataCopyWith<AuthorData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -318,6 +354,8 @@ class _$AuthorDataCopyWithImpl<$Res, $Val extends AuthorData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AuthorData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -356,6 +394,8 @@ class __$$AuthorDataImplCopyWithImpl<$Res>
       _$AuthorDataImpl _value, $Res Function(_$AuthorDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AuthorData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -378,7 +418,7 @@ class __$$AuthorDataImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$AuthorDataImpl implements _AuthorData {
-  _$AuthorDataImpl({required this.name, required this.role});
+  const _$AuthorDataImpl({required this.name, required this.role});
 
   factory _$AuthorDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$AuthorDataImplFromJson(json);
@@ -402,11 +442,13 @@ class _$AuthorDataImpl implements _AuthorData {
             (identical(other.role, role) || other.role == role));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, name, role);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AuthorData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AuthorDataImplCopyWith<_$AuthorDataImpl> get copyWith =>
@@ -421,7 +463,7 @@ class _$AuthorDataImpl implements _AuthorData {
 }
 
 abstract class _AuthorData implements AuthorData {
-  factory _AuthorData(
+  const factory _AuthorData(
       {required final String name,
       required final String role}) = _$AuthorDataImpl;
 
@@ -432,8 +474,11 @@ abstract class _AuthorData implements AuthorData {
   String get name;
   @override
   String get role;
+
+  /// Create a copy of AuthorData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AuthorDataImplCopyWith<_$AuthorDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

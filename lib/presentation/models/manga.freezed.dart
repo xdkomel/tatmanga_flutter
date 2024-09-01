@@ -24,7 +24,9 @@ mixin _$Manga {
   IList<MangaChapter> get chapters => throw _privateConstructorUsedError;
   bool get configUploading => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Manga
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $MangaCopyWith<Manga> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -55,6 +57,8 @@ class _$MangaCopyWithImpl<$Res, $Val extends Manga>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Manga
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -98,6 +102,8 @@ class _$MangaCopyWithImpl<$Res, $Val extends Manga>
     ) as $Val);
   }
 
+  /// Create a copy of Manga
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $StatusImageDataCopyWith<$Res>? get cover {
@@ -139,6 +145,8 @@ class __$$MangaImplCopyWithImpl<$Res>
       _$MangaImpl _value, $Res Function(_$MangaImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Manga
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -242,7 +250,9 @@ class _$MangaImpl implements _Manga {
       const DeepCollectionEquality().hash(chapters),
       configUploading);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Manga
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MangaImplCopyWith<_$MangaImpl> get copyWith =>
@@ -273,8 +283,11 @@ abstract class _Manga implements Manga {
   IList<MangaChapter> get chapters;
   @override
   bool get configUploading;
+
+  /// Create a copy of Manga
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MangaImplCopyWith<_$MangaImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
