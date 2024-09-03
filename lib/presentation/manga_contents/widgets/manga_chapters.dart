@@ -98,11 +98,11 @@ class _OneChapter extends ConsumerWidget {
                 child: Row(
                   children: [
                     SizedBox(
-                      width: 24,
+                      width: 40,
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          '$index',
+                          '${index + 1}',
                           style: Styles.pb.copyWith(color: Styles.prime012),
                         ),
                       ),
@@ -115,7 +115,7 @@ class _OneChapter extends ConsumerWidget {
                                 .translations
                                 .mangaContents
                                 .episodeDefault
-                                .episode(n: index),
+                                .episode(n: index + 1),
                         style: Styles.pr.copyWith(color: Styles.prime200),
                         textAlign: TextAlign.start,
                       ),

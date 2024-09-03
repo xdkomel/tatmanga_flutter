@@ -8,8 +8,12 @@ import 'package:tatmanga_flutter/utils/fp.dart';
 
 class MangaContentRepositoryImpl extends MangaContentRepository {
   final Storage _storage;
+  // final Uuid _uuid;
 
-  MangaContentRepositoryImpl(this._storage);
+  MangaContentRepositoryImpl(
+    this._storage,
+    // this._uuid,
+  );
 
   @override
   Future<Option<String>> getDownloadUrl(String mangaId, String fileName) async {
@@ -28,4 +32,10 @@ class MangaContentRepositoryImpl extends MangaContentRepository {
   @override
   Future<void> uploadImage(String mangaId, String imageName, Uint8List bytes) =>
       _storage.uploadImage(mangaId, imageName, bytes);
+
+  // @override
+  // Future<Option<Manga>> getMangaById(String mangaId) async {
+  //   final config = await _storage.loadConfig(mangaId);
+  //   return config.map((c) => c.toManga(_uuid));
+  // }
 }

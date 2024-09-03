@@ -4,9 +4,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:tatmanga_flutter/domain/models/local_firebase_options.dart';
 
 class Env {
+  String _process(String text) => text.replaceAll('^', ',').replaceAll('\'', '"');
+
   Future<List<String>> get admins async {
     const emails = String.fromEnvironment('EMAILS');
-    return (jsonDecode(emails) as List)
+    return (jsonDecode(_process(emails)) as List)
         .map(
           (e) => e as String,
         )
@@ -16,7 +18,7 @@ class Env {
   Future<FirebaseOptions> get firebaseOptions async {
     const opts = String.fromEnvironment('WEB');
     return LocalFirebaseOptions.fromJson(
-      jsonDecode(opts) as Map<String, dynamic>,
+      jsonDecode(_process(opts)) as Map<String, dynamic>,
     ).toFirebaseOptions;
   }
 }

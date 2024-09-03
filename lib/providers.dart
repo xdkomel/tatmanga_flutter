@@ -1,5 +1,4 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:fluro/fluro.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:tatmanga_flutter/data/auth.dart';
@@ -29,7 +28,6 @@ abstract class P {
   static final uuid = Provider((_) => const Uuid());
   static final env = Provider((_) => Env());
   static final translationsBuilder = Provider((_) => TranslationsBuilder());
-  static final fluroRouter = Provider((_) => FluroRouter());
   static final telegraph = Provider((_) => Telegraph());
   static final mangaListRepository = Provider<MangaListRepository>(
     (ref) => MangaListRepositoryImpl(
@@ -38,7 +36,10 @@ abstract class P {
     ),
   );
   static final mangaContentRepository = Provider<MangaContentRepository>(
-    (ref) => MangaContentRepositoryImpl(ref.read(storage)),
+    (ref) => MangaContentRepositoryImpl(
+      ref.read(storage),
+      // ref.read(uuid),
+    ),
   );
   static final mangaChapterImagesRepository =
       Provider<MangaChapterImagesRepository>(

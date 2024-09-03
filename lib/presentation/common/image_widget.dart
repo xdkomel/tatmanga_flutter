@@ -120,7 +120,42 @@ class _UrlImageWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => CachedNetworkImage(
+  Widget build(BuildContext context) =>
+      // Image.network(
+      //       url,
+      //       width: width,
+      //       height: height,
+      //       fit: fit,
+      //       loadingBuilder: (context, child, progress) {
+      //         return progress.fold(
+      //           () => child,
+      //           (p) => Container(
+      //             width: width,
+      //             height: height,
+      //             color: Colors.black38,
+      //             child: Center(
+      //               child: CircularProgressIndicator(
+      //                 value: p.expectedTotalBytes != null
+      //                     ? p.cumulativeBytesLoaded / (p.expectedTotalBytes ?? 1)
+      //                     : null,
+      //               ),
+      //             ),
+      //           ),
+      //         );
+      //       },
+      //       errorBuilder: (context, msg, _) => Container(
+      //         width: width,
+      //         height: height,
+      //         color: Colors.black38,
+      //         child: Center(
+      //           child: Text(
+      //             '$msg',
+      //             style: Styles.h4b.copyWith(color: Colors.white),
+      //           ),
+      //         ),
+      //       ),
+      //     );
+      CachedNetworkImage(
         width: width,
         height: height,
         imageUrl: url,

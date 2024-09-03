@@ -8,4 +8,5 @@ abstract class MangaContentRepository {
   Future<void> uploadConfig(Manga configModel);
   Future<void> uploadImage(String mangaId, String imageName, Uint8List bytes);
   Future<void> removeImage(String mangaId, String imageName);
+  // Future<Option<Manga>> getMangaById(String mangaId);
 }

@@ -24,6 +24,12 @@ class MangaManager extends Notifier<Option<Manga>> {
 
   void setModel(Manga model) => state = Some(model);
 
+  // Future<void> loadManga(String mangaId) async => state = await ref
+  //     .read(
+  //       P.mangaContentRepository,
+  //     )
+  //     .getMangaById(mangaId);
+
   void _debounceUpdate() {
     _changed = true;
     EasyDebounce.debounce(
@@ -425,12 +431,13 @@ class MangaManager extends Notifier<Option<Manga>> {
 
   void updateChapterName(int index, String name) {
     _debounceUpdate();
+    final finalName = name.isEmpty ? null : name;
     state.map(
       (model) => setModel(
         model.copyWith(
           chapters: model.chapters.replace(
             index,
-            model.chapters.get(index).copyWith(name: name),
+            model.chapters.get(index).copyWith(name: finalName),
           ),
         ),
       ),

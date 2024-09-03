@@ -5,11 +5,12 @@ import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:tatmanga_flutter/domain/models/manga_config.dart';
 import 'package:tatmanga_flutter/utils/fp.dart';
+import 'package:tatmanga_flutter/utils/limited_hash_map.dart';
 
 class Storage {
   final _ref = FirebaseStorage.instance.ref();
 
-  final HashMap<String, String> _linksCache = HashMap();
+  final LimitedHashMap<String, String> _linksCache = LimitedHashMap(20);
 
   Future<Iterable<MangaConfig>> downloadConfigs() async {
     final mangas = await _ref.listAll();
@@ -23,23 +24,34 @@ class Storage {
           }),
         )
         .wait;
-    return configs
-        .map(
-          (c) => c.toNullable(),
-        )
-        .nonNulls;
+    return configs.map((c) => c.toNullable()).nonNulls;
   }
+
+  // Future<Option<MangaConfig>> loadConfig(String mangaId) {
+  //   return _configsCache[mangaId].fold(
+  //     () async {
+  //       final result = await futureThrowable(() async {
+  //         final configData = await _ref.child('$mangaId/config.json').getData();
+  //         final configStr = utf8.decode(configData!);
+  //         final json = jsonDecode(configStr) as Map<String, dynamic>;
+  //         return MangaConfig.fromJson(json);
+  //       });
+  //       return result.toOption();
+  //     },
+  //     (c) => Future.value(Option.of(c)),
+  //   );
+  // }
 
   Future<String?> getUrl(String mangaId, String fileName) {
     final path = '$mangaId/$fileName';
-    return _linksCache[path].fold(
+    return _linksCache.get(path).fold(
       () async {
         final maybeUrl = await futureThrowable(
           _ref.child(path).getDownloadURL,
         );
         return maybeUrl.toNullable().also(
               (url) => url.map(
-                (u) => _linksCache[path] = u,
+                (u) => _linksCache.put(path, u),
               ),
             );
       },

@@ -1,13 +1,11 @@
-import 'dart:collection';
-
 import 'package:fpdart/fpdart.dart';
-import 'package:tatmanga_flutter/utils/fp.dart';
 import 'package:tatmanga_flutter/data/telegraph.dart';
 import 'package:tatmanga_flutter/domain/repositories/manga_chapter_images_repository.dart';
+import 'package:tatmanga_flutter/utils/limited_hash_map.dart';
 
 class MangaChapterImagesRepositoryImpl extends MangaChapterImagesRepository {
   final Telegraph _telegraph;
-  final HashMap<String, Iterable<String>> _cache = HashMap();
+  final LimitedHashMap<String, Iterable<String>> _cache = LimitedHashMap(20);
 
   MangaChapterImagesRepositoryImpl(this._telegraph);
 
@@ -15,11 +13,10 @@ class MangaChapterImagesRepositoryImpl extends MangaChapterImagesRepository {
   Future<Either<String, Iterable<String>>> getImagesUrls(
     String chapterUrl,
   ) =>
-      _cache[chapterUrl].fold(
+      _cache.get(chapterUrl).fold(
         () async {
-          print('Loading for $chapterUrl');
           final result = await _telegraph.getImagesUrls(chapterUrl);
-          result.map((urls) => _cache[chapterUrl] = urls);
+          result.map((urls) => _cache.put(chapterUrl, urls));
           return result;
         },
         (urls) => Future.value(

@@ -12,14 +12,6 @@ void main() async {
   initializeDateFormatting();
   WidgetsFlutterBinding.ensureInitialized();
   final providerContainer = ProviderContainer();
-  // providerContainer.read(P.fluroRouter)
-  //   ..define(
-  //     '/library',
-  //     handler: Handler(
-  //       handlerFunc: (context, _) => const MangaListScreen(),
-  //     ),
-  //   )
-  //   ..define('/manga/', handler: handler);
   runApp(
     UncontrolledProviderScope(
       container: providerContainer,

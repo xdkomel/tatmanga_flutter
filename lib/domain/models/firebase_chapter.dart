@@ -24,7 +24,7 @@ sealed class ChapterImages with _$ChapterImages {
     required List<SingleImage> images,
   }) = ChapterImagesFiles;
   const factory ChapterImages.telegraphChapter({
-    required String telegraphUrl,
+    @JsonKey(name: 'telegraph_url') required String telegraphUrl,
   }) = ChapterImagesTelegraphChapter;
 
   factory ChapterImages.fromJson(Map<String, dynamic> json) =>

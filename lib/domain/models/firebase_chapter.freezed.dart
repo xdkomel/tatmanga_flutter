@@ -232,19 +232,23 @@ mixin _$ChapterImages {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(List<SingleImage> images) files,
-    required TResult Function(String telegraphUrl) telegraphChapter,
+    required TResult Function(
+            @JsonKey(name: 'telegraph_url') String telegraphUrl)
+        telegraphChapter,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(List<SingleImage> images)? files,
-    TResult? Function(String telegraphUrl)? telegraphChapter,
+    TResult? Function(@JsonKey(name: 'telegraph_url') String telegraphUrl)?
+        telegraphChapter,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(List<SingleImage> images)? files,
-    TResult Function(String telegraphUrl)? telegraphChapter,
+    TResult Function(@JsonKey(name: 'telegraph_url') String telegraphUrl)?
+        telegraphChapter,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -380,7 +384,9 @@ class _$ChapterImagesFilesImpl implements ChapterImagesFiles {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(List<SingleImage> images) files,
-    required TResult Function(String telegraphUrl) telegraphChapter,
+    required TResult Function(
+            @JsonKey(name: 'telegraph_url') String telegraphUrl)
+        telegraphChapter,
   }) {
     return files(images);
   }
@@ -389,7 +395,8 @@ class _$ChapterImagesFilesImpl implements ChapterImagesFiles {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(List<SingleImage> images)? files,
-    TResult? Function(String telegraphUrl)? telegraphChapter,
+    TResult? Function(@JsonKey(name: 'telegraph_url') String telegraphUrl)?
+        telegraphChapter,
   }) {
     return files?.call(images);
   }
@@ -398,7 +405,8 @@ class _$ChapterImagesFilesImpl implements ChapterImagesFiles {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(List<SingleImage> images)? files,
-    TResult Function(String telegraphUrl)? telegraphChapter,
+    TResult Function(@JsonKey(name: 'telegraph_url') String telegraphUrl)?
+        telegraphChapter,
     required TResult orElse(),
   }) {
     if (files != null) {
@@ -470,7 +478,7 @@ abstract class _$$ChapterImagesTelegraphChapterImplCopyWith<$Res> {
           $Res Function(_$ChapterImagesTelegraphChapterImpl) then) =
       __$$ChapterImagesTelegraphChapterImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String telegraphUrl});
+  $Res call({@JsonKey(name: 'telegraph_url') String telegraphUrl});
 }
 
 /// @nodoc
@@ -504,7 +512,8 @@ class __$$ChapterImagesTelegraphChapterImplCopyWithImpl<$Res>
 class _$ChapterImagesTelegraphChapterImpl
     implements ChapterImagesTelegraphChapter {
   const _$ChapterImagesTelegraphChapterImpl(
-      {required this.telegraphUrl, final String? $type})
+      {@JsonKey(name: 'telegraph_url') required this.telegraphUrl,
+      final String? $type})
       : $type = $type ?? 'telegraph_chapter';
 
   factory _$ChapterImagesTelegraphChapterImpl.fromJson(
@@ -512,6 +521,7 @@ class _$ChapterImagesTelegraphChapterImpl
       _$$ChapterImagesTelegraphChapterImplFromJson(json);
 
   @override
+  @JsonKey(name: 'telegraph_url')
   final String telegraphUrl;
 
   @JsonKey(name: 'chapter_images_type')
@@ -549,7 +559,9 @@ class _$ChapterImagesTelegraphChapterImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(List<SingleImage> images) files,
-    required TResult Function(String telegraphUrl) telegraphChapter,
+    required TResult Function(
+            @JsonKey(name: 'telegraph_url') String telegraphUrl)
+        telegraphChapter,
   }) {
     return telegraphChapter(telegraphUrl);
   }
@@ -558,7 +570,8 @@ class _$ChapterImagesTelegraphChapterImpl
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(List<SingleImage> images)? files,
-    TResult? Function(String telegraphUrl)? telegraphChapter,
+    TResult? Function(@JsonKey(name: 'telegraph_url') String telegraphUrl)?
+        telegraphChapter,
   }) {
     return telegraphChapter?.call(telegraphUrl);
   }
@@ -567,7 +580,8 @@ class _$ChapterImagesTelegraphChapterImpl
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(List<SingleImage> images)? files,
-    TResult Function(String telegraphUrl)? telegraphChapter,
+    TResult Function(@JsonKey(name: 'telegraph_url') String telegraphUrl)?
+        telegraphChapter,
     required TResult orElse(),
   }) {
     if (telegraphChapter != null) {
@@ -618,12 +632,14 @@ class _$ChapterImagesTelegraphChapterImpl
 
 abstract class ChapterImagesTelegraphChapter implements ChapterImages {
   const factory ChapterImagesTelegraphChapter(
-          {required final String telegraphUrl}) =
+          {@JsonKey(name: 'telegraph_url')
+          required final String telegraphUrl}) =
       _$ChapterImagesTelegraphChapterImpl;
 
   factory ChapterImagesTelegraphChapter.fromJson(Map<String, dynamic> json) =
       _$ChapterImagesTelegraphChapterImpl.fromJson;
 
+  @JsonKey(name: 'telegraph_url')
   String get telegraphUrl;
 
   /// Create a copy of ChapterImages
