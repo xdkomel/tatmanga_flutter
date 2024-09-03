@@ -33,6 +33,14 @@
     },
     "mangaChapterContents": {
         "episodeName": "Эпизодның исеме",
-        "addImages": "Сүрәтләрне өстәргә"
+        "addImages": "Сурәтләрне өстәргә",
+        "imagesLoadingMethod": "Сурәтләрне йөкләү ысулы",
+        "parseFromTelegraphMethod": "Telegraph-тан эшкәртеп чыгарырга",
+        "loadOneByOne": "Берәм-берәм йөкләргә",
+        "telegraphInputPlaceholder": "Telegraph исеме",
+        "telegraphInputExplainText(rich)": "Telegraph исемне сылтамадан чыгарып кертегез. Мәсәлән, ${url(https://telegra.ph/manga-iseme)} сылтама өчен ${name(manga-iseme)} исемен кертергә кирәк"
+    },
+    "episodeImagesView": {
+        "defaultErrorMessage": "Сурәтләрне йөкләп булмады"
     }
 }

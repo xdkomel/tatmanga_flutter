@@ -160,7 +160,12 @@ class _EpisodeImagesViewScreenState
                         child: CircularProgressIndicator(),
                       ),
                     MangaChapterImagesStored stored => Text(
-                        stored.errorMessage ?? 'Не удалось загрузить картинки',
+                        stored.errorMessage ??
+                            ref
+                                .watch(SP.localizationManager)
+                                .translations
+                                .episodeImagesView
+                                .defaultErrorMessage,
                         style: Styles.h4b.copyWith(color: Colors.white),
                       ),
                   },

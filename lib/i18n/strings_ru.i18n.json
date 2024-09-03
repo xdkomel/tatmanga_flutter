@@ -35,6 +35,14 @@
     },
     "mangaChapterContents": {
         "episodeName": "Навание эпизода",
-        "addImages": "Добавить изображения"
+        "addImages": "Добавить изображения",
+        "imagesLoadingMethod": "Способ заргузки изображений",
+        "parseFromTelegraphMethod": "Парсить из Telegraph",
+        "loadOneByOne": "Загрузить по одному",
+        "telegraphInputPlaceholder": "Имя в Telegraph",
+        "telegraphInputExplainText(rich)": "Достаньте из ссылки имя в Telegraph и вставьте его. Например, для ссылки ${url(https://telegra.ph/manga-iseme)} имя в Telegraph будет ${name(manga-iseme)}"
+    },
+    "episodeImagesView": {
+        "defaultErrorMessage": "Не удалось загрузить изображения"
     }
 }

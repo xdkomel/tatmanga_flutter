@@ -34,6 +34,14 @@
     },
     "mangaChapterContents": {
         "episodeName": "Episode name",
-        "addImages": "Add images"
+        "addImages": "Add images",
+        "imagesLoadingMethod": "Images loading method",
+        "parseFromTelegraphMethod": "Parse from Telegraph",
+        "loadOneByOne": "Load one by one",
+        "telegraphInputPlaceholder": "Telegraph name",
+        "telegraphInputExplainText(rich)": "You have to put the Telegraph name retrieved out of a link. For instance, a link ${url(https://telegra.ph/manga-iseme)} refers to the ${name(manga-iseme)} Telegraph name"
+    },
+    "episodeImagesView": {
+        "defaultErrorMessage": "Couldn't load images"
     }
 }

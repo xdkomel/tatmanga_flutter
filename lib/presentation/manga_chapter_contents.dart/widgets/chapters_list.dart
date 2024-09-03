@@ -113,9 +113,34 @@ class ChaptersList extends ConsumerWidget {
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 16,
                               ),
-                              child: _LinkInput(
-                                chapterIndex: chapterIndex,
-                                initialText: mcis.url,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  _LinkInput(
+                                    chapterIndex: chapterIndex,
+                                    initialText: mcis.url,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text.rich(
+                                    ref
+                                        .watch(SP.localizationManager)
+                                        .translations
+                                        .mangaChapterContents
+                                        .telegraphInputExplainText(
+                                          name: (text) => TextSpan(
+                                            text: text,
+                                            style: Styles.pb,
+                                          ),
+                                          url: (text) => TextSpan(
+                                            text: text,
+                                            style: Styles.pr.copyWith(
+                                              color: Colors.blue,
+                                            ),
+                                          ),
+                                        ),
+                                    style: Styles.pr,
+                                  ),
+                                ],
                               ),
                             ),
                           ],
@@ -166,7 +191,11 @@ class _LinkInputState extends ConsumerState<_LinkInput> {
   @override
   Widget build(BuildContext context) => TextEditingField(
         controller: _controller,
-        hintText: 'Telegraph Name',
+        hintText: ref
+            .watch(SP.localizationManager)
+            .translations
+            .mangaChapterContents
+            .telegraphInputPlaceholder,
         style: Styles.pr,
       );
 }

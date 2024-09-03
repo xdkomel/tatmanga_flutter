@@ -30,18 +30,7 @@ class PageBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 16),
-              Row(
-                children: [
-                  SvgPicture.asset(Resources.logo),
-                  const SizedBox(width: 6),
-                  const _Title(),
-                  const Spacer(),
-                  const _LanguageSelector(),
-                  const SizedBox(width: 16),
-                  const _EditButton(),
-                  const _AuthorizeButton(),
-                ],
-              ),
+              const _FlexibleMenu(),
               const SizedBox(height: 16),
               Expanded(
                 child: SingleChildScrollView(
@@ -188,9 +177,77 @@ class _BottomLine extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final name = ref.watch(SP.localizationManager).translations.common.name;
     return Text(
-      '$name | 2024',
+      '$name | ${DateTime.now().year}',
       style: Styles.h4r.copyWith(color: Styles.prime500),
       textAlign: TextAlign.center,
+    );
+  }
+}
+
+class _FlexibleMenu extends StatefulWidget {
+  const _FlexibleMenu();
+
+  @override
+  State<_FlexibleMenu> createState() => _FlexibleMenuState();
+}
+
+class _FlexibleMenuState extends State<_FlexibleMenu> {
+  bool _showAdditionalMenu = false;
+
+  _foldWidth<T>(double width, T wide, T narrow) => switch (width) {
+        >= 708 => wide,
+        _ => narrow,
+      };
+
+  @override
+  Widget build(BuildContext context) {
+    final width = contentWidth(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          children: [
+            SvgPicture.asset(Resources.logo),
+            const SizedBox(width: 6),
+            const _Title(),
+            const Spacer(),
+            ..._foldWidth(
+              width,
+              [
+                const _LanguageSelector(),
+                const SizedBox(width: 16),
+                const _EditButton(),
+                const _AuthorizeButton(),
+              ],
+              [
+                IconButton(
+                  onPressed: () => setState(
+                      () => _showAdditionalMenu = !_showAdditionalMenu),
+                  icon: const Icon(Icons.menu),
+                ),
+              ],
+            ),
+          ],
+        ),
+        AnimatedSize(
+          duration: const Duration(milliseconds: 300),
+          child: _foldWidth(
+            width,
+            const SizedBox(),
+            _showAdditionalMenu
+                ? const Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      _LanguageSelector(),
+                      SizedBox(width: 16),
+                      _EditButton(),
+                      _AuthorizeButton(),
+                    ],
+                  )
+                : const SizedBox(),
+          ),
+        ),
+      ],
     );
   }
 }

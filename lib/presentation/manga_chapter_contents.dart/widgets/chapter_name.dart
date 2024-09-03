@@ -61,7 +61,14 @@ class _ChapterNameState extends ConsumerState<ChapterName> {
           style: Styles.pb,
         ),
         const SizedBox(height: 16),
-        const Text('Способ загрузки изображений', style: Styles.h3b),
+        Text(
+          ref
+              .watch(SP.localizationManager)
+              .translations
+              .mangaChapterContents
+              .imagesLoadingMethod,
+          style: Styles.h3b,
+        ),
         const SizedBox(height: 8),
         _ImagesProviderSelector(index: widget.index),
       ],
@@ -101,7 +108,13 @@ class _ImagesProviderSelector extends ConsumerWidget {
                 groupValue: useTelegraphParsing,
                 onChanged: null,
               ),
-              const Text('Парсить картинки из Telegraph'),
+              Text(
+                ref
+                    .watch(SP.localizationManager)
+                    .translations
+                    .mangaChapterContents
+                    .parseFromTelegraphMethod,
+              ),
             ],
           ),
         ),
@@ -117,7 +130,13 @@ class _ImagesProviderSelector extends ConsumerWidget {
                 groupValue: useTelegraphParsing,
                 onChanged: null,
               ),
-              const Text('Загрузить собственные'),
+              Text(
+                ref
+                    .watch(SP.localizationManager)
+                    .translations
+                    .mangaChapterContents
+                    .loadOneByOne,
+              ),
             ],
           ),
         ),
