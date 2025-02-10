@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tatmanga_flutter/presentation/common/image_widget.dart';
@@ -60,13 +61,15 @@ class MangaCard extends ConsumerWidget {
   Future<void> _openManga(WidgetRef ref, BuildContext context) =>
       ref.read(SP.mangaManager).fold(
         () async {
+          print('DEBUG PRINT: pressed on a manga card');
           final manager = ref.read(SP.mangaManager.notifier);
           manager.setModel(manga);
-          await Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => const MangaContentsScreen(),
-            ),
-          );
+          Beamer.of(context).beamToNamed('/manga/${manga.mangaId}');
+          // await Navigator.of(context).push(
+          //   MaterialPageRoute(
+          //     builder: (_) => const MangaContentsScreen(),
+          //   ),
+          // );
           ref.read(SP.mangaManager).map(
                 ref.read(SP.mangaLoadingManager.notifier).updateManga,
               );

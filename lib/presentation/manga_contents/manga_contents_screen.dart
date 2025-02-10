@@ -16,6 +16,8 @@ class MangaContentsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final data = ref.read(SP.mangaLoadingManager);
+    print('DEBUG PRINT: $data');
     final (coverWidth, bodyWidth) = _coverAndTextWidth(context);
     return PageBody(
       breadCrumbs: [

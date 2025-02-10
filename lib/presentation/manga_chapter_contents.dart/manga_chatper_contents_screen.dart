@@ -5,10 +5,10 @@ import 'package:tatmanga_flutter/presentation/manga_chapter_contents.dart/widget
 import 'package:tatmanga_flutter/presentation/manga_chapter_contents.dart/widgets/chapters_list.dart';
 import 'package:tatmanga_flutter/providers.dart';
 
-class MangaChatperContentsScreen extends ConsumerWidget {
+class MangaChapterContentsScreen extends ConsumerWidget {
   final int chapterIndex;
 
-  const MangaChatperContentsScreen({super.key, required this.chapterIndex});
+  const MangaChapterContentsScreen({super.key, required this.chapterIndex});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => PageBody(

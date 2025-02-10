@@ -137,7 +137,7 @@ class _OneChapter extends ConsumerWidget {
             (manga) => ref.read(SP.editingModeOnManager)
                 ? Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => MangaChatperContentsScreen(
+                      builder: (context) => MangaChapterContentsScreen(
                         chapterIndex: index,
                       ),
                     ),
@@ -155,10 +155,13 @@ class _OneChapter extends ConsumerWidget {
     ref.read(SP.episodeImagesViewManager.notifier).setModel(
           manga.chapters.get(index),
         );
-    final value = await EpisodeImagesViewScreen.show(
-      context,
-      manga.mangaId,
-      startFromEnd,
+    final value = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => EpisodeImagesViewScreen(
+          mangaId: manga.mangaId,
+          startFromEnd: startFromEnd,
+        ),
+      ),
     );
     if (context.mounted) {
       return switch (value) {

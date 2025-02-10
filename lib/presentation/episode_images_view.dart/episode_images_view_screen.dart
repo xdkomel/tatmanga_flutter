@@ -25,18 +25,18 @@ class EpisodeImagesViewScreen extends ConsumerStatefulWidget {
   ConsumerState<EpisodeImagesViewScreen> createState() =>
       _EpisodeImagesViewScreenState();
 
-  static Future<EpisodeImagesViewResponse?> show(
-    BuildContext context,
-    String mangaId,
-    bool startFromEnd,
-  ) =>
-      showCupertinoModalPopup(
-        context: context,
-        builder: (context) => EpisodeImagesViewScreen(
-          mangaId: mangaId,
-          startFromEnd: startFromEnd,
-        ),
-      );
+  // static Future<EpisodeImagesViewResponse?> show(
+  //   BuildContext context,
+  //   String mangaId,
+  //   bool startFromEnd,
+  // ) =>
+  //     showCupertinoModalPopup(
+  //       context: context,
+  //       builder: (context) => EpisodeImagesViewScreen(
+  //         mangaId: mangaId,
+  //         startFromEnd: startFromEnd,
+  //       ),
+  //     );
 }
 
 class _EpisodeImagesViewScreenState
