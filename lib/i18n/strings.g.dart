@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 81 (27 per locale)
+/// Strings: 84 (28 per locale)
 ///
-/// Built on 2024-09-03 at 13:13 UTC
+/// Built on 2025-03-10 at 23:07 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -82,7 +82,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final StringsCommonEn common = StringsCommonEn._(_root);
 	late final StringsMangaContentsEn mangaContents = StringsMangaContentsEn._(_root);
 	late final StringsMangaChapterContentsEn mangaChapterContents = StringsMangaChapterContentsEn._(_root);
-	late final StringsEpisodeImagesViewEn episodeImagesView = StringsEpisodeImagesViewEn._(_root);
+	late final StringsNotFoundEn notFound = StringsNotFoundEn._(_root);
 }
 
 // Path: mangaList
@@ -140,26 +140,21 @@ class StringsMangaChapterContentsEn {
 	String get episodeName => 'Episode name';
 	String get addImages => 'Add images';
 	String get imagesLoadingMethod => 'Images loading method';
-	String get parseFromTelegraphMethod => 'Parse from Telegraph';
+	String get openLink => 'Open link';
 	String get loadOneByOne => 'Load one by one';
-	String get telegraphInputPlaceholder => 'Telegraph name';
-	TextSpan telegraphInputExplainText({required InlineSpanBuilder url, required InlineSpanBuilder name}) => TextSpan(children: [
-		const TextSpan(text: 'You have to put the Telegraph name retrieved out of a link. For instance, a link '),
-		url('https://telegra.ph/manga-iseme'),
-		const TextSpan(text: ' refers to the '),
-		name('manga-iseme'),
-		const TextSpan(text: ' Telegraph name'),
-	]);
+	String get linkInputPlaceholder => 'Link URL';
+	String get linkInputExplainText => 'When the episode opened, a redirect to the link will happen';
 }
 
-// Path: episodeImagesView
-class StringsEpisodeImagesViewEn {
-	StringsEpisodeImagesViewEn._(this._root);
+// Path: notFound
+class StringsNotFoundEn {
+	StringsNotFoundEn._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get defaultErrorMessage => 'Couldn\'t load images';
+	String get title => '404';
+	String get body => 'Not found';
 }
 
 // Path: mangaList.episodesCount
@@ -215,7 +210,7 @@ class StringsRu implements Translations {
 	@override late final StringsCommonRu common = StringsCommonRu._(_root);
 	@override late final StringsMangaContentsRu mangaContents = StringsMangaContentsRu._(_root);
 	@override late final StringsMangaChapterContentsRu mangaChapterContents = StringsMangaChapterContentsRu._(_root);
-	@override late final StringsEpisodeImagesViewRu episodeImagesView = StringsEpisodeImagesViewRu._(_root);
+	@override late final StringsNotFoundRu notFound = StringsNotFoundRu._(_root);
 }
 
 // Path: mangaList
@@ -273,25 +268,21 @@ class StringsMangaChapterContentsRu implements StringsMangaChapterContentsEn {
 	@override String get episodeName => 'Навание эпизода';
 	@override String get addImages => 'Добавить изображения';
 	@override String get imagesLoadingMethod => 'Способ заргузки изображений';
-	@override String get parseFromTelegraphMethod => 'Парсить из Telegraph';
+	@override String get openLink => 'Открыть ссылку';
 	@override String get loadOneByOne => 'Загрузить по одному';
-	@override String get telegraphInputPlaceholder => 'Имя в Telegraph';
-	@override TextSpan telegraphInputExplainText({required InlineSpanBuilder url, required InlineSpanBuilder name}) => TextSpan(children: [
-		const TextSpan(text: 'Достаньте из ссылки имя в Telegraph и вставьте его. Например, для ссылки '),
-		url('https://telegra.ph/manga-iseme'),
-		const TextSpan(text: ' имя в Telegraph будет '),
-		name('manga-iseme'),
-	]);
+	@override String get linkInputPlaceholder => 'Ссылка';
+	@override String get linkInputExplainText => 'При открытии эпизода произойдёт автоматический переход по ссылке';
 }
 
-// Path: episodeImagesView
-class StringsEpisodeImagesViewRu implements StringsEpisodeImagesViewEn {
-	StringsEpisodeImagesViewRu._(this._root);
+// Path: notFound
+class StringsNotFoundRu implements StringsNotFoundEn {
+	StringsNotFoundRu._(this._root);
 
 	@override final StringsRu _root; // ignore: unused_field
 
 	// Translations
-	@override String get defaultErrorMessage => 'Не удалось загрузить изображения';
+	@override String get title => '404';
+	@override String get body => 'Не найдено';
 }
 
 // Path: mangaList.episodesCount
@@ -348,7 +339,7 @@ class StringsTt implements Translations {
 	@override late final StringsCommonTt common = StringsCommonTt._(_root);
 	@override late final StringsMangaContentsTt mangaContents = StringsMangaContentsTt._(_root);
 	@override late final StringsMangaChapterContentsTt mangaChapterContents = StringsMangaChapterContentsTt._(_root);
-	@override late final StringsEpisodeImagesViewTt episodeImagesView = StringsEpisodeImagesViewTt._(_root);
+	@override late final StringsNotFoundTt notFound = StringsNotFoundTt._(_root);
 }
 
 // Path: mangaList
@@ -406,26 +397,21 @@ class StringsMangaChapterContentsTt implements StringsMangaChapterContentsEn {
 	@override String get episodeName => 'Эпизодның исеме';
 	@override String get addImages => 'Сурәтләрне өстәргә';
 	@override String get imagesLoadingMethod => 'Сурәтләрне йөкләү ысулы';
-	@override String get parseFromTelegraphMethod => 'Telegraph-тан эшкәртеп чыгарырга';
+	@override String get openLink => 'Сылтаманы ачырга';
 	@override String get loadOneByOne => 'Берәм-берәм йөкләргә';
-	@override String get telegraphInputPlaceholder => 'Telegraph исеме';
-	@override TextSpan telegraphInputExplainText({required InlineSpanBuilder url, required InlineSpanBuilder name}) => TextSpan(children: [
-		const TextSpan(text: 'Telegraph исемне сылтамадан чыгарып кертегез. Мәсәлән, '),
-		url('https://telegra.ph/manga-iseme'),
-		const TextSpan(text: ' сылтама өчен '),
-		name('manga-iseme'),
-		const TextSpan(text: ' исемен кертергә кирәк'),
-	]);
+	@override String get linkInputPlaceholder => 'Сылтама';
+	@override String get linkInputExplainText => 'Эпизод ачылганда сылтама буенча автоматик күчү булачак';
 }
 
-// Path: episodeImagesView
-class StringsEpisodeImagesViewTt implements StringsEpisodeImagesViewEn {
-	StringsEpisodeImagesViewTt._(this._root);
+// Path: notFound
+class StringsNotFoundTt implements StringsNotFoundEn {
+	StringsNotFoundTt._(this._root);
 
 	@override final StringsTt _root; // ignore: unused_field
 
 	// Translations
-	@override String get defaultErrorMessage => 'Сурәтләрне йөкләп булмады';
+	@override String get title => '404';
+	@override String get body => 'Табылмаган';
 }
 
 // Path: mangaList.episodesCount
@@ -484,17 +470,12 @@ extension on Translations {
 			case 'mangaChapterContents.episodeName': return 'Episode name';
 			case 'mangaChapterContents.addImages': return 'Add images';
 			case 'mangaChapterContents.imagesLoadingMethod': return 'Images loading method';
-			case 'mangaChapterContents.parseFromTelegraphMethod': return 'Parse from Telegraph';
+			case 'mangaChapterContents.openLink': return 'Open link';
 			case 'mangaChapterContents.loadOneByOne': return 'Load one by one';
-			case 'mangaChapterContents.telegraphInputPlaceholder': return 'Telegraph name';
-			case 'mangaChapterContents.telegraphInputExplainText': return ({required InlineSpanBuilder url, required InlineSpanBuilder name}) => TextSpan(children: [
-				const TextSpan(text: 'You have to put the Telegraph name retrieved out of a link. For instance, a link '),
-				url('https://telegra.ph/manga-iseme'),
-				const TextSpan(text: ' refers to the '),
-				name('manga-iseme'),
-				const TextSpan(text: ' Telegraph name'),
-			]);
-			case 'episodeImagesView.defaultErrorMessage': return 'Couldn\'t load images';
+			case 'mangaChapterContents.linkInputPlaceholder': return 'Link URL';
+			case 'mangaChapterContents.linkInputExplainText': return 'When the episode opened, a redirect to the link will happen';
+			case 'notFound.title': return '404';
+			case 'notFound.body': return 'Not found';
 			default: return null;
 		}
 	}
@@ -530,16 +511,12 @@ extension on StringsRu {
 			case 'mangaChapterContents.episodeName': return 'Навание эпизода';
 			case 'mangaChapterContents.addImages': return 'Добавить изображения';
 			case 'mangaChapterContents.imagesLoadingMethod': return 'Способ заргузки изображений';
-			case 'mangaChapterContents.parseFromTelegraphMethod': return 'Парсить из Telegraph';
+			case 'mangaChapterContents.openLink': return 'Открыть ссылку';
 			case 'mangaChapterContents.loadOneByOne': return 'Загрузить по одному';
-			case 'mangaChapterContents.telegraphInputPlaceholder': return 'Имя в Telegraph';
-			case 'mangaChapterContents.telegraphInputExplainText': return ({required InlineSpanBuilder url, required InlineSpanBuilder name}) => TextSpan(children: [
-				const TextSpan(text: 'Достаньте из ссылки имя в Telegraph и вставьте его. Например, для ссылки '),
-				url('https://telegra.ph/manga-iseme'),
-				const TextSpan(text: ' имя в Telegraph будет '),
-				name('manga-iseme'),
-			]);
-			case 'episodeImagesView.defaultErrorMessage': return 'Не удалось загрузить изображения';
+			case 'mangaChapterContents.linkInputPlaceholder': return 'Ссылка';
+			case 'mangaChapterContents.linkInputExplainText': return 'При открытии эпизода произойдёт автоматический переход по ссылке';
+			case 'notFound.title': return '404';
+			case 'notFound.body': return 'Не найдено';
 			default: return null;
 		}
 	}
@@ -573,17 +550,12 @@ extension on StringsTt {
 			case 'mangaChapterContents.episodeName': return 'Эпизодның исеме';
 			case 'mangaChapterContents.addImages': return 'Сурәтләрне өстәргә';
 			case 'mangaChapterContents.imagesLoadingMethod': return 'Сурәтләрне йөкләү ысулы';
-			case 'mangaChapterContents.parseFromTelegraphMethod': return 'Telegraph-тан эшкәртеп чыгарырга';
+			case 'mangaChapterContents.openLink': return 'Сылтаманы ачырга';
 			case 'mangaChapterContents.loadOneByOne': return 'Берәм-берәм йөкләргә';
-			case 'mangaChapterContents.telegraphInputPlaceholder': return 'Telegraph исеме';
-			case 'mangaChapterContents.telegraphInputExplainText': return ({required InlineSpanBuilder url, required InlineSpanBuilder name}) => TextSpan(children: [
-				const TextSpan(text: 'Telegraph исемне сылтамадан чыгарып кертегез. Мәсәлән, '),
-				url('https://telegra.ph/manga-iseme'),
-				const TextSpan(text: ' сылтама өчен '),
-				name('manga-iseme'),
-				const TextSpan(text: ' исемен кертергә кирәк'),
-			]);
-			case 'episodeImagesView.defaultErrorMessage': return 'Сурәтләрне йөкләп булмады';
+			case 'mangaChapterContents.linkInputPlaceholder': return 'Сылтама';
+			case 'mangaChapterContents.linkInputExplainText': return 'Эпизод ачылганда сылтама буенча автоматик күчү булачак';
+			case 'notFound.title': return '404';
+			case 'notFound.body': return 'Табылмаган';
 			default: return null;
 		}
 	}

@@ -1,21 +1,32 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tatmanga_flutter/presentation/common/page_body.dart';
-import 'package:tatmanga_flutter/presentation/manga_chapter_contents.dart/widgets/chapter_name.dart';
-import 'package:tatmanga_flutter/presentation/manga_chapter_contents.dart/widgets/chapters_list.dart';
-import 'package:tatmanga_flutter/providers.dart';
+import '../common/page_body.dart';
+import 'widgets/chapter_name.dart';
+import 'widgets/chapters_list.dart';
+import '../../providers.dart';
 
 class MangaChapterContentsScreen extends ConsumerWidget {
   final int chapterIndex;
 
-  const MangaChapterContentsScreen({super.key, required this.chapterIndex});
+  const MangaChapterContentsScreen({required this.chapterIndex, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => PageBody(
         breadCrumbs: [
-          ref.watch(SP.localizationManager).translations.mangaList.library,
-          ref.read(SP.mangaManager).map((m) => m.title).toNullable() ??
-              ref.watch(SP.localizationManager).translations.common.manga,
+          BreadCrumb(
+            name: ref
+                .watch(SP.localizationManager)
+                .translations
+                .mangaList
+                .library,
+            navigate: () => Beamer.of(context).beamToNamed('/'),
+          ),
+          BreadCrumb(
+            name: ref.read(SP.mangaManager).map((m) => m.title).toNullable() ??
+                ref.watch(SP.localizationManager).translations.common.manga,
+            navigate: Navigator.of(context).maybePop,
+          ),
         ],
         children: [
           Container(

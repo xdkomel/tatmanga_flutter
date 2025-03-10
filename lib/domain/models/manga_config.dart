@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:tatmanga_flutter/domain/models/firebase_chapter.dart';
-import 'package:tatmanga_flutter/domain/models/single_image.dart';
+import 'firebase_chapter.dart';
+import 'single_image.dart';
 
 part 'manga_config.freezed.dart';
 part 'manga_config.g.dart';

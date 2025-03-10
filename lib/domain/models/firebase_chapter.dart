@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:tatmanga_flutter/domain/models/single_image.dart';
+import 'single_image.dart';
 
 part 'firebase_chapter.freezed.dart';
 part 'firebase_chapter.g.dart';
@@ -26,6 +26,9 @@ sealed class ChapterImages with _$ChapterImages {
   const factory ChapterImages.telegraphChapter({
     @JsonKey(name: 'telegraph_url') required String telegraphUrl,
   }) = ChapterImagesTelegraphChapter;
+  const factory ChapterImages.urlChapter({
+    @JsonKey(name: 'url') required String url,
+  }) = ChapterImagesUrlChapter;
 
   factory ChapterImages.fromJson(Map<String, dynamic> json) =>
       _$ChapterImagesFromJson(json);

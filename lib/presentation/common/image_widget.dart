@@ -2,10 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tatmanga_flutter/presentation/common/styles.dart';
-import 'package:tatmanga_flutter/presentation/models/image_data.dart';
-import 'package:tatmanga_flutter/providers.dart';
-import 'package:tatmanga_flutter/utils/fp.dart';
+import 'package:fpdart/fpdart.dart';
+import 'styles.dart';
+import '../models/image_data.dart';
+import '../../providers.dart';
 
 class ImageWidget extends ConsumerStatefulWidget {
   final ImageData imageData;
@@ -16,9 +16,9 @@ class ImageWidget extends ConsumerStatefulWidget {
   final double radius;
 
   const ImageWidget({
-    super.key,
     required this.imageData,
     required this.mangaId,
+    super.key,
     this.width,
     this.height,
     this.fit,
@@ -38,34 +38,28 @@ class _ImageWidgetState extends ConsumerState<ImageWidget> {
     super.initState();
   }
 
-  Future<void> _loadUrl() => switch (widget.imageData) {
-        NamedImage ni => run(
-            () async {
-              final url = await ref
-                  .read(
-                    P.mangaContentRepository,
-                  )
-                  .getDownloadUrl(
-                    widget.mangaId,
-                    ni.name,
-                  );
-              SchedulerBinding.instance.addPostFrameCallback(
-                (_) {
-                  if (mounted) {
-                    setState(
-                      () => _loadedUrl = url.toNullable(),
-                    );
-                  }
-                },
-              );
-            },
-          ),
-        _ => Future.value(),
-      };
+  Future<void> _loadUrl() async {
+    if (widget.imageData case NamedImage(:final name)) {
+      final url = await ref
+          .read(
+            P.mangaContentRepository,
+          )
+          .getDownloadUrl(widget.mangaId, name);
+      SchedulerBinding.instance.addPostFrameCallback(
+        (_) {
+          if (mounted) {
+            setState(
+              () => _loadedUrl = url.toNullable(),
+            );
+          }
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final image = _loadedUrl.fold(
+    final image = Option.fromNullable(_loadedUrl).fold(
       () => widget.imageData,
       (url) => switch (widget.imageData) {
         FirebaseName fn => NamedUrlImage(fn.name, url),
@@ -120,42 +114,7 @@ class _UrlImageWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) =>
-      // Image.network(
-      //       url,
-      //       width: width,
-      //       height: height,
-      //       fit: fit,
-      //       loadingBuilder: (context, child, progress) {
-      //         return progress.fold(
-      //           () => child,
-      //           (p) => Container(
-      //             width: width,
-      //             height: height,
-      //             color: Colors.black38,
-      //             child: Center(
-      //               child: CircularProgressIndicator(
-      //                 value: p.expectedTotalBytes != null
-      //                     ? p.cumulativeBytesLoaded / (p.expectedTotalBytes ?? 1)
-      //                     : null,
-      //               ),
-      //             ),
-      //           ),
-      //         );
-      //       },
-      //       errorBuilder: (context, msg, _) => Container(
-      //         width: width,
-      //         height: height,
-      //         color: Colors.black38,
-      //         child: Center(
-      //           child: Text(
-      //             '$msg',
-      //             style: Styles.h4b.copyWith(color: Colors.white),
-      //           ),
-      //         ),
-      //       ),
-      //     );
-      CachedNetworkImage(
+  Widget build(BuildContext context) => CachedNetworkImage(
         width: width,
         height: height,
         imageUrl: url,
@@ -164,11 +123,9 @@ class _UrlImageWidget extends StatelessWidget {
           width: width,
           height: height,
           color: Colors.black38,
-          child: const Center(
-            child: CircularProgressIndicator(),
-          ),
+          child: const Center(child: CircularProgressIndicator()),
         ),
-        errorWidget: (context, msg, __) => Container(
+        errorWidget: (context, msg, _) => Container(
           width: width,
           height: height,
           color: Colors.black38,

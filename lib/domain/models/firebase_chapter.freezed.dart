@@ -217,6 +217,8 @@ ChapterImages _$ChapterImagesFromJson(Map<String, dynamic> json) {
       return ChapterImagesFiles.fromJson(json);
     case 'telegraph_chapter':
       return ChapterImagesTelegraphChapter.fromJson(json);
+    case 'url_chapter':
+      return ChapterImagesUrlChapter.fromJson(json);
 
     default:
       throw CheckedFromJsonException(
@@ -235,6 +237,7 @@ mixin _$ChapterImages {
     required TResult Function(
             @JsonKey(name: 'telegraph_url') String telegraphUrl)
         telegraphChapter,
+    required TResult Function(@JsonKey(name: 'url') String url) urlChapter,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -242,6 +245,7 @@ mixin _$ChapterImages {
     TResult? Function(List<SingleImage> images)? files,
     TResult? Function(@JsonKey(name: 'telegraph_url') String telegraphUrl)?
         telegraphChapter,
+    TResult? Function(@JsonKey(name: 'url') String url)? urlChapter,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -249,6 +253,7 @@ mixin _$ChapterImages {
     TResult Function(List<SingleImage> images)? files,
     TResult Function(@JsonKey(name: 'telegraph_url') String telegraphUrl)?
         telegraphChapter,
+    TResult Function(@JsonKey(name: 'url') String url)? urlChapter,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -257,18 +262,21 @@ mixin _$ChapterImages {
     required TResult Function(ChapterImagesFiles value) files,
     required TResult Function(ChapterImagesTelegraphChapter value)
         telegraphChapter,
+    required TResult Function(ChapterImagesUrlChapter value) urlChapter,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(ChapterImagesFiles value)? files,
     TResult? Function(ChapterImagesTelegraphChapter value)? telegraphChapter,
+    TResult? Function(ChapterImagesUrlChapter value)? urlChapter,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ChapterImagesFiles value)? files,
     TResult Function(ChapterImagesTelegraphChapter value)? telegraphChapter,
+    TResult Function(ChapterImagesUrlChapter value)? urlChapter,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -387,6 +395,7 @@ class _$ChapterImagesFilesImpl implements ChapterImagesFiles {
     required TResult Function(
             @JsonKey(name: 'telegraph_url') String telegraphUrl)
         telegraphChapter,
+    required TResult Function(@JsonKey(name: 'url') String url) urlChapter,
   }) {
     return files(images);
   }
@@ -397,6 +406,7 @@ class _$ChapterImagesFilesImpl implements ChapterImagesFiles {
     TResult? Function(List<SingleImage> images)? files,
     TResult? Function(@JsonKey(name: 'telegraph_url') String telegraphUrl)?
         telegraphChapter,
+    TResult? Function(@JsonKey(name: 'url') String url)? urlChapter,
   }) {
     return files?.call(images);
   }
@@ -407,6 +417,7 @@ class _$ChapterImagesFilesImpl implements ChapterImagesFiles {
     TResult Function(List<SingleImage> images)? files,
     TResult Function(@JsonKey(name: 'telegraph_url') String telegraphUrl)?
         telegraphChapter,
+    TResult Function(@JsonKey(name: 'url') String url)? urlChapter,
     required TResult orElse(),
   }) {
     if (files != null) {
@@ -421,6 +432,7 @@ class _$ChapterImagesFilesImpl implements ChapterImagesFiles {
     required TResult Function(ChapterImagesFiles value) files,
     required TResult Function(ChapterImagesTelegraphChapter value)
         telegraphChapter,
+    required TResult Function(ChapterImagesUrlChapter value) urlChapter,
   }) {
     return files(this);
   }
@@ -430,6 +442,7 @@ class _$ChapterImagesFilesImpl implements ChapterImagesFiles {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(ChapterImagesFiles value)? files,
     TResult? Function(ChapterImagesTelegraphChapter value)? telegraphChapter,
+    TResult? Function(ChapterImagesUrlChapter value)? urlChapter,
   }) {
     return files?.call(this);
   }
@@ -439,6 +452,7 @@ class _$ChapterImagesFilesImpl implements ChapterImagesFiles {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ChapterImagesFiles value)? files,
     TResult Function(ChapterImagesTelegraphChapter value)? telegraphChapter,
+    TResult Function(ChapterImagesUrlChapter value)? urlChapter,
     required TResult orElse(),
   }) {
     if (files != null) {
@@ -562,6 +576,7 @@ class _$ChapterImagesTelegraphChapterImpl
     required TResult Function(
             @JsonKey(name: 'telegraph_url') String telegraphUrl)
         telegraphChapter,
+    required TResult Function(@JsonKey(name: 'url') String url) urlChapter,
   }) {
     return telegraphChapter(telegraphUrl);
   }
@@ -572,6 +587,7 @@ class _$ChapterImagesTelegraphChapterImpl
     TResult? Function(List<SingleImage> images)? files,
     TResult? Function(@JsonKey(name: 'telegraph_url') String telegraphUrl)?
         telegraphChapter,
+    TResult? Function(@JsonKey(name: 'url') String url)? urlChapter,
   }) {
     return telegraphChapter?.call(telegraphUrl);
   }
@@ -582,6 +598,7 @@ class _$ChapterImagesTelegraphChapterImpl
     TResult Function(List<SingleImage> images)? files,
     TResult Function(@JsonKey(name: 'telegraph_url') String telegraphUrl)?
         telegraphChapter,
+    TResult Function(@JsonKey(name: 'url') String url)? urlChapter,
     required TResult orElse(),
   }) {
     if (telegraphChapter != null) {
@@ -596,6 +613,7 @@ class _$ChapterImagesTelegraphChapterImpl
     required TResult Function(ChapterImagesFiles value) files,
     required TResult Function(ChapterImagesTelegraphChapter value)
         telegraphChapter,
+    required TResult Function(ChapterImagesUrlChapter value) urlChapter,
   }) {
     return telegraphChapter(this);
   }
@@ -605,6 +623,7 @@ class _$ChapterImagesTelegraphChapterImpl
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(ChapterImagesFiles value)? files,
     TResult? Function(ChapterImagesTelegraphChapter value)? telegraphChapter,
+    TResult? Function(ChapterImagesUrlChapter value)? urlChapter,
   }) {
     return telegraphChapter?.call(this);
   }
@@ -614,6 +633,7 @@ class _$ChapterImagesTelegraphChapterImpl
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ChapterImagesFiles value)? files,
     TResult Function(ChapterImagesTelegraphChapter value)? telegraphChapter,
+    TResult Function(ChapterImagesUrlChapter value)? urlChapter,
     required TResult orElse(),
   }) {
     if (telegraphChapter != null) {
@@ -647,5 +667,182 @@ abstract class ChapterImagesTelegraphChapter implements ChapterImages {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ChapterImagesTelegraphChapterImplCopyWith<
           _$ChapterImagesTelegraphChapterImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ChapterImagesUrlChapterImplCopyWith<$Res> {
+  factory _$$ChapterImagesUrlChapterImplCopyWith(
+          _$ChapterImagesUrlChapterImpl value,
+          $Res Function(_$ChapterImagesUrlChapterImpl) then) =
+      __$$ChapterImagesUrlChapterImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({@JsonKey(name: 'url') String url});
+}
+
+/// @nodoc
+class __$$ChapterImagesUrlChapterImplCopyWithImpl<$Res>
+    extends _$ChapterImagesCopyWithImpl<$Res, _$ChapterImagesUrlChapterImpl>
+    implements _$$ChapterImagesUrlChapterImplCopyWith<$Res> {
+  __$$ChapterImagesUrlChapterImplCopyWithImpl(
+      _$ChapterImagesUrlChapterImpl _value,
+      $Res Function(_$ChapterImagesUrlChapterImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ChapterImages
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? url = null,
+  }) {
+    return _then(_$ChapterImagesUrlChapterImpl(
+      url: null == url
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$ChapterImagesUrlChapterImpl implements ChapterImagesUrlChapter {
+  const _$ChapterImagesUrlChapterImpl(
+      {@JsonKey(name: 'url') required this.url, final String? $type})
+      : $type = $type ?? 'url_chapter';
+
+  factory _$ChapterImagesUrlChapterImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ChapterImagesUrlChapterImplFromJson(json);
+
+  @override
+  @JsonKey(name: 'url')
+  final String url;
+
+  @JsonKey(name: 'chapter_images_type')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'ChapterImages.urlChapter(url: $url)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ChapterImagesUrlChapterImpl &&
+            (identical(other.url, url) || other.url == url));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, url);
+
+  /// Create a copy of ChapterImages
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ChapterImagesUrlChapterImplCopyWith<_$ChapterImagesUrlChapterImpl>
+      get copyWith => __$$ChapterImagesUrlChapterImplCopyWithImpl<
+          _$ChapterImagesUrlChapterImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(List<SingleImage> images) files,
+    required TResult Function(
+            @JsonKey(name: 'telegraph_url') String telegraphUrl)
+        telegraphChapter,
+    required TResult Function(@JsonKey(name: 'url') String url) urlChapter,
+  }) {
+    return urlChapter(url);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(List<SingleImage> images)? files,
+    TResult? Function(@JsonKey(name: 'telegraph_url') String telegraphUrl)?
+        telegraphChapter,
+    TResult? Function(@JsonKey(name: 'url') String url)? urlChapter,
+  }) {
+    return urlChapter?.call(url);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(List<SingleImage> images)? files,
+    TResult Function(@JsonKey(name: 'telegraph_url') String telegraphUrl)?
+        telegraphChapter,
+    TResult Function(@JsonKey(name: 'url') String url)? urlChapter,
+    required TResult orElse(),
+  }) {
+    if (urlChapter != null) {
+      return urlChapter(url);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ChapterImagesFiles value) files,
+    required TResult Function(ChapterImagesTelegraphChapter value)
+        telegraphChapter,
+    required TResult Function(ChapterImagesUrlChapter value) urlChapter,
+  }) {
+    return urlChapter(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(ChapterImagesFiles value)? files,
+    TResult? Function(ChapterImagesTelegraphChapter value)? telegraphChapter,
+    TResult? Function(ChapterImagesUrlChapter value)? urlChapter,
+  }) {
+    return urlChapter?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ChapterImagesFiles value)? files,
+    TResult Function(ChapterImagesTelegraphChapter value)? telegraphChapter,
+    TResult Function(ChapterImagesUrlChapter value)? urlChapter,
+    required TResult orElse(),
+  }) {
+    if (urlChapter != null) {
+      return urlChapter(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ChapterImagesUrlChapterImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class ChapterImagesUrlChapter implements ChapterImages {
+  const factory ChapterImagesUrlChapter(
+          {@JsonKey(name: 'url') required final String url}) =
+      _$ChapterImagesUrlChapterImpl;
+
+  factory ChapterImagesUrlChapter.fromJson(Map<String, dynamic> json) =
+      _$ChapterImagesUrlChapterImpl.fromJson;
+
+  @JsonKey(name: 'url')
+  String get url;
+
+  /// Create a copy of ChapterImages
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ChapterImagesUrlChapterImplCopyWith<_$ChapterImagesUrlChapterImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

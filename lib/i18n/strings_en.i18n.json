@@ -36,12 +36,13 @@
         "episodeName": "Episode name",
         "addImages": "Add images",
         "imagesLoadingMethod": "Images loading method",
-        "parseFromTelegraphMethod": "Parse from Telegraph",
+        "openLink": "Open link",
         "loadOneByOne": "Load one by one",
-        "telegraphInputPlaceholder": "Telegraph name",
-        "telegraphInputExplainText(rich)": "You have to put the Telegraph name retrieved out of a link. For instance, a link ${url(https://telegra.ph/manga-iseme)} refers to the ${name(manga-iseme)} Telegraph name"
+        "linkInputPlaceholder": "Link URL",
+        "linkInputExplainText": "When the episode opened, a redirect to the link will happen"
     },
-    "episodeImagesView": {
-        "defaultErrorMessage": "Couldn't load images"
+    "notFound": {
+        "title": "404",
+        "body": "Not found"
     }
 }

@@ -2,12 +2,12 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tatmanga_flutter/i18n/strings.g.dart';
-import 'package:tatmanga_flutter/presentation/common/styles.dart';
-import 'package:tatmanga_flutter/presentation/homepage.dart';
-import 'package:tatmanga_flutter/providers.dart';
-import 'package:tatmanga_flutter/routing/delegate.dart';
-import 'package:tatmanga_flutter/utils/tt_localization_delegate.dart';
+import 'i18n/strings.g.dart';
+import 'presentation/common/styles.dart';
+import 'presentation/homepage.dart';
+import 'providers.dart';
+import 'routing/router_delegate.dart';
+import 'utils/tt_localization_delegate.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
@@ -19,7 +19,7 @@ void main() async {
   runApp(
     UncontrolledProviderScope(
       container: providerContainer,
-      child: const _MaterialApp(),
+      child: const HomePage(child: _MaterialApp()),
     ),
   );
 }
@@ -31,8 +31,9 @@ class _MaterialApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) => MaterialApp.router(
         routerDelegate: routerDelegate,
         routeInformationParser: BeamerParser(),
-        backButtonDispatcher:
-            BeamerBackButtonDispatcher(delegate: routerDelegate),
+        backButtonDispatcher: BeamerBackButtonDispatcher(
+          delegate: routerDelegate,
+        ),
         locale: ref
             .watch(SP.localizationManager)
             .translations

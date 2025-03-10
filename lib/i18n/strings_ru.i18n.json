@@ -37,12 +37,13 @@
         "episodeName": "Навание эпизода",
         "addImages": "Добавить изображения",
         "imagesLoadingMethod": "Способ заргузки изображений",
-        "parseFromTelegraphMethod": "Парсить из Telegraph",
+        "openLink": "Открыть ссылку",
         "loadOneByOne": "Загрузить по одному",
-        "telegraphInputPlaceholder": "Имя в Telegraph",
-        "telegraphInputExplainText(rich)": "Достаньте из ссылки имя в Telegraph и вставьте его. Например, для ссылки ${url(https://telegra.ph/manga-iseme)} имя в Telegraph будет ${name(manga-iseme)}"
+        "linkInputPlaceholder": "Ссылка",
+        "linkInputExplainText": "При открытии эпизода произойдёт автоматический переход по ссылке"
     },
-    "episodeImagesView": {
-        "defaultErrorMessage": "Не удалось загрузить изображения"
+    "notFound": {
+        "title": "404",
+        "body": "Не найдено"
     }
 }

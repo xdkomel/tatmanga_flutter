@@ -54,10 +54,11 @@ dependencies:
   uuid: ^4.4.0
   easy_debounce: ^2.0.3
   slang: ^3.31.1
-  slang_flutter: ^3.31.0
+  slang_flutter: ^3.31.1
   intl: ^0.19.0
   cached_network_image: ^3.4.0
   beamer: ^1.7.0
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +74,7 @@ dev_dependencies:
   custom_lint: ^0.6.4
   riverpod_lint: ^2.3.10
   json_serializable: ^6.8.0
+  slang_build_runner: ^3.31.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

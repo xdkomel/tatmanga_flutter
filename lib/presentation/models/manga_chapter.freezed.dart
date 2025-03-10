@@ -198,20 +198,19 @@ mixin _$MangaChapterImages {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(IList<StatusImageData> images) list,
-    required TResult Function(bool loading, String? errorMessage, String? url)
-        stored,
+    required TResult Function(String? url) stored,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(IList<StatusImageData> images)? list,
-    TResult? Function(bool loading, String? errorMessage, String? url)? stored,
+    TResult? Function(String? url)? stored,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(IList<StatusImageData> images)? list,
-    TResult Function(bool loading, String? errorMessage, String? url)? stored,
+    TResult Function(String? url)? stored,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -330,8 +329,7 @@ class _$MangaChapterImagesListImpl implements MangaChapterImagesList {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(IList<StatusImageData> images) list,
-    required TResult Function(bool loading, String? errorMessage, String? url)
-        stored,
+    required TResult Function(String? url) stored,
   }) {
     return list(images);
   }
@@ -340,7 +338,7 @@ class _$MangaChapterImagesListImpl implements MangaChapterImagesList {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(IList<StatusImageData> images)? list,
-    TResult? Function(bool loading, String? errorMessage, String? url)? stored,
+    TResult? Function(String? url)? stored,
   }) {
     return list?.call(images);
   }
@@ -349,7 +347,7 @@ class _$MangaChapterImagesListImpl implements MangaChapterImagesList {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(IList<StatusImageData> images)? list,
-    TResult Function(bool loading, String? errorMessage, String? url)? stored,
+    TResult Function(String? url)? stored,
     required TResult orElse(),
   }) {
     if (list != null) {
@@ -411,7 +409,7 @@ abstract class _$$MangaChapterImagesStoredImplCopyWith<$Res> {
           $Res Function(_$MangaChapterImagesStoredImpl) then) =
       __$$MangaChapterImagesStoredImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({bool loading, String? errorMessage, String? url});
+  $Res call({String? url});
 }
 
 /// @nodoc
@@ -429,19 +427,9 @@ class __$$MangaChapterImagesStoredImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? loading = null,
-    Object? errorMessage = freezed,
     Object? url = freezed,
   }) {
     return _then(_$MangaChapterImagesStoredImpl(
-      loading: null == loading
-          ? _value.loading
-          : loading // ignore: cast_nullable_to_non_nullable
-              as bool,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
       url: freezed == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
@@ -453,19 +441,14 @@ class __$$MangaChapterImagesStoredImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$MangaChapterImagesStoredImpl implements MangaChapterImagesStored {
-  const _$MangaChapterImagesStoredImpl(
-      {required this.loading, this.errorMessage, this.url});
+  const _$MangaChapterImagesStoredImpl({required this.url});
 
-  @override
-  final bool loading;
-  @override
-  final String? errorMessage;
   @override
   final String? url;
 
   @override
   String toString() {
-    return 'MangaChapterImages.stored(loading: $loading, errorMessage: $errorMessage, url: $url)';
+    return 'MangaChapterImages.stored(url: $url)';
   }
 
   @override
@@ -473,14 +456,11 @@ class _$MangaChapterImagesStoredImpl implements MangaChapterImagesStored {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MangaChapterImagesStoredImpl &&
-            (identical(other.loading, loading) || other.loading == loading) &&
-            (identical(other.errorMessage, errorMessage) ||
-                other.errorMessage == errorMessage) &&
             (identical(other.url, url) || other.url == url));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, loading, errorMessage, url);
+  int get hashCode => Object.hash(runtimeType, url);
 
   /// Create a copy of MangaChapterImages
   /// with the given fields replaced by the non-null parameter values.
@@ -495,30 +475,29 @@ class _$MangaChapterImagesStoredImpl implements MangaChapterImagesStored {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(IList<StatusImageData> images) list,
-    required TResult Function(bool loading, String? errorMessage, String? url)
-        stored,
+    required TResult Function(String? url) stored,
   }) {
-    return stored(loading, errorMessage, url);
+    return stored(url);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(IList<StatusImageData> images)? list,
-    TResult? Function(bool loading, String? errorMessage, String? url)? stored,
+    TResult? Function(String? url)? stored,
   }) {
-    return stored?.call(loading, errorMessage, url);
+    return stored?.call(url);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(IList<StatusImageData> images)? list,
-    TResult Function(bool loading, String? errorMessage, String? url)? stored,
+    TResult Function(String? url)? stored,
     required TResult orElse(),
   }) {
     if (stored != null) {
-      return stored(loading, errorMessage, url);
+      return stored(url);
     }
     return orElse();
   }
@@ -556,13 +535,9 @@ class _$MangaChapterImagesStoredImpl implements MangaChapterImagesStored {
 }
 
 abstract class MangaChapterImagesStored implements MangaChapterImages {
-  const factory MangaChapterImagesStored(
-      {required final bool loading,
-      final String? errorMessage,
-      final String? url}) = _$MangaChapterImagesStoredImpl;
+  const factory MangaChapterImagesStored({required final String? url}) =
+      _$MangaChapterImagesStoredImpl;
 
-  bool get loading;
-  String? get errorMessage;
   String? get url;
 
   /// Create a copy of MangaChapterImages

@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tatmanga_flutter/presentation/common/image_widget.dart';
-import 'package:tatmanga_flutter/presentation/common/styles.dart';
-import 'package:tatmanga_flutter/presentation/common/text_editing_field.dart';
-import 'package:tatmanga_flutter/presentation/common/widget_button.dart';
-import 'package:tatmanga_flutter/presentation/models/image_data.dart';
-import 'package:tatmanga_flutter/presentation/models/manga_chapter.dart';
-import 'package:tatmanga_flutter/presentation/models/status_image_data.dart';
-import 'package:tatmanga_flutter/providers.dart';
-import 'package:tatmanga_flutter/utils/fp.dart';
+import 'package:fpdart/fpdart.dart';
+import '../../common/image_widget.dart';
+import '../../common/styles.dart';
+import '../../common/text_editing_field.dart';
+import '../../common/widget_button.dart';
+import '../../models/image_data.dart';
+import '../../models/manga_chapter.dart';
+import '../../models/status_image_data.dart';
+import '../../../providers.dart';
 
 class ChaptersList extends ConsumerWidget {
   final int chapterIndex;
 
-  const ChaptersList({super.key, required this.chapterIndex});
+  const ChaptersList({required this.chapterIndex, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) =>
@@ -24,9 +24,11 @@ class ChaptersList extends ConsumerWidget {
               children: ref
                   .watch(
                     SP.mangaManager.select(
-                      (m) => m
-                          .map((m) => m.chapters.getOrNull(chapterIndex))
-                          .toNullable(),
+                      (m) => m.flatMap(
+                        (m) => Option.fromNullable(
+                          m.chapters.getOrNull(chapterIndex),
+                        ),
+                      ),
                     ),
                   )
                   .fold(
@@ -121,23 +123,12 @@ class ChaptersList extends ConsumerWidget {
                                     initialText: mcis.url,
                                   ),
                                   const SizedBox(height: 8),
-                                  Text.rich(
+                                  Text(
                                     ref
                                         .watch(SP.localizationManager)
                                         .translations
                                         .mangaChapterContents
-                                        .telegraphInputExplainText(
-                                          name: (text) => TextSpan(
-                                            text: text,
-                                            style: Styles.pb,
-                                          ),
-                                          url: (text) => TextSpan(
-                                            text: text,
-                                            style: Styles.pr.copyWith(
-                                              color: Colors.blue,
-                                            ),
-                                          ),
-                                        ),
+                                        .linkInputExplainText,
                                     style: Styles.pr,
                                   ),
                                 ],
@@ -176,7 +167,7 @@ class _LinkInputState extends ConsumerState<_LinkInput> {
 
   void _updateModel() {
     final newName = _controller.text;
-    ref.read(SP.mangaManager.notifier).setTelegraphMangaName(
+    ref.read(SP.mangaManager.notifier).setMangaLink(
           widget.chapterIndex,
           newName,
         );
@@ -195,7 +186,7 @@ class _LinkInputState extends ConsumerState<_LinkInput> {
             .watch(SP.localizationManager)
             .translations
             .mangaChapterContents
-            .telegraphInputPlaceholder,
+            .linkInputPlaceholder,
         style: Styles.pr,
       );
 }

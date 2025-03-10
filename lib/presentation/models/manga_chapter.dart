@@ -1,8 +1,8 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:tatmanga_flutter/domain/models/firebase_chapter.dart';
-import 'package:tatmanga_flutter/presentation/models/image_data_converter.dart';
-import 'package:tatmanga_flutter/presentation/models/status_image_data.dart';
+import '../../domain/models/firebase_chapter.dart';
+import 'image_data_converter.dart';
+import 'status_image_data.dart';
 
 part 'manga_chapter.freezed.dart';
 
@@ -21,22 +21,27 @@ sealed class MangaChapterImages with _$MangaChapterImages {
     required IList<StatusImageData> images,
   }) = MangaChapterImagesList;
   const factory MangaChapterImages.stored({
-    required bool loading,
-    String? errorMessage,
-    String? url,
+    required String? url,
   }) = MangaChapterImagesStored;
 }
 
 extension MangaChapterToFirebase on MangaChapter {
-  FirebaseChapter get toFirebaseChapter => FirebaseChapter(
-        chapterName: name,
-        images: switch (images) {
-          MangaChapterImagesList list => ChapterImages.files(
-              images: list.images.map((i) => i.image.toSingleImage).toList(),
-            ),
-          MangaChapterImagesStored images => ChapterImages.telegraphChapter(
-              telegraphUrl: images.url ?? '',
-            ),
-        },
-      );
+  FirebaseChapter? get toFirebaseChapter {
+    final fcImages = switch (images) {
+      MangaChapterImagesList list => ChapterImages.files(
+          images: list.images.map((i) => i.image.toSingleImage).toList(),
+        ),
+      MangaChapterImagesStored images when images.url == null => null,
+      MangaChapterImagesStored images => ChapterImages.urlChapter(
+          url: images.url!,
+        ),
+    };
+    if (fcImages == null) {
+      return null;
+    }
+    return FirebaseChapter(
+      chapterName: name,
+      images: fcImages,
+    );
+  }
 }

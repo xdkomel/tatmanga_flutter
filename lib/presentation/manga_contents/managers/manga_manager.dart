@@ -5,17 +5,21 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:tatmanga_flutter/presentation/models/image_data.dart';
-import 'package:tatmanga_flutter/presentation/models/author.dart';
-import 'package:tatmanga_flutter/presentation/models/manga.dart';
-import 'package:tatmanga_flutter/presentation/models/manga_chapter.dart';
-import 'package:tatmanga_flutter/presentation/models/status_image_data.dart';
-import 'package:tatmanga_flutter/providers.dart';
-import 'package:tatmanga_flutter/utils/fp.dart';
+import '../../models/image_data.dart';
+import '../../models/author.dart';
+import '../../models/manga.dart';
+import '../../models/manga_chapter.dart';
+import '../../models/status_image_data.dart';
+import '../../../providers.dart';
+import '../../../utils/fp.dart';
 
 class MangaManager extends Notifier<Option<Manga>> {
+  MangaManager();
+
   bool _changed = false;
   static const _debouncerTag = 'manga-manager-debounce';
+
+  late final _mangasRepository = ref.read(P.mangaListRepository);
 
   @override
   Option<Manga> build() => const None();
@@ -23,6 +27,11 @@ class MangaManager extends Notifier<Option<Manga>> {
   void removeModel() => state = const None();
 
   void setModel(Manga model) => state = Some(model);
+
+  void loadModel(String mangaId) async {
+    final manga = await _mangasRepository.getOneManga(mangaId);
+    state = Option.fromNullable(manga);
+  }
 
   // Future<void> loadManga(String mangaId) async => state = await ref
   //     .read(
@@ -101,7 +110,7 @@ class MangaManager extends Notifier<Option<Manga>> {
         manga.copyWith(
           authors: manga.authors.add(
             Author(
-              id: ref.read(P.uuid).v4(),
+              id: ref.read(P.idGenerator).generateId(),
               name: '',
               role: '',
             ),
@@ -146,16 +155,18 @@ class MangaManager extends Notifier<Option<Manga>> {
 
   Future<void> _uploadCover(Manga model) async {
     final file = await FilePicker.platform.pickFiles();
-    await (file?.files.firstOrNull).map(
-      (f) => f.bytes.map(
-        (bytes) async {
-          final name = ref.read(P.uuid).v4();
-          _setCover(name, bytes);
-          await _uploadImage(model.mangaId, name, bytes);
-          _markCoverLoaded();
-        },
-      ),
-    );
+    final firstFile = file?.files.firstOrNull;
+    if (firstFile == null) {
+      return;
+    }
+    final bytes = firstFile.bytes;
+    if (bytes == null) {
+      return;
+    }
+    final name = ref.read(P.idGenerator).generateId();
+    _setCover(name, bytes);
+    await _uploadImage(model.mangaId, name, bytes);
+    _markCoverLoaded();
   }
 
   void _setCover(String fileName, Uint8List bytes) => state.map(
@@ -170,11 +181,13 @@ class MangaManager extends Notifier<Option<Manga>> {
       );
 
   void _markCoverLoaded() => state.map(
-        (model) => setModel(model.copyWith(
-          cover: model.cover?.copyWith(
-            status: ImageDataStatus.none,
+        (model) => setModel(
+          model.copyWith(
+            cover: model.cover?.copyWith(
+              status: ImageDataStatus.none,
+            ),
           ),
-        )),
+        ),
       );
 
   void setLinkCover(String url) {
@@ -209,7 +222,9 @@ class MangaManager extends Notifier<Option<Manga>> {
     await files.map(
       (fs) => fs.files
           .map(
-            (f) => f.bytes.map((b) => (ref.read(P.uuid).v4(), b)),
+            (f) => f.bytes.map(
+              (b) => (ref.read(P.idGenerator).generateId(), b),
+            ),
           )
           .nonNulls
           .map(
@@ -380,9 +395,9 @@ class MangaManager extends Notifier<Option<Manga>> {
         model.copyWith(
           chapters: model.chapters.add(
             MangaChapter(
-              id: ref.read(P.uuid).v4(),
+              id: ref.read(P.idGenerator).generateId(),
               name: null,
-              images: const MangaChapterImages.stored(loading: false),
+              images: const MangaChapterImages.stored(url: null),
             ),
           ),
         ),
@@ -399,7 +414,7 @@ class MangaManager extends Notifier<Option<Manga>> {
             chIndex,
             model.chapters.get(chIndex).copyWith(
                   images: value
-                      ? const MangaChapterImages.stored(loading: false)
+                      ? const MangaChapterImages.stored(url: null)
                       : const MangaChapterImages.list(images: IList.empty()),
                 ),
           ),
@@ -408,7 +423,7 @@ class MangaManager extends Notifier<Option<Manga>> {
     );
   }
 
-  void setTelegraphMangaName(int chIndex, String name) {
+  void setMangaLink(int chIndex, String name) {
     _debounceUpdate();
     state.map(
       (model) => setModel(

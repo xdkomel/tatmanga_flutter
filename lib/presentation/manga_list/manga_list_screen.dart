@@ -2,13 +2,13 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:tatmanga_flutter/presentation/common/page_body.dart';
-import 'package:tatmanga_flutter/presentation/common/styles.dart';
-import 'package:tatmanga_flutter/presentation/manga_list/widgets/add_manga_card.dart';
-import 'package:tatmanga_flutter/presentation/manga_list/widgets/manga_card.dart';
-import 'package:tatmanga_flutter/presentation/models/manga.dart';
-import 'package:tatmanga_flutter/providers.dart';
-import 'package:tatmanga_flutter/utils/responsive_ui.dart';
+import '../common/page_body.dart';
+import '../common/styles.dart';
+import 'widgets/add_manga_card.dart';
+import 'widgets/manga_card.dart';
+import '../models/manga.dart';
+import '../../providers.dart';
+import '../../utils/responsive_ui.dart';
 
 class MangaListScreen extends ConsumerStatefulWidget {
   const MangaListScreen({super.key});
@@ -24,11 +24,8 @@ class _MangaListScreenState extends ConsumerState<MangaListScreen> {
     loadAll();
   }
 
-  Future<void> loadAll() => ref
-      .read(
-        SP.mangaLoadingManager.notifier,
-      )
-      .loadManga();
+  Future<void> loadAll() =>
+      ref.read(SP.mangaLoadingManager.notifier).loadManga();
 
   @override
   Widget build(BuildContext context) => const PageBody(

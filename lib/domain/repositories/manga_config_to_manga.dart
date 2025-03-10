@@ -1,27 +1,26 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:tatmanga_flutter/domain/models/firebase_chapter.dart';
-import 'package:tatmanga_flutter/domain/models/manga_config.dart';
-import 'package:tatmanga_flutter/domain/models/single_image.dart';
-import 'package:tatmanga_flutter/presentation/models/author.dart';
-import 'package:tatmanga_flutter/presentation/models/image_data.dart';
-import 'package:tatmanga_flutter/presentation/models/manga.dart';
-import 'package:tatmanga_flutter/presentation/models/manga_chapter.dart';
-import 'package:tatmanga_flutter/presentation/models/status_image_data.dart';
-import 'package:tatmanga_flutter/utils/fp.dart';
-import 'package:uuid/uuid.dart';
+import '../../data/id_generator.dart';
+import '../models/firebase_chapter.dart';
+import '../models/manga_config.dart';
+import '../models/single_image.dart';
+import '../../presentation/models/author.dart';
+import '../../presentation/models/image_data.dart';
+import '../../presentation/models/manga.dart';
+import '../../presentation/models/manga_chapter.dart';
+import '../../presentation/models/status_image_data.dart';
 
 extension MangaConfigToManga on MangaConfig {
-  Manga toManga(Uuid uuid) => Manga(
+  Manga toManga(IdGenerator idGenerator) => Manga(
         mangaId: mangaId,
         title: title,
         description: description,
-        cover: coverImage.map(_toStatusImageData),
+        cover: coverImage == null ? null : _toStatusImageData(coverImage!),
         authors: authors
                 ?.map(
                   (au) => Author(
                     name: au.name,
                     role: au.role,
-                    id: uuid.v4(),
+                    id: idGenerator.generateId(name: au.name),
                   ),
                 )
                 .toIList() ??
@@ -29,7 +28,7 @@ extension MangaConfigToManga on MangaConfig {
         chapters: chapters
             .map(
               (ch) => MangaChapter(
-                id: uuid.v4(),
+                id: idGenerator.generateId(name: ch.chapterName),
                 name: ch.chapterName,
                 images: switch (ch.images) {
                   ChapterImagesFiles cif => MangaChapterImages.list(
@@ -37,8 +36,10 @@ extension MangaConfigToManga on MangaConfig {
                     ),
                   ChapterImagesTelegraphChapter cit =>
                     MangaChapterImages.stored(
-                      url: cit.telegraphUrl,
-                      loading: false,
+                      url: 'https://www.telegra.ph/${cit.telegraphUrl}',
+                    ),
+                  ChapterImagesUrlChapter ciu => MangaChapterImages.stored(
+                      url: ciu.url,
                     ),
                 },
               ),

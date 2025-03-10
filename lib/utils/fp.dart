@@ -1,5 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 
+
+// TODO get rid of all funs at some point
 ReturnType run<ReturnType>(ReturnType Function() operation) {
   return operation();
 }
@@ -23,7 +25,7 @@ Either<(Object e, StackTrace st), T> throwable<T>(T Function() fun) {
 }
 
 Future<Either<(Object e, StackTrace st), T>> futureThrowable<T>(
-    Future<T> Function() fun) async {
+    Future<T> Function() fun,) async {
   try {
     return right(await fun());
   } catch (e, st) {

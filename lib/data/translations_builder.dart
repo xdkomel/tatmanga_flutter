@@ -1,7 +1,7 @@
 import 'dart:collection';
 
-import 'package:tatmanga_flutter/i18n/strings.g.dart';
-import 'package:tatmanga_flutter/presentation/common/localization_manager.dart';
+import '../i18n/strings.g.dart';
+import '../presentation/common/localization_manager.dart';
 
 class TranslationsBuilder {
   final HashMap<Language, Translations> _translations = HashMap();

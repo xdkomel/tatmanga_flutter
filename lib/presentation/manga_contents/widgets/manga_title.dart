@@ -1,43 +1,34 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tatmanga_flutter/presentation/common/styles.dart';
-import 'package:tatmanga_flutter/presentation/common/text_editing_field.dart';
-import 'package:tatmanga_flutter/providers.dart';
+import '../../common/styles.dart';
+import '../../common/text_editing_field.dart';
+import '../../../providers.dart';
 
 class MangaTitle extends ConsumerWidget {
   const MangaTitle({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) =>
-      ref.watch(SP.editingModeOnManager)
-          ? const Padding(
-              padding: EdgeInsets.only(bottom: 8),
-              child: _MangaTitleField(),
-            )
-          : const _Title();
-}
-
-class _Title extends ConsumerWidget {
-  const _Title();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) =>
-      ref
-          .watch(SP.mangaManager.select((m) => m.map((m) => m.title)))
-          .map(
-            (title) => Text(
-              title,
-              style: Styles.h2b,
-              textAlign: TextAlign.start,
-            ),
-          )
-          .toNullable() ??
-      const SizedBox();
+      ref.watch(SP.mangaManager.select((m) => m.map((m) => m.title))).match(
+            () => const SizedBox(),
+            (title) => ref.watch(SP.editingModeOnManager)
+                ? Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: _MangaTitleField(initialText: title),
+                  )
+                : Text(
+                    title,
+                    style: Styles.h2b,
+                    textAlign: TextAlign.start,
+                  ),
+          );
 }
 
 class _MangaTitleField extends ConsumerStatefulWidget {
-  const _MangaTitleField();
+  const _MangaTitleField({required this.initialText});
+
+  final String initialText;
 
   @override
   ConsumerState<_MangaTitleField> createState() => _MangaTitleFieldState();
@@ -49,9 +40,7 @@ class _MangaTitleFieldState extends ConsumerState<_MangaTitleField> {
 
   @override
   void initState() {
-    _controller = TextEditingController(
-      text: ref.read(SP.mangaManager).map((m) => m.title).toNullable(),
-    );
+    _controller = TextEditingController(text: widget.initialText);
     _controller.addListener(populateModel);
     super.initState();
   }

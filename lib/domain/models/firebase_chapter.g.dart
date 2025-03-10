@@ -50,3 +50,17 @@ Map<String, dynamic> _$$ChapterImagesTelegraphChapterImplToJson(
       'telegraph_url': instance.telegraphUrl,
       'chapter_images_type': instance.$type,
     };
+
+_$ChapterImagesUrlChapterImpl _$$ChapterImagesUrlChapterImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ChapterImagesUrlChapterImpl(
+      url: json['url'] as String,
+      $type: json['chapter_images_type'] as String?,
+    );
+
+Map<String, dynamic> _$$ChapterImagesUrlChapterImplToJson(
+        _$ChapterImagesUrlChapterImpl instance) =>
+    <String, dynamic>{
+      'url': instance.url,
+      'chapter_images_type': instance.$type,
+    };

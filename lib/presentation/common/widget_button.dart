@@ -7,9 +7,7 @@ class WidgetButton extends StatelessWidget {
   final Color? background;
 
   const WidgetButton({
-    super.key,
-    required this.child,
-    required this.onTap,
+    required this.child, required this.onTap, super.key,
     this.borderRadius = 8,
     this.background,
   });

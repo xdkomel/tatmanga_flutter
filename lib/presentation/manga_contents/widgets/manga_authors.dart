@@ -1,105 +1,103 @@
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tatmanga_flutter/presentation/common/styles.dart';
-import 'package:tatmanga_flutter/presentation/common/text_editing_field.dart';
-import 'package:tatmanga_flutter/presentation/common/widget_button.dart';
-import 'package:tatmanga_flutter/providers.dart';
+import '../../common/styles.dart';
+import '../../common/text_editing_field.dart';
+import '../../common/widget_button.dart';
+import '../../../providers.dart';
+import '../../models/author.dart';
 
 class MangaAuthors extends ConsumerWidget {
   const MangaAuthors({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) =>
-      ref.watch(SP.editingModeOnManager)
-          ? const _AuthorsFields()
-          : const _AuthorsWrap();
+  Widget build(BuildContext context, WidgetRef ref) => ref
+      .watch(
+        SP.mangaManager.select((m) => m.map((m) => m.authors)),
+      )
+      .match(
+        () => const SizedBox(),
+        (authors) => ref.watch(SP.editingModeOnManager)
+            ? _AuthorsFields(authors: authors)
+            : _AuthorsWrap(authors: authors),
+      );
 }
 
 class _AuthorsWrap extends ConsumerWidget {
-  const _AuthorsWrap();
+  const _AuthorsWrap({required this.authors});
+
+  final IList<Author> authors;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) =>
-      ref
-          .watch(SP.mangaManager.select((m) => m.map((m) => m.authors)))
-          .map(
-            (authors) => Wrap(
-              spacing: 16,
-              children: authors
-                  .map(
-                    (ad) => Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 16),
-                        Text(
-                          ad.role,
-                          style: Styles.h4b.copyWith(
-                            color: Styles.prime500,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(ad.name, style: Styles.pr),
-                      ],
+  Widget build(BuildContext context, WidgetRef ref) => Wrap(
+        spacing: 16,
+        children: authors
+            .map(
+              (ad) => Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 16),
+                  Text(
+                    ad.role,
+                    style: Styles.h4b.copyWith(
+                      color: Styles.prime500,
                     ),
-                  )
-                  .toList(),
-            ),
-          )
-          .toNullable() ??
-      const SizedBox();
+                  ),
+                  const SizedBox(height: 2),
+                  Text(ad.name, style: Styles.pr),
+                ],
+              ),
+            )
+            .toList(),
+      );
 }
 
 class _AuthorsFields extends ConsumerWidget {
-  const _AuthorsFields();
+  const _AuthorsFields({required this.authors});
+
+  final IList<Author> authors;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) =>
-      ref
-          .watch(SP.mangaManager.select((m) => m.map((m) => m.authors)))
-          .map(
-            (authors) => Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ...authors.indexed.expand(
-                  (ad) => [
-                    _NameRole(
-                      key: ObjectKey(ad.$2.id),
-                      index: ad.$1,
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-                WidgetButton(
-                  onTap: ref.read(SP.mangaManager.notifier).addAuthor,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.add),
-                        const SizedBox(width: 4),
-                        Text(
-                          ref
-                              .watch(SP.localizationManager)
-                              .translations
-                              .mangaContents
-                              .addAuthor,
-                        ),
-                      ],
-                    ),
+  Widget build(BuildContext context, WidgetRef ref) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ...authors.indexed.expand(
+            (ad) => [
+              _NameRole(
+                key: ObjectKey(ad.$2.id),
+                index: ad.$1,
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
+          WidgetButton(
+            onTap: ref.read(SP.mangaManager.notifier).addAuthor,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                children: [
+                  const Icon(Icons.add),
+                  const SizedBox(width: 4),
+                  Text(
+                    ref
+                        .watch(SP.localizationManager)
+                        .translations
+                        .mangaContents
+                        .addAuthor,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          )
-          .toNullable() ??
-      const SizedBox();
+          ),
+        ],
+      );
 }
 
 class _NameRole extends ConsumerStatefulWidget {
   final int index;
-  const _NameRole({super.key, required this.index});
+  const _NameRole({required this.index, super.key});
 
   @override
   ConsumerState<_NameRole> createState() => _NameRoleState();

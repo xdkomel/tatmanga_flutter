@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:tatmanga_flutter/presentation/common/image_widget.dart';
-import 'package:tatmanga_flutter/presentation/common/styles.dart';
-import 'package:tatmanga_flutter/presentation/common/widget_button.dart';
-import 'package:tatmanga_flutter/presentation/models/status_image_data.dart';
-import 'package:tatmanga_flutter/providers.dart';
-import 'package:tatmanga_flutter/utils/fp.dart';
+import '../../common/image_widget.dart';
+import '../../common/styles.dart';
+import '../../common/widget_button.dart';
+import '../../models/status_image_data.dart';
+import '../../../providers.dart';
+import '../../../utils/fp.dart';
 
 class MangaCover extends ConsumerWidget {
   final double width;
 
-  const MangaCover({super.key, required this.width});
+  const MangaCover({required this.width, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mangaId = ref.read(SP.mangaManager).map((m) => m.mangaId);
     final cover = ref
-        .watch(SP.mangaManager.select((manga) => manga.map((m) => m.cover)))
+        .watch(
+          SP.mangaManager.select((manga) => manga.map((m) => m.cover)),
+        )
         .toNullable();
     return mangaId.fold(
       () => const SizedBox(),
@@ -29,8 +31,8 @@ class MangaCover extends ConsumerWidget {
               height: width,
               color: Colors.black38,
             ),
-            (cover) => ImageWidget(
-              imageData: cover.image,
+            (c) => ImageWidget(
+              imageData: c.image,
               mangaId: mangaId,
               width: width,
             ),
