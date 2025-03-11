@@ -20,7 +20,7 @@ extension MangaConfigToManga on MangaConfig {
                   (au) => Author(
                     name: au.name,
                     role: au.role,
-                    id: idGenerator.generateId(name: au.name),
+                    id: idGenerator.generateId(),
                   ),
                 )
                 .toIList() ??
@@ -28,7 +28,7 @@ extension MangaConfigToManga on MangaConfig {
         chapters: chapters
             .map(
               (ch) => MangaChapter(
-                id: idGenerator.generateId(name: ch.chapterName),
+                id: idGenerator.generateId(),
                 name: ch.chapterName,
                 images: switch (ch.images) {
                   ChapterImagesFiles cif => MangaChapterImages.list(

@@ -2,6 +2,8 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
+import '../../../gen/assets.gen.dart';
 import '../../common/styles.dart';
 import '../../common/text_editing_field.dart';
 import '../../common/widget_button.dart';
@@ -78,7 +80,15 @@ class _AuthorsFields extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Row(
                 children: [
-                  const Icon(Icons.add),
+                  SvgPicture.asset(
+                    Assets.icons.add,
+                    width: 24,
+                    height: 24,
+                    colorFilter: const ColorFilter.mode(
+                      Styles.secondary,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                   const SizedBox(width: 4),
                   Text(
                     ref
@@ -192,7 +202,15 @@ class _NameRoleState extends ConsumerState<_NameRole> {
             onPressed: () => ref.read(SP.mangaManager.notifier).removeAuthor(
                   widget.index,
                 ),
-            icon: const Icon(Icons.delete),
+            icon: SvgPicture.asset(
+              Assets.icons.delete,
+              width: 24,
+              height: 24,
+              colorFilter: const ColorFilter.mode(
+                Styles.secondary,
+                BlendMode.srcIn,
+              ),
+            ),
           ),
         ],
       );

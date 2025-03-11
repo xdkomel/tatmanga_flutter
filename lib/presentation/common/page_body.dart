@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../gen/assets.gen.dart';
 import 'localization_manager.dart';
 import 'resources.dart';
 import 'styles.dart';
@@ -128,10 +129,16 @@ class _EditButton extends ConsumerWidget {
                 onTap: ref.read(SP.editingModeOnManager.notifier).toggle,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Icon(
+                  child: SvgPicture.asset(
+                    width: 24,
+                    height: 24,
                     ref.watch(SP.editingModeOnManager)
-                        ? Icons.edit_off
-                        : Icons.edit,
+                        ? Assets.icons.editOff
+                        : Assets.icons.edit,
+                    colorFilter: const ColorFilter.mode(
+                      Styles.secondary,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
               ),
@@ -147,9 +154,17 @@ class _AuthorizeButton extends ConsumerWidget {
       ref.watch(SP.authenticationManager).fold(
             () => WidgetButton(
               onTap: ref.read(SP.authenticationManager.notifier).auth,
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Icon(Icons.login),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: SvgPicture.asset(
+                  Assets.icons.login,
+                  width: 24,
+                  height: 24,
+                  colorFilter: const ColorFilter.mode(
+                    Styles.secondary,
+                    BlendMode.srcIn,
+                  ),
+                ),
               ),
             ),
             (data) => Text(data.displayName, style: Styles.pb),
@@ -209,7 +224,15 @@ class _FlexibleMenuState extends State<_FlexibleMenu> {
                   onPressed: () => setState(
                     () => _showAdditionalMenu = !_showAdditionalMenu,
                   ),
-                  icon: const Icon(Icons.menu),
+                  icon: SvgPicture.asset(
+                    Assets.icons.menu,
+                    width: 24,
+                    height: 24,
+                    colorFilter: const ColorFilter.mode(
+                      Styles.secondary,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                 ),
               ],
             ),

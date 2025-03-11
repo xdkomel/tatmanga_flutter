@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fpdart/fpdart.dart';
+import '../../../gen/assets.gen.dart';
 import '../../common/image_widget.dart';
 import '../../common/styles.dart';
 import '../../common/text_editing_field.dart';
@@ -74,9 +76,14 @@ class ChaptersList extends ConsumerWidget {
                                             chapterIndex,
                                             pi.$1,
                                           ),
-                                      icon: const Icon(
-                                        Icons.delete,
-                                        color: Colors.redAccent,
+                                      icon: SvgPicture.asset(
+                                        Assets.icons.delete,
+                                        width: 24,
+                                        height: 24,
+                                        colorFilter: const ColorFilter.mode(
+                                          Colors.redAccent,
+                                          BlendMode.srcIn,
+                                        ),
                                       ),
                                     ),
                                 ],

@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
+import '../../../gen/assets.gen.dart';
 import '../../common/styles.dart';
 import '../../common/widget_button.dart';
 import '../../manga_chapter_contents.dart/manga_chatper_contents_screen.dart';
@@ -46,7 +48,15 @@ class _CopyChapterLinkButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => IconButton(
         onPressed: () => Clipboard.setData(ClipboardData(text: chapterLink)),
-        icon: const Icon(Icons.link, color: Styles.primary),
+        icon: SvgPicture.asset(
+          Assets.icons.link,
+          width: 24,
+          height: 24,
+          colorFilter: const ColorFilter.mode(
+            Styles.secondary,
+            BlendMode.srcIn,
+          ),
+        ),
       );
 }
 
@@ -63,9 +73,14 @@ class _RemoveChapterButton extends ConsumerWidget {
               child: IconButton(
                 onPressed: () =>
                     ref.read(SP.mangaManager.notifier).removeChapter(index),
-                icon: const Icon(
-                  Icons.delete,
-                  color: Colors.redAccent,
+                icon: SvgPicture.asset(
+                  Assets.icons.delete,
+                  width: 24,
+                  height: 24,
+                  colorFilter: const ColorFilter.mode(
+                    Colors.redAccent,
+                    BlendMode.srcIn,
+                  ),
                 ),
               ),
             )

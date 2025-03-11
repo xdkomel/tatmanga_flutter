@@ -2,7 +2,9 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../gen/assets.gen.dart';
 import '../common/image_widget.dart';
 import '../models/manga_chapter.dart';
 import '../../providers.dart';
@@ -96,9 +98,14 @@ class _EpisodeImagesViewScreenState
                     child: _showingControls
                         ? IconButton(
                             onPressed: Navigator.of(context).pop,
-                            icon: const Icon(
-                              Icons.close,
-                              color: Colors.white,
+                            icon: SvgPicture.asset(
+                              Assets.icons.close,
+                              width: 24,
+                              height: 24,
+                              colorFilter: const ColorFilter.mode(
+                                Colors.white,
+                                BlendMode.srcIn,
+                              ),
                             ),
                           )
                         : null,

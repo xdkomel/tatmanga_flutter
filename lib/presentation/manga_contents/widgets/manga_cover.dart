@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fpdart/fpdart.dart';
+import '../../../gen/assets.gen.dart';
 import '../../common/image_widget.dart';
 import '../../common/styles.dart';
 import '../../common/widget_button.dart';
@@ -164,8 +166,15 @@ class _CoverNameInputState extends ConsumerState<_CoverNameInput> {
               onPressed: () => ref
                   .read(SP.mangaManager.notifier)
                   .setLinkCover(_textEditingController.text),
-              icon: const Icon(Icons.check),
-              color: Colors.white,
+              icon: SvgPicture.asset(
+                Assets.icons.check,
+                width: 24,
+                height: 24,
+                colorFilter: const ColorFilter.mode(
+                  Colors.white,
+                  BlendMode.srcIn,
+                ),
+              ),
             ),
           ],
         ),
