@@ -1,11 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tatmanga_flutter/presentation/manga_list/manga_list_screen.dart';
-import 'package:tatmanga_flutter/providers.dart';
+import '../providers.dart';
+import 'common/styles.dart';
 
 class HomePage extends ConsumerStatefulWidget {
-  const HomePage({super.key});
+  const HomePage({required this.child, super.key});
+
+  final Widget child;
 
   @override
   ConsumerState<HomePage> createState() => _HomePageState();
@@ -30,7 +32,9 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) => AnimatedSwitcher(
         duration: const Duration(milliseconds: 250),
         child: _firebaseInitialized
-            ? const MangaListScreen()
-            : const CircularProgressIndicator(),
+            ? widget.child
+            : const Material(
+                child: CircularProgressIndicator(color: Styles.primary),
+              ),
       );
 }

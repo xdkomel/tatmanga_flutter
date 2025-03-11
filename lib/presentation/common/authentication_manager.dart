@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:tatmanga_flutter/providers.dart';
-import 'package:tatmanga_flutter/utils/fp.dart';
+import '../../providers.dart';
 
 class AuthData {
   final User user;
@@ -22,16 +21,17 @@ class AuthenticationManager extends Notifier<Option<AuthData>> {
   Future<void> auth() async {
     final user = await ref.read(P.auth).authenticate();
     final admins = await ref.read(P.env).admins;
-    state = user.toOption(identity).map(
-          (u) => AuthData(
-            user: u,
-            displayName: u.displayName ?? u.email ?? u.phoneNumber ?? u.uid,
-            canEdit: _canEdit(u, admins),
-          ),
-        );
+    state = Option.fromNullable(user).map(
+      (u) => AuthData(
+        user: u,
+        displayName: u.displayName ?? u.email ?? u.phoneNumber ?? u.uid,
+        canEdit: _canEdit(u, admins),
+      ),
+    );
   }
 
-  bool _canEdit(User user, List<String> adminEmails) => user.email.fold(
+  bool _canEdit(User user, List<String> adminEmails) =>
+      Option.fromNullable(user.email).match(
         () => false,
         adminEmails.contains,
       );

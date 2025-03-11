@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:tatmanga_flutter/domain/models/local_firebase_options.dart';
+import '../domain/models/local_firebase_options.dart';
 
 class Env {
   String _process(String text) => text.replaceAll('^', ',').replaceAll('\'', '"');

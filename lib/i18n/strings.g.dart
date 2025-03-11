@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 3
-/// Strings: 81 (27 per locale)
+/// Strings: 84 (28 per locale)
 ///
-/// Built on 2024-09-03 at 13:13 UTC
+/// Built on 2025-03-11 at 10:33 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -26,8 +26,8 @@ const AppLocale _baseLocale = AppLocale.en;
 /// - if (LocaleSettings.currentLocale == AppLocale.en) // locale check
 enum AppLocale with BaseAppLocale<AppLocale, Translations> {
 	en(languageCode: 'en', build: Translations.build),
-	ru(languageCode: 'ru', build: StringsRu.build),
-	tt(languageCode: 'tt', build: StringsTt.build);
+	ru(languageCode: 'ru', build: _StringsRu.build),
+	tt(languageCode: 'tt', build: _StringsTt.build);
 
 	const AppLocale({required this.languageCode, this.scriptCode, this.countryCode, required this.build}); // ignore: unused_element
 
@@ -35,6 +35,72 @@ enum AppLocale with BaseAppLocale<AppLocale, Translations> {
 	@override final String? scriptCode;
 	@override final String? countryCode;
 	@override final TranslationBuilder<AppLocale, Translations> build;
+
+	/// Gets current instance managed by [LocaleSettings].
+	Translations get translations => LocaleSettings.instance.translationMap[this]!;
+}
+
+/// Method A: Simple
+///
+/// No rebuild after locale change.
+/// Translation happens during initialization of the widget (call of t).
+/// Configurable via 'translate_var'.
+///
+/// Usage:
+/// String a = t.someKey.anotherKey;
+/// String b = t['someKey.anotherKey']; // Only for edge cases!
+Translations get t => LocaleSettings.instance.currentTranslations;
+
+/// Method B: Advanced
+///
+/// All widgets using this method will trigger a rebuild when locale changes.
+/// Use this if you have e.g. a settings page where the user can select the locale during runtime.
+///
+/// Step 1:
+/// wrap your App with
+/// TranslationProvider(
+/// 	child: MyApp()
+/// );
+///
+/// Step 2:
+/// final t = Translations.of(context); // Get t variable.
+/// String a = t.someKey.anotherKey; // Use t variable.
+/// String b = t['someKey.anotherKey']; // Only for edge cases!
+class TranslationProvider extends BaseTranslationProvider<AppLocale, Translations> {
+	TranslationProvider({required super.child}) : super(settings: LocaleSettings.instance);
+
+	static InheritedLocaleData<AppLocale, Translations> of(BuildContext context) => InheritedLocaleData.of<AppLocale, Translations>(context);
+}
+
+/// Method B shorthand via [BuildContext] extension method.
+/// Configurable via 'translate_var'.
+///
+/// Usage (e.g. in a widget's build method):
+/// context.t.someKey.anotherKey
+extension BuildContextTranslationsExtension on BuildContext {
+	Translations get t => TranslationProvider.of(this).translations;
+}
+
+/// Manages all translation instances and the current locale
+class LocaleSettings extends BaseFlutterLocaleSettings<AppLocale, Translations> {
+	LocaleSettings._() : super(utils: AppLocaleUtils.instance);
+
+	static final instance = LocaleSettings._();
+
+	// static aliases (checkout base methods for documentation)
+	static AppLocale get currentLocale => instance.currentLocale;
+	static Stream<AppLocale> getLocaleStream() => instance.getLocaleStream();
+	static AppLocale setLocale(AppLocale locale, {bool? listenToDeviceLocale = false}) => instance.setLocale(locale, listenToDeviceLocale: listenToDeviceLocale);
+	static AppLocale setLocaleRaw(String rawLocale, {bool? listenToDeviceLocale = false}) => instance.setLocaleRaw(rawLocale, listenToDeviceLocale: listenToDeviceLocale);
+	static AppLocale useDeviceLocale() => instance.useDeviceLocale();
+	@Deprecated('Use [AppLocaleUtils.supportedLocales]') static List<Locale> get supportedLocales => instance.supportedLocales;
+	@Deprecated('Use [AppLocaleUtils.supportedLocalesRaw]') static List<String> get supportedLocalesRaw => instance.supportedLocalesRaw;
+	static void setPluralResolver({String? language, AppLocale? locale, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver}) => instance.setPluralResolver(
+		language: language,
+		locale: locale,
+		cardinalResolver: cardinalResolver,
+		ordinalResolver: ordinalResolver,
+	);
 }
 
 /// Provides utility functions without any side effects.
@@ -54,8 +120,13 @@ class AppLocaleUtils extends BaseAppLocaleUtils<AppLocale, Translations> {
 // translations
 
 // Path: <root>
-typedef StringsEn = Translations; // ignore: unused_element
 class Translations implements BaseTranslations<AppLocale, Translations> {
+	/// Returns the current translations of the given [context].
+	///
+	/// Usage:
+	/// final t = Translations.of(context);
+	static Translations of(BuildContext context) => InheritedLocaleData.of<AppLocale, Translations>(context).translations;
+
 	/// You can call this constructor and build your own translation instance of this locale.
 	/// Constructing via the enum [AppLocale.build] is preferred.
 	Translations.build({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver})
@@ -78,27 +149,27 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final Translations _root = this; // ignore: unused_field
 
 	// Translations
-	late final StringsMangaListEn mangaList = StringsMangaListEn._(_root);
-	late final StringsCommonEn common = StringsCommonEn._(_root);
-	late final StringsMangaContentsEn mangaContents = StringsMangaContentsEn._(_root);
-	late final StringsMangaChapterContentsEn mangaChapterContents = StringsMangaChapterContentsEn._(_root);
-	late final StringsEpisodeImagesViewEn episodeImagesView = StringsEpisodeImagesViewEn._(_root);
+	late final _StringsMangaListEn mangaList = _StringsMangaListEn._(_root);
+	late final _StringsCommonEn common = _StringsCommonEn._(_root);
+	late final _StringsMangaContentsEn mangaContents = _StringsMangaContentsEn._(_root);
+	late final _StringsMangaChapterContentsEn mangaChapterContents = _StringsMangaChapterContentsEn._(_root);
+	late final _StringsNotFoundEn notFound = _StringsNotFoundEn._(_root);
 }
 
 // Path: mangaList
-class StringsMangaListEn {
-	StringsMangaListEn._(this._root);
+class _StringsMangaListEn {
+	_StringsMangaListEn._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
 	// Translations
 	String get library => 'Library';
-	late final StringsMangaListEpisodesCountEn episodesCount = StringsMangaListEpisodesCountEn._(_root);
+	late final _StringsMangaListEpisodesCountEn episodesCount = _StringsMangaListEpisodesCountEn._(_root);
 }
 
 // Path: common
-class StringsCommonEn {
-	StringsCommonEn._(this._root);
+class _StringsCommonEn {
+	_StringsCommonEn._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
@@ -111,8 +182,8 @@ class StringsCommonEn {
 }
 
 // Path: mangaContents
-class StringsMangaContentsEn {
-	StringsMangaContentsEn._(this._root);
+class _StringsMangaContentsEn {
+	_StringsMangaContentsEn._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
@@ -121,7 +192,7 @@ class StringsMangaContentsEn {
 	String get name => 'Name';
 	String get role => 'Role';
 	String get addEpisode => 'Add episode';
-	late final StringsMangaContentsEpisodeDefaultEn episodeDefault = StringsMangaContentsEpisodeDefaultEn._(_root);
+	late final _StringsMangaContentsEpisodeDefaultEn episodeDefault = _StringsMangaContentsEpisodeDefaultEn._(_root);
 	String get coverUpload => 'Upload';
 	String get coverRemove => 'Remove';
 	String get mangaDescription => 'Description';
@@ -131,8 +202,8 @@ class StringsMangaContentsEn {
 }
 
 // Path: mangaChapterContents
-class StringsMangaChapterContentsEn {
-	StringsMangaChapterContentsEn._(this._root);
+class _StringsMangaChapterContentsEn {
+	_StringsMangaChapterContentsEn._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
@@ -140,31 +211,26 @@ class StringsMangaChapterContentsEn {
 	String get episodeName => 'Episode name';
 	String get addImages => 'Add images';
 	String get imagesLoadingMethod => 'Images loading method';
-	String get parseFromTelegraphMethod => 'Parse from Telegraph';
+	String get openLink => 'Open link';
 	String get loadOneByOne => 'Load one by one';
-	String get telegraphInputPlaceholder => 'Telegraph name';
-	TextSpan telegraphInputExplainText({required InlineSpanBuilder url, required InlineSpanBuilder name}) => TextSpan(children: [
-		const TextSpan(text: 'You have to put the Telegraph name retrieved out of a link. For instance, a link '),
-		url('https://telegra.ph/manga-iseme'),
-		const TextSpan(text: ' refers to the '),
-		name('manga-iseme'),
-		const TextSpan(text: ' Telegraph name'),
-	]);
+	String get linkInputPlaceholder => 'Link URL';
+	String get linkInputExplainText => 'When the episode opened, a redirect to the link will happen';
 }
 
-// Path: episodeImagesView
-class StringsEpisodeImagesViewEn {
-	StringsEpisodeImagesViewEn._(this._root);
+// Path: notFound
+class _StringsNotFoundEn {
+	_StringsNotFoundEn._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get defaultErrorMessage => 'Couldn\'t load images';
+	String get title => '404';
+	String get body => 'Not found';
 }
 
 // Path: mangaList.episodesCount
-class StringsMangaListEpisodesCountEn {
-	StringsMangaListEpisodesCountEn._(this._root);
+class _StringsMangaListEpisodesCountEn {
+	_StringsMangaListEpisodesCountEn._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
@@ -176,8 +242,8 @@ class StringsMangaListEpisodesCountEn {
 }
 
 // Path: mangaContents.episodeDefault
-class StringsMangaContentsEpisodeDefaultEn {
-	StringsMangaContentsEpisodeDefaultEn._(this._root);
+class _StringsMangaContentsEpisodeDefaultEn {
+	_StringsMangaContentsEpisodeDefaultEn._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
@@ -188,10 +254,10 @@ class StringsMangaContentsEpisodeDefaultEn {
 }
 
 // Path: <root>
-class StringsRu implements Translations {
+class _StringsRu implements Translations {
 	/// You can call this constructor and build your own translation instance of this locale.
 	/// Constructing via the enum [AppLocale.build] is preferred.
-	StringsRu.build({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver})
+	_StringsRu.build({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver})
 		: assert(overrides == null, 'Set "translation_overrides: true" in order to enable this feature.'),
 		  $meta = TranslationMetadata(
 		    locale: AppLocale.ru,
@@ -208,32 +274,32 @@ class StringsRu implements Translations {
 	/// Access flat map
 	@override dynamic operator[](String key) => $meta.getTranslation(key);
 
-	@override late final StringsRu _root = this; // ignore: unused_field
+	@override late final _StringsRu _root = this; // ignore: unused_field
 
 	// Translations
-	@override late final StringsMangaListRu mangaList = StringsMangaListRu._(_root);
-	@override late final StringsCommonRu common = StringsCommonRu._(_root);
-	@override late final StringsMangaContentsRu mangaContents = StringsMangaContentsRu._(_root);
-	@override late final StringsMangaChapterContentsRu mangaChapterContents = StringsMangaChapterContentsRu._(_root);
-	@override late final StringsEpisodeImagesViewRu episodeImagesView = StringsEpisodeImagesViewRu._(_root);
+	@override late final _StringsMangaListRu mangaList = _StringsMangaListRu._(_root);
+	@override late final _StringsCommonRu common = _StringsCommonRu._(_root);
+	@override late final _StringsMangaContentsRu mangaContents = _StringsMangaContentsRu._(_root);
+	@override late final _StringsMangaChapterContentsRu mangaChapterContents = _StringsMangaChapterContentsRu._(_root);
+	@override late final _StringsNotFoundRu notFound = _StringsNotFoundRu._(_root);
 }
 
 // Path: mangaList
-class StringsMangaListRu implements StringsMangaListEn {
-	StringsMangaListRu._(this._root);
+class _StringsMangaListRu implements _StringsMangaListEn {
+	_StringsMangaListRu._(this._root);
 
-	@override final StringsRu _root; // ignore: unused_field
+	@override final _StringsRu _root; // ignore: unused_field
 
 	// Translations
 	@override String get library => 'Библиотека';
-	@override late final StringsMangaListEpisodesCountRu episodesCount = StringsMangaListEpisodesCountRu._(_root);
+	@override late final _StringsMangaListEpisodesCountRu episodesCount = _StringsMangaListEpisodesCountRu._(_root);
 }
 
 // Path: common
-class StringsCommonRu implements StringsCommonEn {
-	StringsCommonRu._(this._root);
+class _StringsCommonRu implements _StringsCommonEn {
+	_StringsCommonRu._(this._root);
 
-	@override final StringsRu _root; // ignore: unused_field
+	@override final _StringsRu _root; // ignore: unused_field
 
 	// Translations
 	@override String get name => 'Татманга';
@@ -244,17 +310,17 @@ class StringsCommonRu implements StringsCommonEn {
 }
 
 // Path: mangaContents
-class StringsMangaContentsRu implements StringsMangaContentsEn {
-	StringsMangaContentsRu._(this._root);
+class _StringsMangaContentsRu implements _StringsMangaContentsEn {
+	_StringsMangaContentsRu._(this._root);
 
-	@override final StringsRu _root; // ignore: unused_field
+	@override final _StringsRu _root; // ignore: unused_field
 
 	// Translations
 	@override String get addAuthor => 'Добавить автора';
 	@override String get name => 'Имя';
 	@override String get role => 'Роль';
 	@override String get addEpisode => 'Добавить эпизод';
-	@override late final StringsMangaContentsEpisodeDefaultRu episodeDefault = StringsMangaContentsEpisodeDefaultRu._(_root);
+	@override late final _StringsMangaContentsEpisodeDefaultRu episodeDefault = _StringsMangaContentsEpisodeDefaultRu._(_root);
 	@override String get coverUpload => 'Загрузить';
 	@override String get coverRemove => 'Удалить';
 	@override String get mangaDescription => 'Описание';
@@ -264,41 +330,37 @@ class StringsMangaContentsRu implements StringsMangaContentsEn {
 }
 
 // Path: mangaChapterContents
-class StringsMangaChapterContentsRu implements StringsMangaChapterContentsEn {
-	StringsMangaChapterContentsRu._(this._root);
+class _StringsMangaChapterContentsRu implements _StringsMangaChapterContentsEn {
+	_StringsMangaChapterContentsRu._(this._root);
 
-	@override final StringsRu _root; // ignore: unused_field
+	@override final _StringsRu _root; // ignore: unused_field
 
 	// Translations
 	@override String get episodeName => 'Навание эпизода';
 	@override String get addImages => 'Добавить изображения';
 	@override String get imagesLoadingMethod => 'Способ заргузки изображений';
-	@override String get parseFromTelegraphMethod => 'Парсить из Telegraph';
+	@override String get openLink => 'Открыть ссылку';
 	@override String get loadOneByOne => 'Загрузить по одному';
-	@override String get telegraphInputPlaceholder => 'Имя в Telegraph';
-	@override TextSpan telegraphInputExplainText({required InlineSpanBuilder url, required InlineSpanBuilder name}) => TextSpan(children: [
-		const TextSpan(text: 'Достаньте из ссылки имя в Telegraph и вставьте его. Например, для ссылки '),
-		url('https://telegra.ph/manga-iseme'),
-		const TextSpan(text: ' имя в Telegraph будет '),
-		name('manga-iseme'),
-	]);
+	@override String get linkInputPlaceholder => 'Ссылка';
+	@override String get linkInputExplainText => 'При открытии эпизода произойдёт автоматический переход по ссылке';
 }
 
-// Path: episodeImagesView
-class StringsEpisodeImagesViewRu implements StringsEpisodeImagesViewEn {
-	StringsEpisodeImagesViewRu._(this._root);
+// Path: notFound
+class _StringsNotFoundRu implements _StringsNotFoundEn {
+	_StringsNotFoundRu._(this._root);
 
-	@override final StringsRu _root; // ignore: unused_field
+	@override final _StringsRu _root; // ignore: unused_field
 
 	// Translations
-	@override String get defaultErrorMessage => 'Не удалось загрузить изображения';
+	@override String get title => '404';
+	@override String get body => 'Не найдено';
 }
 
 // Path: mangaList.episodesCount
-class StringsMangaListEpisodesCountRu implements StringsMangaListEpisodesCountEn {
-	StringsMangaListEpisodesCountRu._(this._root);
+class _StringsMangaListEpisodesCountRu implements _StringsMangaListEpisodesCountEn {
+	_StringsMangaListEpisodesCountRu._(this._root);
 
-	@override final StringsRu _root; // ignore: unused_field
+	@override final _StringsRu _root; // ignore: unused_field
 
 	// Translations
 	@override String episodes({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(n,
@@ -309,10 +371,10 @@ class StringsMangaListEpisodesCountRu implements StringsMangaListEpisodesCountEn
 }
 
 // Path: mangaContents.episodeDefault
-class StringsMangaContentsEpisodeDefaultRu implements StringsMangaContentsEpisodeDefaultEn {
-	StringsMangaContentsEpisodeDefaultRu._(this._root);
+class _StringsMangaContentsEpisodeDefaultRu implements _StringsMangaContentsEpisodeDefaultEn {
+	_StringsMangaContentsEpisodeDefaultRu._(this._root);
 
-	@override final StringsRu _root; // ignore: unused_field
+	@override final _StringsRu _root; // ignore: unused_field
 
 	// Translations
 	@override String episode({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(n,
@@ -321,10 +383,10 @@ class StringsMangaContentsEpisodeDefaultRu implements StringsMangaContentsEpisod
 }
 
 // Path: <root>
-class StringsTt implements Translations {
+class _StringsTt implements Translations {
 	/// You can call this constructor and build your own translation instance of this locale.
 	/// Constructing via the enum [AppLocale.build] is preferred.
-	StringsTt.build({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver})
+	_StringsTt.build({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver})
 		: assert(overrides == null, 'Set "translation_overrides: true" in order to enable this feature.'),
 		  $meta = TranslationMetadata(
 		    locale: AppLocale.tt,
@@ -341,32 +403,32 @@ class StringsTt implements Translations {
 	/// Access flat map
 	@override dynamic operator[](String key) => $meta.getTranslation(key);
 
-	@override late final StringsTt _root = this; // ignore: unused_field
+	@override late final _StringsTt _root = this; // ignore: unused_field
 
 	// Translations
-	@override late final StringsMangaListTt mangaList = StringsMangaListTt._(_root);
-	@override late final StringsCommonTt common = StringsCommonTt._(_root);
-	@override late final StringsMangaContentsTt mangaContents = StringsMangaContentsTt._(_root);
-	@override late final StringsMangaChapterContentsTt mangaChapterContents = StringsMangaChapterContentsTt._(_root);
-	@override late final StringsEpisodeImagesViewTt episodeImagesView = StringsEpisodeImagesViewTt._(_root);
+	@override late final _StringsMangaListTt mangaList = _StringsMangaListTt._(_root);
+	@override late final _StringsCommonTt common = _StringsCommonTt._(_root);
+	@override late final _StringsMangaContentsTt mangaContents = _StringsMangaContentsTt._(_root);
+	@override late final _StringsMangaChapterContentsTt mangaChapterContents = _StringsMangaChapterContentsTt._(_root);
+	@override late final _StringsNotFoundTt notFound = _StringsNotFoundTt._(_root);
 }
 
 // Path: mangaList
-class StringsMangaListTt implements StringsMangaListEn {
-	StringsMangaListTt._(this._root);
+class _StringsMangaListTt implements _StringsMangaListEn {
+	_StringsMangaListTt._(this._root);
 
-	@override final StringsTt _root; // ignore: unused_field
+	@override final _StringsTt _root; // ignore: unused_field
 
 	// Translations
 	@override String get library => 'Мангаханә';
-	@override late final StringsMangaListEpisodesCountTt episodesCount = StringsMangaListEpisodesCountTt._(_root);
+	@override late final _StringsMangaListEpisodesCountTt episodesCount = _StringsMangaListEpisodesCountTt._(_root);
 }
 
 // Path: common
-class StringsCommonTt implements StringsCommonEn {
-	StringsCommonTt._(this._root);
+class _StringsCommonTt implements _StringsCommonEn {
+	_StringsCommonTt._(this._root);
 
-	@override final StringsTt _root; // ignore: unused_field
+	@override final _StringsTt _root; // ignore: unused_field
 
 	// Translations
 	@override String get name => 'Татманга';
@@ -377,17 +439,17 @@ class StringsCommonTt implements StringsCommonEn {
 }
 
 // Path: mangaContents
-class StringsMangaContentsTt implements StringsMangaContentsEn {
-	StringsMangaContentsTt._(this._root);
+class _StringsMangaContentsTt implements _StringsMangaContentsEn {
+	_StringsMangaContentsTt._(this._root);
 
-	@override final StringsTt _root; // ignore: unused_field
+	@override final _StringsTt _root; // ignore: unused_field
 
 	// Translations
 	@override String get addAuthor => 'Авторны өстәргә';
 	@override String get name => 'Исем';
 	@override String get role => 'Роль';
 	@override String get addEpisode => 'Эпизодны өстәргә';
-	@override late final StringsMangaContentsEpisodeDefaultTt episodeDefault = StringsMangaContentsEpisodeDefaultTt._(_root);
+	@override late final _StringsMangaContentsEpisodeDefaultTt episodeDefault = _StringsMangaContentsEpisodeDefaultTt._(_root);
 	@override String get coverUpload => 'Бушатырга';
 	@override String get coverRemove => 'Ерагайтырга';
 	@override String get mangaDescription => 'Тасвирлама';
@@ -397,42 +459,37 @@ class StringsMangaContentsTt implements StringsMangaContentsEn {
 }
 
 // Path: mangaChapterContents
-class StringsMangaChapterContentsTt implements StringsMangaChapterContentsEn {
-	StringsMangaChapterContentsTt._(this._root);
+class _StringsMangaChapterContentsTt implements _StringsMangaChapterContentsEn {
+	_StringsMangaChapterContentsTt._(this._root);
 
-	@override final StringsTt _root; // ignore: unused_field
+	@override final _StringsTt _root; // ignore: unused_field
 
 	// Translations
 	@override String get episodeName => 'Эпизодның исеме';
 	@override String get addImages => 'Сурәтләрне өстәргә';
 	@override String get imagesLoadingMethod => 'Сурәтләрне йөкләү ысулы';
-	@override String get parseFromTelegraphMethod => 'Telegraph-тан эшкәртеп чыгарырга';
+	@override String get openLink => 'Сылтаманы ачырга';
 	@override String get loadOneByOne => 'Берәм-берәм йөкләргә';
-	@override String get telegraphInputPlaceholder => 'Telegraph исеме';
-	@override TextSpan telegraphInputExplainText({required InlineSpanBuilder url, required InlineSpanBuilder name}) => TextSpan(children: [
-		const TextSpan(text: 'Telegraph исемне сылтамадан чыгарып кертегез. Мәсәлән, '),
-		url('https://telegra.ph/manga-iseme'),
-		const TextSpan(text: ' сылтама өчен '),
-		name('manga-iseme'),
-		const TextSpan(text: ' исемен кертергә кирәк'),
-	]);
+	@override String get linkInputPlaceholder => 'Сылтама';
+	@override String get linkInputExplainText => 'Эпизод ачылганда сылтама буенча автоматик күчү булачак';
 }
 
-// Path: episodeImagesView
-class StringsEpisodeImagesViewTt implements StringsEpisodeImagesViewEn {
-	StringsEpisodeImagesViewTt._(this._root);
+// Path: notFound
+class _StringsNotFoundTt implements _StringsNotFoundEn {
+	_StringsNotFoundTt._(this._root);
 
-	@override final StringsTt _root; // ignore: unused_field
+	@override final _StringsTt _root; // ignore: unused_field
 
 	// Translations
-	@override String get defaultErrorMessage => 'Сурәтләрне йөкләп булмады';
+	@override String get title => '404';
+	@override String get body => 'Табылмаган';
 }
 
 // Path: mangaList.episodesCount
-class StringsMangaListEpisodesCountTt implements StringsMangaListEpisodesCountEn {
-	StringsMangaListEpisodesCountTt._(this._root);
+class _StringsMangaListEpisodesCountTt implements _StringsMangaListEpisodesCountEn {
+	_StringsMangaListEpisodesCountTt._(this._root);
 
-	@override final StringsTt _root; // ignore: unused_field
+	@override final _StringsTt _root; // ignore: unused_field
 
 	// Translations
 	@override String episodes({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('tt'))(n,
@@ -441,10 +498,10 @@ class StringsMangaListEpisodesCountTt implements StringsMangaListEpisodesCountEn
 }
 
 // Path: mangaContents.episodeDefault
-class StringsMangaContentsEpisodeDefaultTt implements StringsMangaContentsEpisodeDefaultEn {
-	StringsMangaContentsEpisodeDefaultTt._(this._root);
+class _StringsMangaContentsEpisodeDefaultTt implements _StringsMangaContentsEpisodeDefaultEn {
+	_StringsMangaContentsEpisodeDefaultTt._(this._root);
 
-	@override final StringsTt _root; // ignore: unused_field
+	@override final _StringsTt _root; // ignore: unused_field
 
 	// Translations
 	@override String episode({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('tt'))(n,
@@ -484,23 +541,18 @@ extension on Translations {
 			case 'mangaChapterContents.episodeName': return 'Episode name';
 			case 'mangaChapterContents.addImages': return 'Add images';
 			case 'mangaChapterContents.imagesLoadingMethod': return 'Images loading method';
-			case 'mangaChapterContents.parseFromTelegraphMethod': return 'Parse from Telegraph';
+			case 'mangaChapterContents.openLink': return 'Open link';
 			case 'mangaChapterContents.loadOneByOne': return 'Load one by one';
-			case 'mangaChapterContents.telegraphInputPlaceholder': return 'Telegraph name';
-			case 'mangaChapterContents.telegraphInputExplainText': return ({required InlineSpanBuilder url, required InlineSpanBuilder name}) => TextSpan(children: [
-				const TextSpan(text: 'You have to put the Telegraph name retrieved out of a link. For instance, a link '),
-				url('https://telegra.ph/manga-iseme'),
-				const TextSpan(text: ' refers to the '),
-				name('manga-iseme'),
-				const TextSpan(text: ' Telegraph name'),
-			]);
-			case 'episodeImagesView.defaultErrorMessage': return 'Couldn\'t load images';
+			case 'mangaChapterContents.linkInputPlaceholder': return 'Link URL';
+			case 'mangaChapterContents.linkInputExplainText': return 'When the episode opened, a redirect to the link will happen';
+			case 'notFound.title': return '404';
+			case 'notFound.body': return 'Not found';
 			default: return null;
 		}
 	}
 }
 
-extension on StringsRu {
+extension on _StringsRu {
 	dynamic _flatMapFunction(String path) {
 		switch (path) {
 			case 'mangaList.library': return 'Библиотека';
@@ -530,22 +582,18 @@ extension on StringsRu {
 			case 'mangaChapterContents.episodeName': return 'Навание эпизода';
 			case 'mangaChapterContents.addImages': return 'Добавить изображения';
 			case 'mangaChapterContents.imagesLoadingMethod': return 'Способ заргузки изображений';
-			case 'mangaChapterContents.parseFromTelegraphMethod': return 'Парсить из Telegraph';
+			case 'mangaChapterContents.openLink': return 'Открыть ссылку';
 			case 'mangaChapterContents.loadOneByOne': return 'Загрузить по одному';
-			case 'mangaChapterContents.telegraphInputPlaceholder': return 'Имя в Telegraph';
-			case 'mangaChapterContents.telegraphInputExplainText': return ({required InlineSpanBuilder url, required InlineSpanBuilder name}) => TextSpan(children: [
-				const TextSpan(text: 'Достаньте из ссылки имя в Telegraph и вставьте его. Например, для ссылки '),
-				url('https://telegra.ph/manga-iseme'),
-				const TextSpan(text: ' имя в Telegraph будет '),
-				name('manga-iseme'),
-			]);
-			case 'episodeImagesView.defaultErrorMessage': return 'Не удалось загрузить изображения';
+			case 'mangaChapterContents.linkInputPlaceholder': return 'Ссылка';
+			case 'mangaChapterContents.linkInputExplainText': return 'При открытии эпизода произойдёт автоматический переход по ссылке';
+			case 'notFound.title': return '404';
+			case 'notFound.body': return 'Не найдено';
 			default: return null;
 		}
 	}
 }
 
-extension on StringsTt {
+extension on _StringsTt {
 	dynamic _flatMapFunction(String path) {
 		switch (path) {
 			case 'mangaList.library': return 'Мангаханә';
@@ -573,17 +621,12 @@ extension on StringsTt {
 			case 'mangaChapterContents.episodeName': return 'Эпизодның исеме';
 			case 'mangaChapterContents.addImages': return 'Сурәтләрне өстәргә';
 			case 'mangaChapterContents.imagesLoadingMethod': return 'Сурәтләрне йөкләү ысулы';
-			case 'mangaChapterContents.parseFromTelegraphMethod': return 'Telegraph-тан эшкәртеп чыгарырга';
+			case 'mangaChapterContents.openLink': return 'Сылтаманы ачырга';
 			case 'mangaChapterContents.loadOneByOne': return 'Берәм-берәм йөкләргә';
-			case 'mangaChapterContents.telegraphInputPlaceholder': return 'Telegraph исеме';
-			case 'mangaChapterContents.telegraphInputExplainText': return ({required InlineSpanBuilder url, required InlineSpanBuilder name}) => TextSpan(children: [
-				const TextSpan(text: 'Telegraph исемне сылтамадан чыгарып кертегез. Мәсәлән, '),
-				url('https://telegra.ph/manga-iseme'),
-				const TextSpan(text: ' сылтама өчен '),
-				name('manga-iseme'),
-				const TextSpan(text: ' исемен кертергә кирәк'),
-			]);
-			case 'episodeImagesView.defaultErrorMessage': return 'Сурәтләрне йөкләп булмады';
+			case 'mangaChapterContents.linkInputPlaceholder': return 'Сылтама';
+			case 'mangaChapterContents.linkInputExplainText': return 'Эпизод ачылганда сылтама буенча автоматик күчү булачак';
+			case 'notFound.title': return '404';
+			case 'notFound.body': return 'Табылмаган';
 			default: return null;
 		}
 	}

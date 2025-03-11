@@ -1,5 +1,5 @@
-import 'package:tatmanga_flutter/domain/models/single_image.dart';
-import 'package:tatmanga_flutter/presentation/models/image_data.dart';
+import '../../domain/models/single_image.dart';
+import 'image_data.dart';
 
 extension ImageDataConverter on ImageData {
   SingleImage get toSingleImage => switch (this) {

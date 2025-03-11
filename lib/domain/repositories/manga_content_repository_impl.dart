@@ -1,10 +1,10 @@
 import 'dart:typed_data';
 import 'package:fpdart/fpdart.dart';
-import 'package:tatmanga_flutter/data/storage.dart';
+import '../../data/storage.dart';
 
-import 'package:tatmanga_flutter/domain/repositories/manga_content_repository.dart';
-import 'package:tatmanga_flutter/presentation/models/manga.dart';
-import 'package:tatmanga_flutter/utils/fp.dart';
+import '../../utils/limited_hash_map.dart';
+import 'manga_content_repository.dart';
+import '../../presentation/models/manga.dart';
 
 class MangaContentRepositoryImpl extends MangaContentRepository {
   final Storage _storage;
@@ -15,10 +15,21 @@ class MangaContentRepositoryImpl extends MangaContentRepository {
     // this._uuid,
   );
 
+  final LimitedHashMap<String, String> _linksCache = LimitedHashMap(20);
+
   @override
-  Future<Option<String>> getDownloadUrl(String mangaId, String fileName) async {
-    final image = await _storage.getUrl(mangaId, fileName);
-    return image.toOption(identity);
+  Future<Option<String>> getDownloadUrl(String mangaId, String fileName) {
+    final key = '$mangaId/$fileName';
+    return _linksCache.get(key).match(
+      () async {
+        final image = await _storage.getUrl(mangaId, fileName);
+        if (image != null) {
+          _linksCache.put(key, image);
+        }
+        return Option.fromNullable(image);
+      },
+      (url) => Future.value(Option.of(url)),
+    );
   }
 
   @override

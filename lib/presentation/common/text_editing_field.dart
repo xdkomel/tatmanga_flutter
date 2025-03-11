@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:tatmanga_flutter/presentation/common/styles.dart';
+import 'styles.dart';
 
 class TextEditingField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final TextStyle style;
+  final int? maxLines;
 
   const TextEditingField({
-    super.key,
     required this.controller,
     required this.hintText,
     required this.style,
+    this.maxLines = 1,
+    super.key,
   });
 
   @override
   Widget build(BuildContext context) => TextField(
         controller: controller,
         style: style,
+        maxLines: maxLines,
         decoration: InputDecoration(
           hintText: hintText,
           border: OutlineInputBorder(

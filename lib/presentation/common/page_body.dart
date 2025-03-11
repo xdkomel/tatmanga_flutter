@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:tatmanga_flutter/presentation/common/localization_manager.dart';
-import 'package:tatmanga_flutter/presentation/common/resources.dart';
-import 'package:tatmanga_flutter/presentation/common/styles.dart';
-import 'package:tatmanga_flutter/presentation/common/widget_button.dart';
-import 'package:tatmanga_flutter/providers.dart';
-import 'package:tatmanga_flutter/utils/responsive_ui.dart';
+import '../../gen/assets.gen.dart';
+import 'localization_manager.dart';
+import 'resources.dart';
+import 'styles.dart';
+import 'widget_button.dart';
+import '../../providers.dart';
+import '../../utils/responsive_ui.dart';
 
 class PageBody extends StatelessWidget {
   final List<Widget> children;
-  final List<String> breadCrumbs;
+  final List<BreadCrumb> breadCrumbs;
   const PageBody({
-    super.key,
     required this.children,
+    super.key,
     this.breadCrumbs = const [],
   });
 
@@ -40,26 +41,21 @@ class PageBody extends StatelessWidget {
                     children: [
                       if (breadCrumbs.isNotEmpty) ...[
                         Row(
-                          children: breadCrumbs.indexed
+                          children: breadCrumbs
                               .expand(
                                 (bc) => [
                                   WidgetButton(
+                                    onTap: bc.navigate,
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 8),
+                                        horizontal: 8,
+                                      ),
                                       child: Text(
-                                        bc.$2,
+                                        bc.name,
                                         style: Styles.pr
                                             .copyWith(color: Styles.prime400),
                                       ),
                                     ),
-                                    onTap: () {
-                                      for (final _ in Iterable.generate(
-                                        breadCrumbs.length - bc.$1,
-                                      )) {
-                                        Navigator.of(context).pop();
-                                      }
-                                    },
                                   ),
                                   Text(
                                     '·',
@@ -75,6 +71,7 @@ class PageBody extends StatelessWidget {
                       ...children,
                       const SizedBox(height: 24),
                       const _BottomLine(),
+                      const SizedBox(height: 24),
                     ],
                   ),
                 ),
@@ -85,6 +82,12 @@ class PageBody extends StatelessWidget {
       ),
     );
   }
+}
+
+class BreadCrumb {
+  BreadCrumb({required this.name, required this.navigate});
+  final String name;
+  final void Function() navigate;
 }
 
 class _Title extends ConsumerWidget {
@@ -126,19 +129,16 @@ class _EditButton extends ConsumerWidget {
                 onTap: ref.read(SP.editingModeOnManager.notifier).toggle,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Text(
+                  child: SvgPicture.asset(
+                    width: 24,
+                    height: 24,
                     ref.watch(SP.editingModeOnManager)
-                        ? ref
-                            .watch(SP.localizationManager)
-                            .translations
-                            .common
-                            .stopEditing
-                        : ref
-                            .watch(SP.localizationManager)
-                            .translations
-                            .common
-                            .edit,
-                    style: Styles.pr,
+                        ? Assets.icons.editOff
+                        : Assets.icons.edit,
+                    colorFilter: const ColorFilter.mode(
+                      Styles.secondary,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
               ),
@@ -156,13 +156,14 @@ class _AuthorizeButton extends ConsumerWidget {
               onTap: ref.read(SP.authenticationManager.notifier).auth,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Text(
-                  ref
-                      .watch(SP.localizationManager)
-                      .translations
-                      .common
-                      .authorize,
-                  style: Styles.pr,
+                child: SvgPicture.asset(
+                  Assets.icons.login,
+                  width: 24,
+                  height: 24,
+                  colorFilter: const ColorFilter.mode(
+                    Styles.secondary,
+                    BlendMode.srcIn,
+                  ),
                 ),
               ),
             ),
@@ -215,15 +216,23 @@ class _FlexibleMenuState extends State<_FlexibleMenu> {
               width,
               [
                 const _LanguageSelector(),
-                const SizedBox(width: 16),
                 const _EditButton(),
                 const _AuthorizeButton(),
               ],
               [
                 IconButton(
                   onPressed: () => setState(
-                      () => _showAdditionalMenu = !_showAdditionalMenu),
-                  icon: const Icon(Icons.menu),
+                    () => _showAdditionalMenu = !_showAdditionalMenu,
+                  ),
+                  icon: SvgPicture.asset(
+                    Assets.icons.menu,
+                    width: 24,
+                    height: 24,
+                    colorFilter: const ColorFilter.mode(
+                      Styles.secondary,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                 ),
               ],
             ),

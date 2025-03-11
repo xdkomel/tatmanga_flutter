@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tatmanga_flutter/presentation/common/styles.dart';
-import 'package:tatmanga_flutter/presentation/common/widget_button.dart';
-import 'package:tatmanga_flutter/providers.dart';
+import '../../common/styles.dart';
+import '../../common/widget_button.dart';
+import '../../../providers.dart';
 
 class UploadConfigButton extends ConsumerWidget {
   const UploadConfigButton({super.key});

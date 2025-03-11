@@ -1,21 +1,21 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tatmanga_flutter/presentation/common/image_widget.dart';
-import 'package:tatmanga_flutter/presentation/common/styles.dart';
-import 'package:tatmanga_flutter/presentation/common/widget_button.dart';
-import 'package:tatmanga_flutter/presentation/manga_contents/manga_contents_screen.dart';
-import 'package:tatmanga_flutter/presentation/models/manga.dart';
-import 'package:tatmanga_flutter/providers.dart';
-import 'package:tatmanga_flutter/utils/fp.dart';
+import '../../common/image_widget.dart';
+import '../../common/styles.dart';
+import '../../common/widget_button.dart';
+import '../../models/manga.dart';
+import '../../../providers.dart';
+import '../../../utils/fp.dart';
 
 class MangaCard extends ConsumerWidget {
   final Manga manga;
   final double width;
 
   const MangaCard({
-    super.key,
     required this.manga,
     required this.width,
+    super.key,
   });
 
   @override
@@ -57,24 +57,8 @@ class MangaCard extends ConsumerWidget {
         ],
       );
 
-  Future<void> _openManga(WidgetRef ref, BuildContext context) =>
-      ref.read(SP.mangaManager).fold(
-        () async {
-          final manager = ref.read(SP.mangaManager.notifier);
-          manager.setModel(manga);
-          await Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => const MangaContentsScreen(),
-            ),
-          );
-          ref.read(SP.mangaManager).map(
-                ref.read(SP.mangaLoadingManager.notifier).updateManga,
-              );
-          await manager.uploadConfig();
-          manager.removeModel();
-        },
-        (_) => Future.value(),
-      );
+  void _openManga(WidgetRef ref, BuildContext context) =>
+      Beamer.of(context).beamToNamed('/manga/${manga.mangaId}');
 }
 
 class _EpisodesCount extends ConsumerWidget {

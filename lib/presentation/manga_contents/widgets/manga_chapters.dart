@@ -1,36 +1,63 @@
+import 'package:beamer/beamer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tatmanga_flutter/presentation/common/styles.dart';
-import 'package:tatmanga_flutter/presentation/common/widget_button.dart';
-import 'package:tatmanga_flutter/presentation/episode_images_view.dart/episode_images_view_screen.dart';
-import 'package:tatmanga_flutter/presentation/manga_chapter_contents.dart/manga_chatper_contents_screen.dart';
-import 'package:tatmanga_flutter/presentation/models/manga.dart';
-import 'package:tatmanga_flutter/presentation/models/manga_chapter.dart';
-import 'package:tatmanga_flutter/providers.dart';
+import 'package:flutter_svg/svg.dart';
+import '../../../gen/assets.gen.dart';
+import '../../common/styles.dart';
+import '../../common/widget_button.dart';
+import '../../manga_chapter_contents.dart/manga_chatper_contents_screen.dart';
+import '../../models/manga_chapter.dart';
+import '../../../providers.dart';
 
 class MangaChapters extends ConsumerWidget {
   const MangaChapters({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) =>
-      ref
-          .watch(SP.mangaManager.select((m) => m.map((m) => m.chapters)))
-          .map(
-            (chapters) => Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ...chapters.indexed.expand(
-                  (ch) => [
-                    _OneChapter(index: ch.$1, chapter: ch.$2),
-                    const Divider(height: 1),
-                  ],
-                ),
-                const _AddChapterButton(),
-              ],
-            ),
-          )
-          .toNullable() ??
-      const SizedBox();
+      ref.watch(SP.mangaManager).match(
+        () => const SizedBox(),
+        (manga) {
+          final chapters = manga.chapters;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ...chapters.indexed.expand(
+                (ch) => [
+                  _OneChapter(
+                    index: ch.$1,
+                    chapter: ch.$2,
+                    mangaId: manga.mangaId,
+                  ),
+                  const Divider(height: 1),
+                ],
+              ),
+              const _AddChapterButton(),
+            ],
+          );
+        },
+      );
+}
+
+class _CopyChapterLinkButton extends StatelessWidget {
+  const _CopyChapterLinkButton({required this.chapterLink});
+
+  final String chapterLink;
+
+  @override
+  Widget build(BuildContext context) => IconButton(
+        onPressed: () => Clipboard.setData(ClipboardData(text: chapterLink)),
+        icon: SvgPicture.asset(
+          Assets.icons.link,
+          width: 24,
+          height: 24,
+          colorFilter: const ColorFilter.mode(
+            Styles.secondary,
+            BlendMode.srcIn,
+          ),
+        ),
+      );
 }
 
 class _RemoveChapterButton extends ConsumerWidget {
@@ -46,9 +73,14 @@ class _RemoveChapterButton extends ConsumerWidget {
               child: IconButton(
                 onPressed: () =>
                     ref.read(SP.mangaManager.notifier).removeChapter(index),
-                icon: const Icon(
-                  Icons.delete,
-                  color: Colors.redAccent,
+                icon: SvgPicture.asset(
+                  Assets.icons.delete,
+                  width: 24,
+                  height: 24,
+                  colorFilter: const ColorFilter.mode(
+                    Colors.redAccent,
+                    BlendMode.srcIn,
+                  ),
                 ),
               ),
             )
@@ -80,10 +112,12 @@ class _AddChapterButton extends ConsumerWidget {
 class _OneChapter extends ConsumerWidget {
   final int index;
   final MangaChapter chapter;
+  final String mangaId;
 
   const _OneChapter({
     required this.index,
     required this.chapter,
+    required this.mangaId,
   });
 
   @override
@@ -126,59 +160,26 @@ class _OneChapter extends ConsumerWidget {
             ),
           ),
           _RemoveChapterButton(index: index),
+          const SizedBox(width: 16),
+          _CopyChapterLinkButton(
+            chapterLink: 'https://tatmanga.ru/manga/$mangaId/${index + 1}',
+          ),
         ],
       );
 
-  void _openChapter(
-    WidgetRef ref,
-    BuildContext context,
-  ) =>
+  void _openChapter(WidgetRef ref, BuildContext context) =>
       ref.read(SP.mangaManager).map(
-            (manga) => ref.read(SP.editingModeOnManager)
-                ? Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => MangaChatperContentsScreen(
-                        chapterIndex: index,
-                      ),
-                    ),
-                  )
-                : _openEpisodeView(ref, context, index, manga),
-          );
-
-  Future<void> _openEpisodeView(
-    WidgetRef ref,
-    BuildContext context,
-    int index,
-    Manga manga, [
-    bool startFromEnd = false,
-  ]) async {
-    ref.read(SP.episodeImagesViewManager.notifier).setModel(
-          manga.chapters.get(index),
-        );
-    final value = await EpisodeImagesViewScreen.show(
-      context,
-      manga.mangaId,
-      startFromEnd,
-    );
-    if (context.mounted) {
-      return switch (value) {
-        EpisodeImagesViewResponse.back when index > 0 => _openEpisodeView(
-            ref,
-            context,
-            index - 1,
-            manga,
-            true,
-          ),
-        EpisodeImagesViewResponse.forward
-            when index < manga.chapters.length - 1 =>
-          _openEpisodeView(
-            ref,
-            context,
-            index + 1,
-            manga,
-          ),
-        _ => null,
-      };
-    }
-  }
+        (manga) {
+          final isEditing = ref.read(SP.editingModeOnManager);
+          if (isEditing) {
+            showCupertinoModalPopup(
+              context: context,
+              builder: (context) =>
+                  MangaChapterContentsScreen(chapterIndex: index),
+            );
+          } else {
+            Beamer.of(context).beamToNamed('${index + 1}');
+          }
+        },
+      );
 }

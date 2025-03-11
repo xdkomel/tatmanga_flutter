@@ -1,14 +1,14 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tatmanga_flutter/presentation/common/styles.dart';
-import 'package:tatmanga_flutter/presentation/common/text_editing_field.dart';
-import 'package:tatmanga_flutter/presentation/models/manga_chapter.dart';
-import 'package:tatmanga_flutter/providers.dart';
+import '../../common/styles.dart';
+import '../../common/text_editing_field.dart';
+import '../../models/manga_chapter.dart';
+import '../../../providers.dart';
 
 class ChapterName extends ConsumerStatefulWidget {
   final int index;
-  const ChapterName({super.key, required this.index});
+  const ChapterName({required this.index, super.key});
 
   @override
   ConsumerState<ChapterName> createState() => _ChapterNameState();
@@ -113,7 +113,7 @@ class _ImagesProviderSelector extends ConsumerWidget {
                     .watch(SP.localizationManager)
                     .translations
                     .mangaChapterContents
-                    .parseFromTelegraphMethod,
+                    .openLink,
               ),
             ],
           ),

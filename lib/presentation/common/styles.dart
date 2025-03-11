@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 abstract class Styles {
   // Text Styles
@@ -54,6 +53,7 @@ abstract class Styles {
 
   // Colors
   static const primary = Color(0xFF24AF34);
+  static const secondary = Color(0xFF3c6838);
   static const background = Color(0xFFF2F2F2);
   static const prime500 = Color(0xFF666666);
   static const prime400 = Color(0xFF4D4D4D);

@@ -35,12 +35,13 @@
         "episodeName": "Эпизодның исеме",
         "addImages": "Сурәтләрне өстәргә",
         "imagesLoadingMethod": "Сурәтләрне йөкләү ысулы",
-        "parseFromTelegraphMethod": "Telegraph-тан эшкәртеп чыгарырга",
+        "openLink": "Сылтаманы ачырга",
         "loadOneByOne": "Берәм-берәм йөкләргә",
-        "telegraphInputPlaceholder": "Telegraph исеме",
-        "telegraphInputExplainText(rich)": "Telegraph исемне сылтамадан чыгарып кертегез. Мәсәлән, ${url(https://telegra.ph/manga-iseme)} сылтама өчен ${name(manga-iseme)} исемен кертергә кирәк"
+        "linkInputPlaceholder": "Сылтама",
+        "linkInputExplainText": "Эпизод ачылганда сылтама буенча автоматик күчү булачак"
     },
-    "episodeImagesView": {
-        "defaultErrorMessage": "Сурәтләрне йөкләп булмады"
+    "notFound": {
+        "title": "404",
+        "body": "Табылмаган"
     }
 }

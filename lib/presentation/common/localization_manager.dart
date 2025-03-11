@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tatmanga_flutter/i18n/strings.g.dart';
-import 'package:tatmanga_flutter/providers.dart';
+import '../../i18n/strings.g.dart';
+import '../../providers.dart';
 
 enum Language { ru, tt, en }
 

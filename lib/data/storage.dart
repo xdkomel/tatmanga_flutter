@@ -3,75 +3,52 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:tatmanga_flutter/domain/models/manga_config.dart';
-import 'package:tatmanga_flutter/utils/fp.dart';
-import 'package:tatmanga_flutter/utils/limited_hash_map.dart';
+import 'package:fpdart/fpdart.dart';
+import '../domain/models/manga_config.dart';
 
 class Storage {
   final _ref = FirebaseStorage.instance.ref();
 
-  final LimitedHashMap<String, String> _linksCache = LimitedHashMap(20);
-
   Future<Iterable<MangaConfig>> downloadConfigs() async {
     final mangas = await _ref.listAll();
-    final configs = await mangas.prefixes
-        .map(
-          (r) => futureThrowable(() async {
-            final configData = await r.child('config.json').getData();
-            final configStr = utf8.decode(configData!);
-            final json = jsonDecode(configStr) as Map<String, dynamic>;
-            return MangaConfig.fromJson(json);
-          }),
-        )
-        .wait;
-    return configs.map((c) => c.toNullable()).nonNulls;
+    final configs = await mangas.prefixes.map(_getMangaConfig).wait;
+    return configs.nonNulls;
   }
 
-  // Future<Option<MangaConfig>> loadConfig(String mangaId) {
-  //   return _configsCache[mangaId].fold(
-  //     () async {
-  //       final result = await futureThrowable(() async {
-  //         final configData = await _ref.child('$mangaId/config.json').getData();
-  //         final configStr = utf8.decode(configData!);
-  //         final json = jsonDecode(configStr) as Map<String, dynamic>;
-  //         return MangaConfig.fromJson(json);
-  //       });
-  //       return result.toOption();
-  //     },
-  //     (c) => Future.value(Option.of(c)),
-  //   );
-  // }
+  Future<MangaConfig?> _getMangaConfig(Reference ref) async {
+    final config = await TaskOption.tryCatch(() async {
+      final configData = await ref.child('config.json').getData();
+      final configStr = utf8.decode(configData!);
+      final json = jsonDecode(configStr) as Map<String, dynamic>;
+      return MangaConfig.fromJson(json);
+    }).run();
+    return config.toNullable();
+  }
 
-  Future<String?> getUrl(String mangaId, String fileName) {
+  Future<MangaConfig?> downloadOneConfig(String mangaId) =>
+      _getMangaConfig(_ref.child(mangaId));
+
+  Future<String?> getUrl(String mangaId, String fileName) async {
     final path = '$mangaId/$fileName';
-    return _linksCache.get(path).fold(
-      () async {
-        final maybeUrl = await futureThrowable(
-          _ref.child(path).getDownloadURL,
-        );
-        return maybeUrl.toNullable().also(
-              (url) => url.map(
-                (u) => _linksCache.put(path, u),
-              ),
-            );
-      },
-      Future.value,
-    );
+    final url = await TaskOption.tryCatch(
+      _ref.child(path).getDownloadURL,
+    ).run();
+    return url.toNullable();
   }
 
-  Future<void> uploadConfig(MangaConfig config) {
-    return futureThrowable(() async {
-      final json = jsonEncode(config.toJson());
-      await _ref.child('${config.mangaId}/config.json').putString(json);
-    });
-  }
+  Future<void> uploadConfig(MangaConfig config) =>
+      TaskOption.tryCatch(() async {
+        final json = jsonEncode(config.toJson());
+        await _ref.child('${config.mangaId}/config.json').putString(json);
+      }).run();
 
   Future<void> uploadImage(String mangaId, String imageName, Uint8List bytes) =>
-      futureThrowable(
+      TaskOption.tryCatch(
         () => _ref.child('$mangaId/$imageName').putData(bytes),
-      );
+      ).run();
 
-  Future<void> removeImage(String mangaId, String imageName) => futureThrowable(
+  Future<void> removeImage(String mangaId, String imageName) =>
+      TaskOption.tryCatch(
         _ref.child('$mangaId/$imageName').delete,
-      );
+      ).run();
 }

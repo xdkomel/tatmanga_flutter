@@ -1,11 +1,11 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:tatmanga_flutter/domain/models/manga_config.dart';
-import 'package:tatmanga_flutter/presentation/models/author.dart';
-import 'package:tatmanga_flutter/presentation/models/image_data_converter.dart';
-import 'package:tatmanga_flutter/presentation/models/manga_chapter.dart';
-import 'package:tatmanga_flutter/presentation/models/status_image_data.dart';
-import 'package:tatmanga_flutter/utils/fp.dart';
+import '../../domain/models/manga_config.dart';
+import 'author.dart';
+import 'image_data_converter.dart';
+import 'manga_chapter.dart';
+import 'status_image_data.dart';
+import '../../utils/fp.dart';
 
 part 'manga.freezed.dart';
 
@@ -33,6 +33,6 @@ extension ToMangConfig on Manga {
               (a) => AuthorData(name: a.name, role: a.role),
             )
             .toList(),
-        chapters: chapters.map((e) => e.toFirebaseChapter).toList(),
+        chapters: chapters.map((e) => e.toFirebaseChapter).nonNulls.toList(),
       );
 }

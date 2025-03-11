@@ -59,6 +59,7 @@ class CupertinoLocalizationTt extends CupertinoLocalizationRu {
           localeName: 'tt',
           fullYearFormat: DateFormat.y('ru'),
           dayFormat: DateFormat.d('ru'),
+          weekdayFormat: DateFormat(DateFormat.WEEKDAY, 'ru'),
           mediumDateFormat: DateFormat.MMMd('ru'),
           singleDigitHourFormat: DateFormat('H'),
           singleDigitMinuteFormat: DateFormat('m'),
